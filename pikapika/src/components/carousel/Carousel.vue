@@ -75,7 +75,7 @@ export default {
 .carousel-container {
   position: relative;
   border-radius: 5px;
-  background: rgba(0, 0, 0, 0.1);
+  // background: rgba(0, 0, 0, 0.1);
   cursor: pointer;
 
   .carousel-indicator {
@@ -85,6 +85,7 @@ export default {
     right: 0;
     ul {
       display: flex;
+      cursor: auto;
       li {
         margin-right: 10px;
         img {
@@ -115,5 +116,6 @@ export default {
   width: 100%;
   height: 62px;
   background: linear-gradient(-180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75));
+  cursor:auto;
 }
 </style>

@@ -1,0 +1,39 @@
+@url=http://localhost:3000/admin/api
+@json=Content-Type: application/json
+
+###
+get {{url}}/
+
+###
+get {{url}}/bangumis
+
+###
+get {{url}}/bangumis/3
+
+###
+post {{url}}/bangumis
+{{json}}
+
+{
+    "b_name": "33333333333333333333",
+    "t_id": 1,
+    "b_imgSrc": "dawdawdw",
+    "b_episodes": "12",
+    "b_status": 2,
+    "b_style": "战斗、热血",
+    "b_initials": "D",
+    "b_playtime": "2019-10-07",
+    "b_quarter":"10",
+    "b_years": "2019",
+    "b_actors":"户松遥、松冈祯丞",
+    "b_summary":"虚拟游戏战斗番"
+}
+
+###
+post {{url}}/users/codePhoneLogin
+{{json}}
+
+{
+    "phone": "13980769536",
+    "code": "6893"
+}
