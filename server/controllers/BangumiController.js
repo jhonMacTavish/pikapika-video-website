@@ -8,7 +8,7 @@ getBangumiByName = async(b_name) => {
     return result;
 }
 
-getBangumi = async (req, res) => {
+getBangumiByID = async (req, res) => {
     var v_id = req.params.id
     var sql = 'select * from pk_bangumi where v_id=?';
     var sqlArr = [v_id];
@@ -25,15 +25,16 @@ getBangumis = (req, res) => {
         if (err) {
             console.log("操作出错");
             res.send({
-                'status': 500,
-                'msg': "操作出错"
+                'status': 402,
+                'msg': "信息获取失败"
             })
         } else {
             // console.log("getBangumis", data);
             console.log("操作成功");
             res.send({
                 "list":data,
-                "msg":"操作成功"
+                "status":200,
+                "msg":"信息获取成功"
             })
         }
     }
@@ -59,20 +60,20 @@ createBangumi = async(req, res) => {
     var sql =
         'insert into pk_bangumi(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
         + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
-    console.log("插入2");
 
     let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
             res.send({
-                'msg': "操作出错"
+                "status":402,
+                'msg': "添加失败"
             });
         } else {
             console.log("操作成功");
             res.send({
                 "status":200,
-                "msg":"操作成功"
+                "msg":"添加成功"
             });
         }
     }
@@ -81,6 +82,58 @@ createBangumi = async(req, res) => {
 
 }
 
+updateBangumi = (req,res) => {
+    console.log("更新数据", )
+    let {b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary,v_id} = req.body;
+    
+    sql = 'update pk_bangumi set b_name=?,b_imgSrc=?,b_episodes=?,b_status=?,b_style=?,b_initials=?,b_playtime=?,b_quarter=?,b_years=?,b_actors=?,b_summary=? where v_id=?';
+    sqlArr = [b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary,v_id];
+
+    callback = (err,data) => {
+        if (err) {
+            console.log("操作出错")
+            res.send({
+                "status":402,
+                'msg': "更新失败"
+            });
+        } else {
+            console.log("操作成功");
+            res.send({
+                "status":200,
+                "msg":"更新成功"
+            });
+        }
+    }
+
+    dbconfig.sqlConnect(sql,sqlArr,callback);
+}
+
+deleteBangumi = (req,res) => {
+    console.log("删除数据", )
+    let v_id = req.params.id;
+    console.log("v_id", req.params);
+    let sql = 'delete from pk_bangumi where v_id=?';
+    let sqlArr = [v_id];
+
+    callback = (err,data) => {
+        if (err) {
+            console.log("操作出错")
+            res.send({
+                "status":402,
+                'msg': "删除失败"
+            });
+        } else {
+            console.log("操作成功");
+            res.send({
+                "status":200,
+                "msg":"删除成功"
+            });
+        }
+    }
+
+    dbconfig.sqlConnect(sql,sqlArr,callback);
+}
+
 module.exports = {
-    getBangumis, createBangumi, getBangumi
+    getBangumis, createBangumi, getBangumiByID,updateBangumi,deleteBangumi
 }

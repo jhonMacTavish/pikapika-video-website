@@ -12,8 +12,10 @@ module.exports = app => {
   });
 
   router.get('/bangumis',Bangumi.getBangumis);
-  router.get('/bangumis/:id',Bangumi.getBangumi);
+  router.get('/bangumis/:id',Bangumi.getBangumiByID);
   router.post('/bangumis',Bangumi.createBangumi);
+  router.put('/bangumis/:id',Bangumi.updateBangumi);
+  router.delete('/bangumis/:id',Bangumi.deleteBangumi);
 
   app.use('/admin/api',router);
 }

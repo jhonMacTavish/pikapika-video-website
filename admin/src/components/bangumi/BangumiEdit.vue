@@ -72,7 +72,8 @@
         <el-input type="textarea" rows="3" v-model="model.b_summary" clearable maxlength="500"></el-input>
       </el-form-item>
       <el-form-item>
-        <el-button type="primary" @click.native="submitForm('bangumi')">保存</el-button>
+        <el-button type="primary" @click.native="submitForm('bangumi')">保 存</el-button>
+        <el-button @click="$router.go(-1)">取 消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -193,7 +194,7 @@ export default {
         t_id: 1,
         b_imgSrc: "",
         b_episodes: "",
-        b_status: 2,
+        b_status: 1,
         b_style: [],
         b_initials: "",
         b_playtime: "",
@@ -248,9 +249,19 @@ export default {
           params.b_style = params.b_style.join("、");
           params.b_actors = params.b_actors.join("、");
           console.log("params*************", params);
-          const res = await this.$http.post("/bangumis", params);
-          console.log("res***********", res);
 
+          let res;
+
+          if (this.id) {
+            console.log("更新");
+            res = await this.$http.put(`/bangumis/${this.id}`, params);
+          } else {
+            console.log("创建");
+            res = await this.$http.post("/bangumis", params);
+          }
+
+          console.log("res***********", res);
+          
           if (res.data.status == 200) {
             this.$message({
               type: "success",

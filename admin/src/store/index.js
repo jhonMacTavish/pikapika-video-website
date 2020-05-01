@@ -169,6 +169,8 @@ export default new Vuex.Store({
         }
     },
     actions: {
-
+        updateBangumiList({commit},bangumiList){
+            commit('updateBangumiList',bangumiList);
+        }
     }
 })
