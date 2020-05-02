@@ -1,19 +1,19 @@
 <template>
-  <div>
-    <h1>番剧列表</h1>
+  <div class="content">
+    <h1>国漫列表</h1>
     <el-table :data="pageList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="b_name" label="名称"></el-table-column>
-      <el-table-column prop="b_episodes" label="集数"></el-table-column>
-      <el-table-column prop="b_style" label="风格"></el-table-column>
-      <el-table-column prop="b_playtime" label="开播时间"></el-table-column>
+      <el-table-column prop="g_name" label="名称"></el-table-column>
+      <el-table-column prop="g_episodes" label="集数"></el-table-column>
+      <el-table-column prop="g_style" label="风格"></el-table-column>
+      <el-table-column prop="g_playtime" label="开播时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row.v_id)" class="detail">查看</el-button>
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/bangumi/eidt/${scope.row.v_id}`)"
+            @click="$router.push(`/guoman/eidt/${scope.row.v_id}`)"
             class="deit"
           >编辑</el-button>
           <el-button type="text" size="small" @click="remove(scope.row)" class="delete">删除</el-button>
@@ -34,35 +34,35 @@
     <el-dialog title="番剧信息" :visible.sync="dialogFormVisible">
       <el-form :model="model" label-width="100px" style="margin-right: 0;">
         <el-form-item label="名称" class="form-item">
-          <p>{{model.b_name}}</p>
+          <p>{{model.g_name}}</p>
         </el-form-item>
         <el-form-item label="类型" class="form-item">
           <p>{{model.t_id}}</p>
         </el-form-item>
 
         <el-form-item label="总集数" class="form-item">
-          <p>{{model.b_episodes}}</p>
+          <p>{{model.g_episodes}}</p>
         </el-form-item>
         <el-form-item label="状态" class="form-item">
-          <p>{{model.b_status}}</p>
+          <p>{{model.g_status}}</p>
         </el-form-item>
         <el-form-item label="风格" class="form-item">
-          <p>{{model.b_style}}</p>
+          <p>{{model.g_style}}</p>
         </el-form-item>
         <el-form-item label="首字母" class="form-item">
-          <p>{{model.b_initials}}</p>
+          <p>{{model.g_initials}}</p>
         </el-form-item>
         <el-form-item label="开播时间" class="form-item">
-          <p>{{model.b_playtime}}</p>
+          <p>{{model.g_playtime}}</p>
         </el-form-item>
         <el-form-item label="声优" class="form-item">
-          <p>{{model.b_actors}}</p>
+          <p>{{model.g_actors}}</p>
         </el-form-item>
         <el-form-item label="图片地址" class="form-item">
-          <p>{{model.b_imgSrc}}</p>
+          <p>{{model.g_imgSrc}}</p>
         </el-form-item>
         <el-form-item label="简介" class="form-item">
-          <p>{{model.b_summary}}</p>
+          <p>{{model.g_summary}}</p>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -74,7 +74,7 @@
 
 <script>
 export default {
-  name: "BangumiList",
+  name: "GuomanList",
   data() {
     return {
       dialogFormVisible: false,
@@ -87,12 +87,12 @@ export default {
     await this.fetch();
   },
   computed: {
-    bangumiList() {
-      return this.$store.getters.bangumiList;
+    guomanList() {
+      return this.$store.getters.guomanList;
     },
 
     totalItems() {
-      return this.$store.getters.bangumiList.length;
+      return this.$store.getters.guomanList.length;
     }
   },
   beforeUpdate(){
@@ -100,11 +100,9 @@ export default {
   watch: {},
   methods: {
     async fetch() {
-      const res = await this.$http.get("/bangumis");
-      this.$store.dispatch("updateBangumiList", res.data.list);
-      console.log("this.totalItems/10", this.totalItems/10);
-      console.log("this.totalItems", this.totalItems);
-      console.log("this.currentPage", this.currentPage);
+      const res = await this.$http.get("/guomans");
+      console.log("guomanList", res);
+      this.$store.dispatch("updateGuomanList", res.data.list);
       
       if(Math.ceil(this.totalItems/10) < this.currentPage){
         --this.currentPage;
@@ -113,12 +111,12 @@ export default {
     },
 
     async remove(row) {
-      this.$confirm(`是否确定要删除番剧 "${row.b_name}"`, "提示", {
+      this.$confirm(`是否确定要删除番剧 "${row.g_name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       }).then(async () => {
-        const res = await this.$http.delete(`/bangumis/${row.v_id}`);
+        const res = await this.$http.delete(`/guomans/${row.v_id}`);
         console.log("delete", res);
         if (res.data.status == 200) {
           this.$message({
@@ -148,14 +146,14 @@ export default {
         i < (10 * val < this.totalItems ? 10 * val : this.totalItems);
         i++
       ) {
-        pageList.push(this.bangumiList[i]);
+        pageList.push(this.guomanList[i]);
       }
       this.pageList = pageList;
       // document.querySelector("counter1").scrollIntoView(true); //这里的counter1是将要返回地方的id
     },
 
     async detail(v_id) {
-      const res = await this.$http.get(`/bangumis/${v_id}`);
+      const res = await this.$http.get(`/guomans/${v_id}`);
       this.model = res.data[0];
       this.dialogFormVisible = true;
       console.log("this.model", this.model);

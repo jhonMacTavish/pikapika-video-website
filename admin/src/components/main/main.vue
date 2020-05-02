@@ -1,15 +1,20 @@
 <template>
   <el-container style="height: 100vh; border: 1px solid #eee">
     <el-aside width="200px" style="background-color: rgb(238, 241, 246)">
-      <el-menu router :default-openeds="['1', '3']">
+      <el-menu router :default-openeds="['1']" unique-opened :default-active="$route.path">
         <el-submenu index="1">
           <template slot="title">
-            <i class="el-icon-message"></i>视屏管理
+            <i class="el-icon-message"></i>视频管理
           </template>
           <el-menu-item-group>
             <template slot="title">番剧</template>
             <el-menu-item index="/bangumi/list">番剧列表</el-menu-item>
             <el-menu-item index="/bangumi/create">添加番剧</el-menu-item>
+          </el-menu-item-group>
+          <el-menu-item-group>
+            <template slot="title">国漫</template>
+            <el-menu-item index="/guoman/list">国漫列表</el-menu-item>
+            <el-menu-item index="/guoman/create">添加国漫</el-menu-item>
           </el-menu-item-group>
         </el-submenu>
       </el-menu>

@@ -140,7 +140,7 @@ export default new Vuex.Store({
             }
         ],
         bangumiList: [],
-        guochuangList: [],
+        guomanList: [],
         theaterList: [],
         fimlTVList: []
     },
@@ -150,7 +150,7 @@ export default new Vuex.Store({
         initials: state => state.initials,
 
         bangumiList: state => state.bangumiList,
-        guochuangList: state => state.guochuangList,
+        guomanList: state => state.guomanList,
         theaterList: state => state.theaterList,
         fimlTVList: state => state.fimlTVList,
     },
@@ -158,8 +158,8 @@ export default new Vuex.Store({
         updateBangumiList(state, bangumiList) {
             state.bangumiList = bangumiList;
         },
-        updateGuochuangList(state, guochuangList) {
-            state.guochuangList = guochuangList;
+        updateGuomanList(state, guomanList) {
+            state.guomanList = guomanList;
         },
         updateTheaterList(state, theaterList) {
             state.theaterList = theaterList;
@@ -171,6 +171,9 @@ export default new Vuex.Store({
     actions: {
         updateBangumiList({commit},bangumiList){
             commit('updateBangumiList',bangumiList);
+        },
+        updateGuomanList({commit},guomanList){
+            commit('updateGuomanList',guomanList);
         }
     }
 })
