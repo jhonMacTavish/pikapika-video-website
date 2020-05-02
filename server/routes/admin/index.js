@@ -1,8 +1,8 @@
 module.exports = app => {
   var express = require('express');
   var router = express.Router();
-  var Bangumi = require('../../controllers/bangumi/BangumiController');
-  var Guoman = require('../../controllers/guoman/GuomanController');
+  var Bangumi = require('../../controllers/BangumiController');
+  var Guoman = require('../../controllers/GuomanController');
 
   /* GET home page. */
   router.get('/', (req, res) => {
@@ -12,17 +12,17 @@ module.exports = app => {
     })
   });
 
-  router.get('/bangumis',Bangumi.getBangumis);
-  router.get('/bangumis/:id',Bangumi.getBangumiByID);
-  router.post('/bangumis',Bangumi.createBangumi);
-  router.put('/bangumis/:id',Bangumi.updateBangumi);
-  router.delete('/bangumis/:id',Bangumi.deleteBangumi);
+  router.get('/bangumis', Bangumi.getAll);
+  router.get('/bangumis/:id', Bangumi.getOne);
+  router.post('/bangumis', Bangumi.createOne);
+  router.put('/bangumis/:id', Bangumi.updateOne);
+  router.delete('/bangumis/:id', Bangumi.deleteOne);
 
-  router.get('/guomans',Guoman.getGuomans);
-  router.get('/guomans/:id',Guoman.getGuomanByID);
-  router.post('/guomans',Guoman.createGuoman);
-  router.put('/guomans/:id',Guoman.updateGuoman);
-  router.delete('/guomans/:id',Guoman.deleteGuoman);
+  router.get('/guomans', Guoman.getAll);
+  router.get('/guomans/:id', Guoman.getOne);
+  router.post('/guomans', Guoman.createOne);
+  router.put('/guomans/:id', Guoman.updateOne);
+  router.delete('/guomans/:id', Guoman.deleteOne);
 
-  app.use('/admin/api',router);
+  app.use('/admin/api', router);
 }

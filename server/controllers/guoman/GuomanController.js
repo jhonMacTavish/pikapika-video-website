@@ -1,27 +1,29 @@
-var dbconfig = require('../../util/dbconfig');
+let dbconfig = require('../../util/dbconfig');
 
-getGuomanByName = async (g_name) => {
-    var sql = 'select * from pk_guoman where g_name=?';
-    var sqlArr = [g_name];
+let getByParams = async (obj) => {
+    console.log(`getBy${obj.key}`);
+    let sql = `select * from pk_guoman where ${obj.key}=?`;
+    let sqlArr = [obj.value];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     return result;
 }
 
-getGuomanByID = async (req, res) => {
-    var v_id = req.params.id
-    var sql = 'select * from pk_guoman where v_id=?';
-    var sqlArr = [v_id];
+getOne = async (req, res) => {
+    console.log("getByID", )
+    let v_id = req.params.id
+    let sql = 'select * from pk_guoman where v_id=?';
+    let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     res.send(result);
 }
 
-getGuomans = (req, res) => {
-    console.log("getGuomans")
-    var sql = 'select v_id,g_name,g_episodes,g_style,g_playtime from pk_guoman where t_id=2';
-    var sqlArr = [];
-    var callback = (err, data) => {
+getAll = (req, res) => {
+    console.log("getAll")
+    let sql = 'select v_id,g_name,g_episodes,g_style,g_playtime from pk_guoman where t_id=2';
+    let sqlArr = [];
+    let callback = (err, data) => {
         if (err) {
             console.log("操作出错");
             res.send({
@@ -29,7 +31,7 @@ getGuomans = (req, res) => {
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getGuomans", data);
+            // console.log("getAll", data);
             console.log("操作成功");
             res.send({
                 "list": data,
@@ -42,13 +44,11 @@ getGuomans = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-createGuoman = async (req, res) => {
-    console.log("createGuoman");
-    // console.log("req", req.body);
-    console.log("params", req.body);
+createOne = async (req, res) => {
+    console.log("create");
 
     let { g_name, t_id, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
-    let g_nameRst = await getGuomanByName(g_name);
+    let g_nameRst = await getByParams({key:'g_name',value:g_name});
     if (g_nameRst.length != 0) {
         res.send({
             "status": 402,
@@ -57,7 +57,7 @@ createGuoman = async (req, res) => {
         return;
     }
 
-    var sql =
+    let sql =
         'insert into pk_guoman(g_name,t_id,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary) '
         + 'values(?,?,?,?,?,?,?,?,?,?,?)';
 
@@ -82,7 +82,7 @@ createGuoman = async (req, res) => {
 
 }
 
-updateGuoman = (req, res) => {
+updateOne = (req, res) => {
     console.log("更新数据", req.body);
     let { t_id, g_name, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id } = req.body;
 
@@ -108,7 +108,7 @@ updateGuoman = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-deleteGuoman = (req, res) => {
+deleteOne = (req, res) => {
     console.log("删除数据")
     let v_id = req.params.id;
     console.log("v_id", req.params);
@@ -135,5 +135,5 @@ deleteGuoman = (req, res) => {
 }
 
 module.exports = {
-    getGuomans, createGuoman, getGuomanByID, updateGuoman, deleteGuoman
+    getAll, getOne, createOne, updateOne, deleteOne
 }

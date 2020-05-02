@@ -73,7 +73,7 @@
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click.native="submitForm('bangumi')">保 存</el-button>
-        <el-button @click="$router.go(-1)">取 消</el-button>
+        <el-button @click="$router.push('/bangumi/list')">取 消</el-button>
       </el-form-item>
     </el-form>
   </div>
