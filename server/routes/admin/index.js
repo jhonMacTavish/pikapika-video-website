@@ -1,8 +1,8 @@
 module.exports = app => {
   var express = require('express');
   var router = express.Router();
-  var Bangumi = require('../../controllers/BangumiController');
-  var Guoman = require('../../controllers/GuomanController');
+  var Bangumi = require('../../controllers/bangumi/BangumiController');
+  var Guoman = require('../../controllers/guoman/GuomanController');
 
   /* GET home page. */
   router.get('/', (req, res) => {
