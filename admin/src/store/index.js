@@ -228,7 +228,7 @@ export default new Vuex.Store({
         updateUserinfoList({commit},userinfoList){
             commit('UpdateUserinfoList',userinfoList);
         },
-        updateVideofoList({commit},videoList){
+        updateVideoList({commit},videoList){
             commit('UpdateVideoList',videoList);
         }
     }

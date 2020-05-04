@@ -16,6 +16,7 @@ getOne = async (req, res) => {
     let sqlArr = [u_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    console.log("userRst", result);
     res.send(result);
 }
 

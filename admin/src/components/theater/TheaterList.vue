@@ -225,7 +225,7 @@ export default {
       let rst = await this.$http.get(`/videos/`, {
         params: { v_id: this.model.v_id, t_id: this.model.t_id }
       });
-      this.$store.dispatch("updateVideofoList", rst.data.list);
+      this.$store.dispatch("updateVideoList", rst.data.list);
       this.videoCurrentChange(this.videoCurrentPage);
     },
 

@@ -71,9 +71,11 @@ createOne = async (req, res) => {
             });
         } else {
             console.log("操作成功");
+            console.log("data", data.insertId);
             res.send({
                 "status": 200,
-                "msg": "添加成功"
+                "msg": "添加成功",
+                "v_id": data.insertId
             });
         }
     }

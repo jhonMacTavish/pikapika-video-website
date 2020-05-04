@@ -15,7 +15,7 @@ let dbconfig = require('../../../util/dbconfig');
 
 let getByParams = async (obj) => {
     console.log(`getBangumiBy${obj.key}`);
-    console.log("obj.key",obj.key);
+    console.log("obj.key", obj.key);
     let sql = `select * from pk_bangumi where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
@@ -69,7 +69,7 @@ let getOne = async (req, res) => {
 //                     + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
 
 //                 let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
-                
+
 
 //                 break;
 //             case 2:
@@ -158,9 +158,11 @@ let createOne = async (req, res) => {
             });
         } else {
             console.log("操作成功");
+            console.log("data", data.insertId);
             res.send({
                 "status": 200,
-                "msg": "添加成功"
+                "msg": "添加成功",
+                "v_id": data.insertId
             });
         }
     }

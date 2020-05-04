@@ -1,11 +1,11 @@
 <template>
   <div>
-    <h1>{{id?'编辑番剧 ♥ '+this.model.b_name:'添加番剧'}}</h1>
+    <h1>{{id?'编辑番剧 ♥ '+this.modelB.b_name:'添加番剧'}}</h1>
 
-    <el-tabs v-model="activeName">
+    <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="first" class="panel">
         <el-form
-          :model="model"
+          :model="modelB"
           :rules="rules"
           ref="basicInfo"
           label-width="190px"
@@ -13,10 +13,10 @@
           style="padding-right: 60px;margin-top:60px"
         >
           <el-form-item label="名称" prop="b_name">
-            <el-input v-model="model.b_name" style="width:222px" maxlength="100"></el-input>
+            <el-input v-model="modelB.b_name" style="width:222px" maxlength="100"></el-input>
           </el-form-item>
           <el-form-item label="类型" prop="t_id">
-            <el-select v-model="model.t_id" placeholder="请选择" disabled>
+            <el-select v-model="modelB.t_id" placeholder="请选择" disabled>
               <el-option
                 v-for="item in types"
                 :key="item.t_id"
@@ -27,10 +27,10 @@
           </el-form-item>
 
           <el-form-item label="总集数" prop="b_episodes">
-            <el-input v-model="model.b_episodes" style="width:222px" maxlength="4"></el-input>
+            <el-input v-model="modelB.b_episodes" style="width:222px" maxlength="4"></el-input>
           </el-form-item>
           <el-form-item label="状态" prop="b_status">
-            <el-select v-model="model.b_status" placeholder="请选择">
+            <el-select v-model="modelB.b_status" placeholder="请选择">
               <el-option
                 v-for="(item) in status"
                 :key="item.id"
@@ -41,7 +41,7 @@
           </el-form-item>
           <el-form-item label="风格" prop="b_style">
             <!-- <el-select
-              v-model="model.b_style"
+              v-model="modelB.b_style"
               multiple
               filterable
               allow-create
@@ -53,7 +53,7 @@
             </el-select>-->
             <el-tag
               :key="tag"
-              v-for="tag in model.b_style"
+              v-for="tag in modelB.b_style"
               closable
               :disable-transitions="false"
               @close="styHandleClose(tag)"
@@ -72,7 +72,7 @@
             </el-button>
           </el-form-item>
           <el-form-item label="首字母" prop="b_initials">
-            <el-select v-model="model.b_initials" placeholder="请选择">
+            <el-select v-model="modelB.b_initials" placeholder="请选择">
               <el-option
                 v-for="item in initials"
                 :key="item.id"
@@ -83,7 +83,7 @@
           </el-form-item>
           <el-form-item label="开播时间" prop="b_playtime">
             <el-date-picker
-              v-model="model.b_playtime"
+              v-model="modelB.b_playtime"
               type="date"
               placeholder="选择日期"
               value-format="yyyy-MM-dd"
@@ -91,7 +91,7 @@
           </el-form-item>
           <el-form-item label="声优" prop="b_actors">
             <!-- <el-select
-              v-model="model.b_actors"
+              v-model="modelB.b_actors"
               multiple
               filterable
               allow-create
@@ -103,7 +103,7 @@
             </el-select>-->
             <el-tag
               :key="tag"
-              v-for="tag in model.b_actors"
+              v-for="tag in modelB.b_actors"
               closable
               :disable-transitions="false"
               @close="actHandleClose(tag)"
@@ -122,10 +122,10 @@
             </el-button>
           </el-form-item>
           <el-form-item label="图片地址" prop="b_imgSrc">
-            <el-input v-model="model.b_imgSrc" maxlength="500"></el-input>
+            <el-input v-model="modelB.b_imgSrc" maxlength="500"></el-input>
           </el-form-item>
           <el-form-item label="简介" prop="b_summary">
-            <el-input type="textarea" rows="4" v-model="model.b_summary" clearable maxlength="500"></el-input>
+            <el-input type="textarea" rows="4" v-model="modelB.b_summary" clearable maxlength="500"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click.native="submitForm('basicInfo')">保 存</el-button>
@@ -133,7 +133,7 @@
           </el-form-item>
         </el-form>
       </el-tab-pane>
-      <el-tab-pane label="视频资源" name="second" class="panel">
+      <el-tab-pane v-if="id" label="视频资源" name="second" class="panel">
         <el-button type="text" @click="addVideo" :disabled="isAdding">
           <i class="el-icon-plus"></i>添加视频
         </el-button>
@@ -209,17 +209,88 @@
           ></el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="评论信息" name="third" class="panel">
+      <el-tab-pane v-if="id" label="评论信息" name="third" class="panel">
         <el-table :data="pageListC" strike style="margin-top:40px">
           <el-table-column type="index" width="50px"></el-table-column>
-          <el-table-column prop="c_uname" label="用户名" width="200"></el-table-column>
-          <el-table-column prop="c_uavatar" label="用户头像" width=""></el-table-column>
+          <el-table-column prop="c_uname" label="用户名" width="150">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                class="detail-button"
+                @click="userDetail(scope.row)"
+              >{{scope.row.c_uname}}</el-button>
+            </template>
+          </el-table-column>
+          <el-table-column prop="c_uavatar" label="用户头像" width="100"></el-table-column>
           <el-table-column prop="c_content" label="评论内容" width="500"></el-table-column>
-          <el-table-column prop="create_time" label="评论时间" width=""></el-table-column>
-          <el-table-column label="操作" width=""></el-table-column>
+          <el-table-column prop="create_time" label="评论时间" width="230" fixed="right"></el-table-column>
+          <el-table-column label="操作" width="200" fixed="right">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                class="detail-button"
+                icon="el-icon-edit-outline"
+                @click="commentDetail(scope.row)"
+              >查看</el-button>
+              <el-button
+                type="text"
+                class="delete-button"
+                icon="el-icon-delete"
+                @click="commentRemove(scope.row)"
+              >删除</el-button>
+            </template>
+          </el-table-column>
         </el-table>
+        <div class="video-pagination">
+          <el-pagination
+            @current-change="commentCurrentChange"
+            :current-page.sync="commentCurrentPage"
+            :page-size="10"
+            layout="total, prev, pager, next"
+            :total="commentTotal"
+            background
+          ></el-pagination>
+        </div>
       </el-tab-pane>
     </el-tabs>
+    <el-dialog title="评论信息" :visible.sync="dialogFormVisibleC">
+      <el-form :model="modelC" label-width="100px">
+        <el-form-item label="用户名" class="form-item">
+          <p>{{modelC.c_uname}}</p>
+        </el-form-item>
+        <el-form-item label="用户头像" class="form-item">
+          <p>{{modelC.c_uavatar}}</p>
+        </el-form-item>
+        <el-form-item label="评论内容" class="form-item">
+          <p>{{modelC.c_content}}</p>
+        </el-form-item>
+        <el-form-item label="评论时间" class="form-item">
+          <p>{{modelC.create_time}}</p>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleC = false" class="close">关 闭</el-button>
+      </div>
+    </el-dialog>
+    <el-dialog title="用户信息" :visible.sync="dialogFormVisibleU">
+      <el-form :model="modelU" label-width="100px">
+        <el-form-item label="用户名" class="form-item">
+          <p>{{modelU.u_name}}</p>
+        </el-form-item>
+        <el-form-item label="用户头像" class="form-item">
+          <p>{{modelU.u_avatar}}</p>
+        </el-form-item>
+        <el-form-item label="性别" class="form-item">
+          <p>{{modelU.u_sex==1?"女":"男"}}</p>
+        </el-form-item>
+        <el-form-item label="邮箱" class="form-item">
+          <p>{{modelU.u_email}}</p>
+        </el-form-item>
+      </el-form>
+      <div slot="footer" class="dialog-footer">
+        <el-button @click="dialogFormVisibleU = false" class="close">关 闭</el-button>
+      </div>
+    </el-dialog>
   </div>
 </template>
 
@@ -345,7 +416,7 @@ export default {
         b_summary: [{ validator: b_summary, trigger: "blur" }]
       },
 
-      model: {
+      modelB: {
         b_name: "",
         t_id: 1,
         b_imgSrc: "",
@@ -380,44 +451,14 @@ export default {
 
       isAdding: false,
 
-      pageListC: [
-        {
-          c_uname: "MMMMMMMWWWWWWMMM",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        }
-      ]
+      pageListC: [],
+      commentCurrentPage: 1,
+
+      dialogFormVisibleC: false,
+      dialogFormVisibleU: false,
+
+      modelC: {},
+      modelU: {}
     };
   },
   computed: {
@@ -427,6 +468,14 @@ export default {
 
     videoTotal() {
       return this.$store.getters.videoList.length;
+    },
+
+    commentList() {
+      return this.$store.getters.commentList;
+    },
+
+    commentTotal() {
+      return this.$store.getters.commentList.length;
     }
   },
   watch: {},
@@ -438,6 +487,38 @@ export default {
     this.initials = this.$store.getters.initials;
   },
   methods: {
+    async userDetail(row) {
+      const res = await this.$http.post(`/userinfos/${row.c_uid}`);
+      this.modelU = res.data[0];
+      this.dialogFormVisibleU = true;
+      console.log("this.modelU", this.modelU);
+    },
+
+    async commentRemove(row) {
+      let res = await this.$http.delete(`/comments/${row.c_id}`);
+
+      if (res.data.status == 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg
+        });
+        await this.fetchComment();
+        this.commentCurrentPage = Math.ceil(this.commentTotal / 10);
+        this.commentCurrentChange(this.commentCurrentPage);
+      } else {
+        this.$message({
+          type: "error",
+          message: res.data.msg
+        });
+      }
+    },
+
+    commentDetail(row) {
+      this.modelC = row;
+      console.log("modelC", this.modelC);
+      this.dialogFormVisibleC = true;
+    },
+
     async update(row) {
       console.log("isAdding", this.isAdding);
 
@@ -462,7 +543,7 @@ export default {
           type: "success",
           message: res.data.msg
         });
-        this.fetch();
+        this.fetchVideo();
       } else {
         this.$message({
           type: "error",
@@ -494,7 +575,7 @@ export default {
               type: "success",
               message: res.data.msg
             });
-            await this.fetch();
+            await this.fetchVideo();
             this.videoCurrentChange(this.videoCurrentPage);
           } else {
             this.$message({
@@ -534,8 +615,8 @@ export default {
       let params = this.newVideo;
       console.log("params", params);
       params.r_episode = Number(params.r_episode);
-      params.v_id = this.model.v_id;
-      params.t_id = this.model.t_id;
+      params.v_id = this.modelB.v_id;
+      params.t_id = this.modelB.t_id;
 
       let res = await this.$http.post("/videos", params);
       console.log("rst", res);
@@ -545,7 +626,7 @@ export default {
           type: "success",
           message: res.data.msg
         });
-        await this.fetch();
+        await this.fetchVideo();
         this.isAdding = false;
         this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
         this.videoCurrentChange(this.videoCurrentPage);
@@ -566,7 +647,7 @@ export default {
         if (valid) {
           console.log("save");
 
-          var objString = JSON.stringify(this.model);
+          var objString = JSON.stringify(this.modelB);
           var params = JSON.parse(objString);
           let timeSlice = params.b_playtime.split("-");
           params.b_years = timeSlice[0];
@@ -584,16 +665,31 @@ export default {
           } else {
             console.log("创建");
             res = await this.$http.post("/bangumis", params);
+            console.log("创建res", res);
           }
 
           console.log("res***********", res);
 
           if (res.data.status == 200) {
-            this.$message({
-              type: "success",
-              message: res.data.msg
+            // this.$message({
+            //   type: "success",
+            //   message: res.data.msg
+            // });
+            this.$confirm(`${res.data.msg},是否添加"${params.b_name}"的视频资源?`, "提示", {
+              confirmButtonText: "确定",
+              cancelButtonText: "取消",
+              type: "success"
+            })
+            .then(async () => {
+              this.id = res.data.v_id;
+              await this.fetch();
+              await this.fetchVideo();
+              await this.fetchComment();
+              this.activeName = 'second';
+            })
+            .catch(() => {
+              this.$router.push("/bangumi/list");
             });
-            this.$router.push("/bangumi/list");
           } else {
             this.$message({
               type: "error",
@@ -612,7 +708,7 @@ export default {
 
     async save() {
       console.log("save");
-      var objString = JSON.stringify(this.model);
+      var objString = JSON.stringify(this.modelB);
       var params = JSON.parse(objString);
       let timeSlice = params.b_playtime.split("-");
       params.b_years = timeSlice[0];
@@ -639,7 +735,7 @@ export default {
     },
 
     async fetch() {
-      console.log("this.videoCurrentPage", this.videoCurrentPage);
+      // console.log("this.videoCurrentPage", this.videoCurrentPage);
 
       console.log("edit");
       const resB = await this.$http.get(`/bangumis/${this.id}`);
@@ -648,28 +744,49 @@ export default {
       resB.data[0].b_style = resB.data[0].b_style.split("、");
       resB.data[0].b_actors = resB.data[0].b_actors.split("、");
 
-      this.model = resB.data[0];
+      this.modelB = resB.data[0];
+
+      // let resV = await this.$http.get(`/videos/`, {
+      //   params: { v_id: this.modelB.v_id, t_id: this.modelB.t_id }
+      // });
+      // console.log("resV.data.list", resV.data.list);
+      // // this.$store.dispatch("updateVideoList", resV.data.list);
+      // this.$store.commit("UpdateVideoList", resV.data.list);
+
+      // this.videoCurrentChange(this.videoCurrentPage);
+
+      // let resC = await this.$http.get(`/comments/`, {
+      //   params: { v_id: this.modelB.v_id, t_id: this.modelB.t_id }
+      // });
+
+      // console.log("resC", resC.data.list);
+      // this.$store.commit("UpdateCommentList", resC.data.list);
+      // this.commentCurrentChange(this.commentCurrentPage);
+    },
+
+    async fetchVideo() {
       let resV = await this.$http.get(`/videos/`, {
-        params: { v_id: this.model.v_id, t_id: this.model.t_id }
+        params: { v_id: this.modelB.v_id, t_id: this.modelB.t_id }
       });
       console.log("resV.data.list", resV.data.list);
-      // this.$store.dispatch("updateVideofoList", resV.data.list);
+      // this.$store.dispatch("updateVideoList", resV.data.list);
       this.$store.commit("UpdateVideoList", resV.data.list);
 
-      if (Math.ceil(this.videoTotal / 10) < this.videoCurrentPage) {
-        --this.videoCurrentPage;
-      }
       this.videoCurrentChange(this.videoCurrentPage);
+    },
 
+    async fetchComment(){
       let resC = await this.$http.get(`/comments/`, {
-        params: { v_id: this.model.v_id, t_id: this.model.t_id }
+        params: { v_id: this.modelB.v_id, t_id: this.modelB.t_id }
       });
 
-      console.log("resC", resC);
+      console.log("resC", resC.data.list);
+      this.$store.commit("UpdateCommentList", resC.data.list);
+      this.commentCurrentChange(this.commentCurrentPage);
     },
 
     styHandleClose(tag) {
-      this.model.b_style.splice(this.model.b_style.indexOf(tag), 1);
+      this.modelB.b_style.splice(this.modelB.b_style.indexOf(tag), 1);
     },
 
     styShowInput() {
@@ -682,7 +799,7 @@ export default {
     styHandleInputConfirm() {
       let styleValue = this.styleValue;
       if (styleValue) {
-        this.model.b_style.push(styleValue);
+        this.modelB.b_style.push(styleValue);
       }
 
       this.styleVisible = false;
@@ -690,7 +807,7 @@ export default {
     },
 
     actHandleClose(tag) {
-      this.model.b_actors.splice(this.model.b_actors.indexOf(tag), 1);
+      this.modelB.b_actors.splice(this.modelB.b_actors.indexOf(tag), 1);
     },
 
     actShowInput() {
@@ -703,7 +820,7 @@ export default {
     actHandleInputConfirm() {
       let actorsValue = this.actorsValue;
       if (actorsValue) {
-        this.model.b_actors.push(actorsValue);
+        this.modelB.b_actors.push(actorsValue);
       }
       this.actorsVisible = false;
       this.actorsValue = "";
@@ -711,6 +828,9 @@ export default {
 
     videoCurrentChange(val) {
       console.log("this.videoTotal", this.videoTotal);
+      if (Math.ceil(this.videoTotal / 10) < this.videoCurrentPage) {
+        --this.videoCurrentPage;
+      }
 
       if (val < 1) {
         val = 1;
@@ -726,6 +846,45 @@ export default {
       }
       this.pageListV = pageList;
       console.log("this.pageListV", this.pageListV);
+    },
+
+    commentCurrentChange(val) {
+      console.log("this.commentTotal", this.commentTotal);
+      if (Math.ceil(this.videoTotal / 10) < this.commentCurrentPage) {
+        --this.commentCurrentPage;
+      }
+
+      if (val < 1) {
+        val = 1;
+      }
+      console.log("this.commentCurrentPage", this.commentCurrentPage);
+      let pageList = [];
+      for (
+        let i = 10 * (val - 1);
+        i < (10 * val < this.commentTotal ? 10 * val : this.commentTotal);
+        i++
+      ) {
+        console.log("i", i);
+        pageList.push(this.commentList[i]);
+      }
+      console.log("this.commentList", pageList);
+      this.pageListC = pageList;
+      console.log("this.pageListC", this.pageListC);
+    },
+
+    handleClick(){
+      this.cancelAdd();
+      this.isAdding=false;
+
+      if(this.activeName == "second"){
+        console.log("second", );
+        this.fetchVideo();
+      }
+
+      if(this.activeName == "third"){
+        console.log("third", );
+        this.fetchComment();
+      }
     }
   },
   filters: {
@@ -787,6 +946,10 @@ export default {
   }
 }
 
+.detail-button {
+  color: #409eff;
+}
+
 .delete-button {
   color: #f56c6c;
   margin-right: 20px;
@@ -800,9 +963,34 @@ export default {
   color: #67c23a;
 }
 
-.video-list {
+.form-item {
+  font-weight: bold;
+  margin: 5px 0;
 }
 
+.form-item:nth-child(even) {
+  background: #fafafa;
+}
+
+.form-item:hover {
+  background: rgba(100, 150, 200, 0.1);
+}
+p {
+  font-weight: normal;
+  margin: 0;
+  padding: 0;
+  margin-left: 30px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 90%;
+}
+
+.lastP {
+  word-wrap: break-word;
+  white-space: pre-wrap;
+  overflow: visible;
+}
 .newVideo {
   font-size: 14px;
   color: #606266;

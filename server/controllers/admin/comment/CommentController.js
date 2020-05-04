@@ -108,8 +108,8 @@ let getAll = (req, res) => {
     console.log("getCommentAll");
     let {v_id,t_id} = req.query;
     console.log("reqQuery", req.query);
-    let sql = 'select c_uid,c_uavatar,c_content,create_time from pk_comments where v_id=? and t_id=? order by create_time asc';
-    let sqlArr = [];
+    let sql = 'select c_id,c_uname,c_uid,c_uavatar,c_content,create_time from pk_comments where v_id=? and t_id=? order by create_time asc';
+    let sqlArr = [v_id,t_id];
     let callback = (err, data) => {
         if (err) {
             console.log("操作出错");
@@ -199,10 +199,10 @@ let updateOne = (req, res) => {
 
 let deleteOne = (req, res) => {
     console.log("deleteBangumiByID")
-    let v_id = req.params.id;
-    console.log("v_id", req.params);
-    let sql = 'delete from pk_comments where v_id=?';
-    let sqlArr = [v_id];
+    let c_id = req.params.id;
+    console.log("c_id", req.params);
+    let sql = 'delete from pk_comments where c_id=?';
+    let sqlArr = [c_id];
 
     callback = (err, data) => {
         if (err) {

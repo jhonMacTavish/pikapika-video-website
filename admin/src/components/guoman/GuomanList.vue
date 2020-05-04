@@ -226,7 +226,7 @@ export default {
         params: { v_id: this.model.v_id, t_id: this.model.t_id }
       });
       console.log("rst", rst);
-      this.$store.dispatch("updateVideofoList",rst.data.list);
+      this.$store.dispatch("updateVideoList",rst.data.list);
       this.videoCurrentChange(this.videoCurrentPage);
     },
 

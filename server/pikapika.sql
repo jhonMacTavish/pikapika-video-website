@@ -9,6 +9,7 @@ CREATE TABLE pk_user(
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
     
 INSERT INTO pk_user(u_id,u_name,u_email,u_password,u_sex,u_avatar) VALUES(1,'Dragon_Mr','981192661@qq.com','a981192661',0,'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3038277678,2828142910&fm=26&gp=0.jpg');
+INSERT INTO pk_user(u_id,u_name,u_email,u_password,u_sex,u_avatar) VALUES(2,'Jhon_Mactavish96','819661408@qq.com','a981192661',0,'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3038277678,2828142910&fm=26&gp=0.jpg');
 
     
 CREATE TABLE pk_type(
@@ -23,7 +24,7 @@ INSERT INTO pk_type VALUES(4,'影视');
 CREATE TABLE pk_bangumi(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     t_id TINYINT(1) NOT NULL,
-    b_name VARCHAR(100) NOT NULL,
+    b_name VARCHAR(100) UNIQUE NOT NULL,
     b_imgSrc VARCHAR(500) NOT NULL,
     b_episodes VARCHAR(4) NOT NULL,
     b_status TINYINT(1) NOT NULL,
@@ -40,37 +41,36 @@ CREATE TABLE pk_bangumi(
     
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(1,1,'苍之彼方的四重奏','','12',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(2,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(3,1,'苍之彼方的四重奏','','12',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(4,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(5,1,'苍之彼方的四重奏','','12',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(6,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(7,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(3,1,'苍之彼方的四s重奏','','12',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(4,1,'我们的爱只有dawwwww10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(5,1,'苍之彼方的d四重奏','','12',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(6,1,'我们的爱只有d1ddd0厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(7,1,'我们的爱只有f10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(8,1,'我们pk_bangumi的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(9,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(10,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(11,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(12,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(93,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(180,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(111,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(122,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(123,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(144,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(125,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(116,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(117,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(118,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(191,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(210,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(241,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(242,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(243,1,'我们的爱只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(9,1,'我们的爱只有1f0厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(10,1,'我们的爱656只有s10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(11,1,'我们的爱只有4654f10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(12,1,'我们的爱只sdddd有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(93,1,'我们的爱g只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(180,1,'我们的353h爱只ad有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(111,1,'我们的爱g只有1ada0厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(122,1,'我们的54354爱只adgh有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(123,1,'我们的爱只fd有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(144,1,'我们的34爱只有g1dgd0厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(116,1,'我们的gdd爱只有g10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(117,1,'我们的爱d只有g10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(118,1,'我们的爱只fd有gg10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(191,1,'我们的爱d只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(210,1,'我们的爱只dddd有hh10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(241,1,'我们的爱只dgggh有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(242,1,'我们的爱s只dd有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
+INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(243,1,'我们的爱ss只有10厘米。','','6',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
 
 
 CREATE TABLE pk_guoman(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     t_id TINYINT(1) NOT NULL,
-    g_name VARCHAR(100) NOT NULL,
+    g_name VARCHAR(100) UNIQUE NOT NULL,
     g_imgSrc VARCHAR(500) NOT NULL,
     g_episodes VARCHAR(4) NOT NULL,
     g_status TINYINT(1) NOT NULL,
@@ -85,42 +85,42 @@ CREATE TABLE pk_guoman(
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
     
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(1,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(2,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(3,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(4,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(5,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(6,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(12,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(25,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(37,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(43,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(57,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(63,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(17,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(21,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(34,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(41,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(52,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(65,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(16,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(28,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(33,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(497,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(58,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(6213,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(18,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(28855,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(35,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(42,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(53,2,'今天开始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
-INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(62,2,'剑网3·侠肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(2,2,'剑网3·侠肝55义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(3,2,'今天开始f做s明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(4,2,'剑网3·侠f肝s义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(5,2,'今天开始fss做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(6,2,'剑网3·侠fg肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(12,2,'今天开始jf做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(25,2,'剑网3·侠肝6hk义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(37,2,'今天开始做64明chh星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(43,2,'剑网3·侠肝义k胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(57,2,'今天开始做明gkk星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(63,2,'剑网3·侠肝义胆g沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(17,2,'今天开465始做明星k','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(21,2,'剑g网3·侠bz肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(34,2,'今g天开gxbgg始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(41,2,'剑网g3·侠c肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(52,2,'今天ggk开bcc始做明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(65,2,'剑网3·侠ccbb肝c义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(16,2,'今天开始做cVDvxScbb明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(28,2,'剑网3·侠肝义cbc胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(33,2,'今天开始f做vvSd明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(497,2,'剑网3·侠dxx3wer肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(58,2,'今天开始做r3wrw3r3r3we明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(6213,2,'剑网3·侠d肝rw3r3w义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(18,2,'今天开始做明dddd星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(28855,2,'剑网3·侠tw3t3r3肝义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(35,2,'今天开始做3wefgre3明星','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(42,2,'剑网3·侠肝wer3er3w义胆沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(53,2,'今天开始做bdvfb明星ret','','12',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
+INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(62,2,'剑网3·侠肝义胆fff沈剑心','','12',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
 
 
 CREATE TABLE pk_theater(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     t_id TINYINT(1) NOT NULL,
     th_tag TINYINT(1) NOT NULL,
-    th_name VARCHAR(100) NOT NULL,
+    th_name VARCHAR(100) UNIQUE NOT NULL,
     th_imgSrc VARCHAR(500) NOT NULL,
     th_VGA TINYINT(1) NOT NULL,
     th_style VARCHAR(50) NOT NULL,
@@ -133,40 +133,40 @@ CREATE TABLE pk_theater(
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
     
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(1,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(2,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(3,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(4,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(16,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(21,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(35,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(1,3,1,'Re：从ddad零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(2,3,1,'凉宫wbnv bm春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(3,3,1,'Re：从零bmb开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(4,3,1,'凉宫春日bb的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(16,3,1,'Re：从零mbmmbm开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(21,3,1,'凉宫春bmm日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(35,3,1,'Re：从零开bb始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(432,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(163,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(246,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(392,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(427,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(14,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(255,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(37,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(466,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(11,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(242,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(373,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(40,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(15,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(293,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(32,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(459,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(132,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(24,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(323,3,1,'Re：从零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
-INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(41,3,1,'凉宫春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(246,3,1,'凉宫春日的hfghzg消失s','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(392,3,1,'Re：从零开始sfnj的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(427,3,1,'凉宫春日xxxzjx的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(14,3,1,'Re：从零开hgxx,vk始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(255,3,1,'凉宫春日的my nxz消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(37,3,1,'Re：从零开,cj始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(466,3,1,'凉宫春日ngtnjtxnhz的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(11,3,1,'Re：从零开bzzbzbz始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(242,3,1,'凉宫春日zvvnxgbzbz的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(373,3,1,'Re：从零开1351351315的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(40,3,1,'凉宫春日的31失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(15,3,1,'Re：从零53开daddsd始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(293,3,1,'凉宫春++4日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(32,3,1,'Re：从零53开sd始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(459,3,1,'凉宫春135日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(132,3,1,'Re：从23241544零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(24,3,1,'凉宫春日的64642消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(323,3,1,'Re：从零12321开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
+INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(41,3,1,'凉宫春日的1111消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
     
 
  CREATE TABLE pk_filmTV(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     t_id TINYINT(1) NOT NULL,
-    f_name VARCHAR(100) NOT NULL,
+    f_name VARCHAR(100) UNIQUE NOT NULL,
     f_imgSrc VARCHAR(500) NOT NULL,
     f_status TINYINT(1) NOT NULL,
     f_episodes VARCHAR(4) NOT NULL,
@@ -182,17 +182,17 @@ INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_ini
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
 
 
-INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(1,4,'我是大哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
-INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(2,4,'你是大哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
-INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(3,4,'他是大哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
-INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(4,4,'狗是大哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
-INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(5,4,'猪是大哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
+INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(1,4,'我是大54哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
+INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(2,4,'你是大654哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
+INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(3,4,'他是大64554哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
+INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(4,4,'狗是大6456543哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
+INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_episodes,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(5,4,'猪是54645大哥大','',1,'10','剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
 
 CREATE TABLE pk_resources(
 	r_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	v_id INT NOT NULL,
     t_id TINYINT(1) NOT NULL,
-    r_episode INT(4) NOT NULL,
+    r_episode INT(4) NOT NULL DEFAULT 1,
     r_address VARCHAR(500) NOT NULL,
     /*PRIMARY KEY(v_id,r_t_id,r_episode),
     FOREIGN KEY(v_id) REFERENCES pk_bangumi(v_id),
@@ -267,6 +267,31 @@ CREATE TABLE pk_comments(
     FOREIGN KEY(c_vid) REFERENCES pk_filmTV(ID),*/
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
     
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,1,'今天也要加油鸭1','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,1,'今天也要加油鸭2','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,1,'今天也要加油鸭3','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,1,'今天也要加油鸭4','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,1,'今天也要加油鸭5','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,2,'今天也要加油鸭1','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,2,'今天也要加油鸭2','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,2,'今天也要加油鸭3','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,2,'今天也要加油鸭4','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,2,'今天也要加油鸭5','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,3,'今天也要加油鸭1','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,3,'今天也要加油鸭2','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,3,'今天也要加油鸭3','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,3,'今天也要加油鸭4','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,3,'今天也要加油鸭5','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,4,'今天也要加油鸭1','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,4,'今天也要加油鸭2','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,4,'今天也要加油鸭3','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,4,'今天也要加油鸭4','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,4,'今天也要加油鸭5','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
+
+
 CREATE TABLE pk_admin(
 	a_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     a_name VARCHAR(18) NOT NULL,
