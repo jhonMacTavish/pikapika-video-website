@@ -1,47 +1,27 @@
-let dbconfig = require('../../util/dbconfig');
-
-// getByName = async (b_name) => {
-//     let sql = 'select * from pk_bangumi where b_name=?';
-//     let sqlArr = [b_name];
-
-//     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-//     return result;
-// }
-
-// let obj = {
-//     key:'b_name',
-//     value:'苍之彼方的四重奏'
-// }
+let dbconfig = require('../../../util/dbconfig');
 
 let getByParams = async (obj) => {
     console.log(`getBy${obj.key}`);
-    let sql = `select * from pk_bangumi where ${obj.key}=?`;
+    let sql = `select * from pk_filmTV where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     return result;
 }
 
-let getOne = async (req, res) => {
-    console.log("getByID");
+getOne = async (req, res) => {
+    console.log("getFilmTVByID", )
     let v_id = req.params.id
-    let sql = 'select * from pk_bangumi where v_id=?';
+    let sql = 'select * from pk_filmTV where v_id=?';
     let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     res.send(result);
 }
 
-let format = (v_id, t_id) => {
-    let rst = this.getByParams({key:'t_id',value:t_id});
-    console.log("formatRst", rst);
-}
-
-// format()
-
-let getAll = (req, res) => {
-    console.log("getAll")
-    let sql = 'select v_id,b_name,b_episodes,b_style,b_playtime from pk_bangumi where t_id=1';
+getAll = (req, res) => {
+    console.log("getFilmTVAll")
+    let sql = 'select v_id,f_name,f_episodes,f_style,f_playtime from pk_filmTV order by f_name asc';
     let sqlArr = [];
     let callback = (err, data) => {
         if (err) {
@@ -64,26 +44,24 @@ let getAll = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-let createOne = async (req, res) => {
-    console.log("create");
+createOne = async (req, res) => {
+    console.log("createFilmTV");
 
-    let { b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = req.body;
-    console.log("b_name", b_name);
-
-    let b_nameRst = await getByParams({key: 'b_name',value: b_name});
-    if (b_nameRst.length != 0) {
+    let { f_name, t_id, f_imgSrc, f_episodes, f_status, f_style, f_initials, f_playtime, /*f_quarter,*/ f_years, f_actors, f_summary } = req.body;
+    let f_nameRst = await getByParams({key:'f_name',value:f_name});
+    if (f_nameRst.length != 0) {
         res.send({
             "status": 402,
-            "msg": "数据库中存在同名番剧"
+            "msg": "数据库中存在同名国漫"
         });
         return;
     }
 
     let sql =
-        'insert into pk_bangumi(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
+        'insert into pk_filmTV(f_name,t_id,f_imgSrc,f_episodes,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary) '
+        + 'values(?,?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
+    let sqlArr = [f_name, t_id, f_imgSrc, f_episodes, f_status, f_style, f_initials, f_playtime, /*f_quarter,*/ f_years, f_actors, f_summary];
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
@@ -104,12 +82,12 @@ let createOne = async (req, res) => {
 
 }
 
-let updateOne = (req, res) => {
-    console.log("更新数据")
-    let { b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id } = req.body;
+updateOne = (req, res) => {
+    console.log("updateFilmTV");
+    let { t_id, f_name, f_imgSrc, f_episodes, f_status, f_style, f_initials, f_playtime,/*f_quarter,*/f_years, f_actors, f_summary, v_id } = req.body;
 
-    sql = 'update pk_bangumi set b_name=?,b_imgSrc=?,b_episodes=?,b_status=?,b_style=?,b_initials=?,b_playtime=?,b_quarter=?,b_years=?,b_actors=?,b_summary=? where v_id=?';
-    sqlArr = [b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id];
+    sql = 'update pk_filmTV set t_id=?,f_name=?,f_imgSrc=?,f_episodes=?,f_status=?,f_style=?,f_initials=?,f_playtime=?,f_years=?,f_actors=?,f_summary=? where v_id=?';
+    sqlArr = [t_id, f_name, f_imgSrc, f_episodes, f_status, f_style, f_initials, f_playtime,/*f_quarter,*/f_years, f_actors, f_summary, v_id];
 
     callback = (err, data) => {
         if (err) {
@@ -130,11 +108,10 @@ let updateOne = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-let deleteOne = (req, res) => {
-    console.log("删除数据")
+deleteOne = (req, res) => {
+    console.log("deleteFilmTV")
     let v_id = req.params.id;
-    console.log("v_id", req.params);
-    let sql = 'delete from pk_bangumi where v_id=?';
+    let sql = 'delete from pk_filmTV where v_id=?';
     let sqlArr = [v_id];
 
     callback = (err, data) => {

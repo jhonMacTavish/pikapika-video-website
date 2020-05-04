@@ -1,4 +1,4 @@
-let dbconfig = require('../../util/dbconfig');
+let dbconfig = require('../../../util/dbconfig');
 
 let getByParams = async (obj) => {
     console.log(`getBy${obj.key}`);
@@ -10,7 +10,7 @@ let getByParams = async (obj) => {
 }
 
 getOne = async (req, res) => {
-    console.log("getByID", )
+    console.log("getGuomanByID", )
     let v_id = req.params.id
     let sql = 'select * from pk_guoman where v_id=?';
     let sqlArr = [v_id];
@@ -20,8 +20,8 @@ getOne = async (req, res) => {
 }
 
 getAll = (req, res) => {
-    console.log("getAll")
-    let sql = 'select v_id,g_name,g_episodes,g_style,g_playtime from pk_guoman where t_id=2';
+    console.log("getGuomanAll")
+    let sql = 'select v_id,g_name,g_episodes,g_style,g_playtime from pk_guoman order by g_name asc';
     let sqlArr = [];
     let callback = (err, data) => {
         if (err) {
@@ -45,7 +45,7 @@ getAll = (req, res) => {
 }
 
 createOne = async (req, res) => {
-    console.log("create");
+    console.log("createGuoman");
 
     let { g_name, t_id, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
     let g_nameRst = await getByParams({key:'g_name',value:g_name});
@@ -83,7 +83,7 @@ createOne = async (req, res) => {
 }
 
 updateOne = (req, res) => {
-    console.log("更新数据", req.body);
+    console.log("updateGuomanByID");
     let { t_id, g_name, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id } = req.body;
 
     sql = 'update pk_guoman set t_id=?,g_name=?,g_imgSrc=?,g_episodes=?,g_status=?,g_style=?,g_initials=?,g_playtime=?,g_years=?,g_actors=?,g_summary=? where v_id=?';
@@ -109,7 +109,7 @@ updateOne = (req, res) => {
 }
 
 deleteOne = (req, res) => {
-    console.log("删除数据")
+    console.log("deleteGuomanByID")
     let v_id = req.params.id;
     console.log("v_id", req.params);
     let sql = 'delete from pk_guoman where v_id=?';

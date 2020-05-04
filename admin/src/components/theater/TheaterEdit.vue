@@ -1,19 +1,18 @@
 <template>
   <div>
-    <h1>{{id?'编辑番剧 ♥ '+this.model.b_name:'添加番剧'}}</h1>
-
+    <h1>{{id?'编辑电影 ♥ '+this.model.th_name:'添加电影'}}</h1>
     <el-tabs v-model="activeName">
       <el-tab-pane label="基本信息" name="first" class="panel">
         <el-form
           :model="model"
           :rules="rules"
-          ref="basicInfo"
-          label-width="190px"
+          ref="bangumi"
+          label-width="200px"
           @submit.native.prevent="save"
-          style="padding-right: 60px;margin-top:60px"
+          style="margin-right: 200px"
         >
-          <el-form-item label="名称" prop="b_name">
-            <el-input v-model="model.b_name" style="width:222px" maxlength="100"></el-input>
+          <el-form-item label="名称" prop="th_name">
+            <el-input v-model="model.th_name" style="width:222px" maxlength="100"></el-input>
           </el-form-item>
           <el-form-item label="类型" prop="t_id">
             <el-select v-model="model.t_id" placeholder="请选择" disabled>
@@ -25,35 +24,32 @@
               ></el-option>
             </el-select>
           </el-form-item>
-
-          <el-form-item label="总集数" prop="b_episodes">
-            <el-input v-model="model.b_episodes" style="width:222px" maxlength="4"></el-input>
-          </el-form-item>
-          <el-form-item label="状态" prop="b_status">
-            <el-select v-model="model.b_status" placeholder="请选择">
-              <el-option
-                v-for="(item) in status"
-                :key="item.id"
-                :label="item.text"
-                :value="item.id"
-              ></el-option>
+          <el-form-item label="标签" prop="th_tag">
+            <el-select v-model="model.th_tag" placeholder="请选择">
+              <el-option v-for="item in tags" :key="item.id" :label="item.text" :value="item.id"></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="风格" prop="b_style">
+          <el-form-item label="画质" prop="th_VGA">
+            <el-select v-model="model.th_VGA" placeholder="请选择">
+              <el-option v-for="item in VGAs" :key="item.id" :label="item.text" :value="item.id"></el-option>
+            </el-select>
+          </el-form-item>
+
+          <el-form-item label="风格" prop="th_style">
             <!-- <el-select
-              v-model="model.b_style"
-              multiple
-              filterable
-              allow-create
-              placeholder="请输入"
-              :default-first-option="true"
-              clearable
-            >
-              <el-option label="请编辑风格" value disabled></el-option>
+          v-model="model.th_style"
+          multiple
+          filterable
+          allow-create
+          placeholder="请输入"
+          :default-first-option="true"
+          clearable
+        >
+          <el-option label="请编辑风格" value disabled></el-option>
             </el-select>-->
             <el-tag
               :key="tag"
-              v-for="tag in model.b_style"
+              v-for="tag in model.th_style"
               closable
               :disable-transitions="false"
               @close="styHandleClose(tag)"
@@ -71,8 +67,8 @@
               <i class="el-icon-plus"></i> 风格
             </el-button>
           </el-form-item>
-          <el-form-item label="首字母" prop="b_initials">
-            <el-select v-model="model.b_initials" placeholder="请选择">
+          <el-form-item label="首字母" prop="th_initials">
+            <el-select v-model="model.th_initials" placeholder="请选择">
               <el-option
                 v-for="item in initials"
                 :key="item.id"
@@ -81,29 +77,29 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="开播时间" prop="b_playtime">
+          <el-form-item label="开播时间" prop="th_playtime">
             <el-date-picker
-              v-model="model.b_playtime"
+              v-model="model.th_playtime"
               type="date"
               placeholder="选择日期"
               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="声优" prop="b_actors">
+          <el-form-item label="演员" prop="th_actors">
             <!-- <el-select
-              v-model="model.b_actors"
-              multiple
-              filterable
-              allow-create
-              placeholder="请输入"
-              :default-first-option="true"
-              clearable
-            >
-            <el-option label="请编辑声优" value disabled></el-option>
+          v-model="model.th_actors"
+          multiple
+          filterable
+          allow-create
+          placeholder="请输入"
+          :default-first-option="true"
+          clearable
+        >
+          <el-option label="请编辑演员" value disabled></el-option>
             </el-select>-->
             <el-tag
               :key="tag"
-              v-for="tag in model.b_actors"
+              v-for="tag in model.th_actors"
               closable
               :disable-transitions="false"
               @close="actHandleClose(tag)"
@@ -118,23 +114,23 @@
               @blur="actHandleInputConfirm"
             ></el-input>
             <el-button v-else class="button-new-tag" size="small" @click="actShowInput">
-              <i class="el-icon-plus"></i> 声优
+              <i class="el-icon-plus"></i> 演员
             </el-button>
           </el-form-item>
-          <el-form-item label="图片地址" prop="b_imgSrc">
-            <el-input v-model="model.b_imgSrc" maxlength="500"></el-input>
+          <el-form-item label="图片地址" prop="th_imgSrc">
+            <el-input v-model="model.th_imgSrc" maxlength="500"></el-input>
           </el-form-item>
-          <el-form-item label="简介" prop="b_summary">
-            <el-input type="textarea" rows="4" v-model="model.b_summary" clearable maxlength="500"></el-input>
+          <el-form-item label="简介" prop="th_summary">
+            <el-input type="textarea" rows="3" v-model="model.th_summary" clearable maxlength="500"></el-input>
           </el-form-item>
           <el-form-item>
-            <el-button type="primary" @click.native="submitForm('basicInfo')">保 存</el-button>
-            <el-button @click="$router.push('/bangumi/list')">取 消</el-button>
+            <el-button type="primary" @click.native="submitForm('bangumi')">保 存</el-button>
+            <el-button @click="$router.push('/theater/list')">取 消</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
       <el-tab-pane label="视频资源" name="second" class="panel">
-        <el-button type="text" @click="addVideo" :disabled="isAdding">
+        <el-button type="text" @click="addVideo" :disabled="true">
           <i class="el-icon-plus"></i>添加视频
         </el-button>
         <el-table :data="pageListV" stripe class="video-list">
@@ -183,7 +179,6 @@
                   class="confirm-button"
                   icon="el-icon-edit-outline"
                   @click="update(scope.row)"
-                  :disabled="isAdding"
                 >修改</el-button>
                 <el-button
                   v-if="scope.row.r_id"
@@ -191,7 +186,6 @@
                   class="delete-button"
                   icon="el-icon-delete"
                   @click="remove(scope.row)"
-                  :disabled="isAdding"
                 >删除</el-button>
               </div>
             </template>
@@ -209,16 +203,6 @@
           ></el-pagination>
         </div>
       </el-tab-pane>
-      <el-tab-pane label="评论信息" name="third" class="panel">
-        <el-table :data="pageListC" strike style="margin-top:40px">
-          <el-table-column type="index" width="50px"></el-table-column>
-          <el-table-column prop="c_uname" label="用户名" width="200"></el-table-column>
-          <el-table-column prop="c_uavatar" label="用户头像" width=""></el-table-column>
-          <el-table-column prop="c_content" label="评论内容" width="500"></el-table-column>
-          <el-table-column prop="create_time" label="评论时间" width=""></el-table-column>
-          <el-table-column label="操作" width=""></el-table-column>
-        </el-table>
-      </el-tab-pane>
     </el-tabs>
   </div>
 </template>
@@ -230,7 +214,7 @@ export default {
     id: {}
   },
   data() {
-    let b_name = (rule, value, callback) => {
+    let th_name = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入番名")); // 请输入番名
       } else {
@@ -249,9 +233,9 @@ export default {
       }
     };
 
-    let b_episodes = (rule, value, callback) => {
+    let th_tag = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入集数")); // 请输入请输入集数
+        callback(new Error("请选择标签")); // 请输入番名
       } else {
         if (isNaN(Number(value))) {
           callback(new Error("请输入数字"));
@@ -260,28 +244,23 @@ export default {
       }
     };
 
-    let b_status = (rule, value, callback) => {
+    let th_VGA = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入集数")); // 请输入请输入集数
+        callback(new Error("请输入画质")); // 请输入番名
       } else {
-        if (isNaN(Number(value))) {
-          callback(new Error("请输入数字"));
-        }
         callback();
       }
     };
 
-    let b_style = (rule, value, callback) => {
+    let th_style = (rule, value, callback) => {
       if (value.length == 0) {
         callback(new Error("请编辑番剧风格")); // 请输入请输入集数
-      } else if (value.join("").length > 50) {
-        callback(new Error("字符数不能大于50"));
       } else {
         callback();
       }
     };
 
-    let b_initials = (rule, value, callback) => {
+    let th_initials = (rule, value, callback) => {
       if (value.length == 0) {
         callback(new Error("请选择首字母")); // 请输入请输入集数
       } else {
@@ -289,78 +268,85 @@ export default {
       }
     };
 
-    let b_playtime = (rule, value, callback) => {
+    let th_playtime = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请选择开播时间")); // 请输入请输入集数
-      } else if (value.length > 10) {
-        callback(new Error("请选择正确的时间格式：yyyy-mm-dd"));
       } else {
         callback();
       }
     };
 
-    let b_actors = (rule, value, callback) => {
+    let th_actors = (rule, value, callback) => {
       if (value.length == 0) {
         callback(new Error("请编辑番剧声优")); // 请输入请输入集数
-      } else if (value.join("").length > 255) {
-        callback(new Error("字符数不能大于255"));
       } else {
         callback();
       }
     };
 
-    let b_imgSrc = (rule, value, callback) => {
+    let th_imgSrc = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请添加图片路径")); // 请输入请输入集数
-      } else if (value.length > 500) {
-        callback(new Error("图片路径字符数不能大于500"));
       } else {
         callback();
       }
     };
 
-    let b_summary = (rule, value, callback) => {
+    let th_summary = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请填写番剧简介")); // 请输入请输入集数
-      } else if (value.length > 500) {
-        callback(new Error("简介字符数不能大于500"));
       } else {
         callback();
       }
     };
 
     return {
-      input: "",
-
       rules: {
-        b_name: [{ validator: b_name, trigger: "blur" }],
+        th_name: [{ validator: th_name, trigger: "blur" }],
         t_id: [{ validator: t_id, trigger: "change" }],
-        b_episodes: [{ validator: b_episodes, trigger: "blur" }],
-        b_status: [{ validator: b_status, trigger: "change" }],
-        b_style: [{ validator: b_style, trigger: "change" }],
-        b_initials: [{ validator: b_initials, trigger: "change" }],
-        b_playtime: [{ validator: b_playtime, trigger: "blur" }],
-        b_actors: [{ validator: b_actors, trigger: "change" }],
-        b_imgSrc: [{ validator: b_imgSrc, trigger: "blur" }],
-        b_summary: [{ validator: b_summary, trigger: "blur" }]
+        th_tag: [{ validator: th_tag, trigger: "change" }],
+        th_VGA: [{ validator: th_VGA, trigger: "blur" }],
+        th_style: [{ validator: th_style, trigger: "change" }],
+        th_initials: [{ validator: th_initials, trigger: "change" }],
+        th_playtime: [{ validator: th_playtime, trigger: "blur" }],
+        th_actors: [{ validator: th_actors, trigger: "change" }],
+        th_imgSrc: [{ validator: th_imgSrc, trigger: "blur" }],
+        th_summary: [{ validator: th_summary, trigger: "blur" }]
       },
 
       model: {
-        b_name: "",
-        t_id: 1,
-        b_imgSrc: "",
-        b_episodes: "",
-        b_status: 1,
-        b_style: [],
-        b_initials: "",
-        b_playtime: "",
-        b_quarter: "",
-        b_years: "",
-        b_actors: [],
-        b_summary: ""
+        th_name: "",
+        t_id: 3,
+        th_imgSrc: "",
+        th_VGA: 1,
+        th_tag: 1,
+        th_style: [],
+        th_initials: "",
+        th_playtime: "",
+        // th_quarter: "",
+        th_years: "",
+        th_actors: [],
+        th_summary: ""
       },
+      // model: {
+      //   v_id: 0,
+      //   t_id: 1,
+      //   th_name: "",
+      //   th_imgSrc: "",
+      //   th_episodes: "",
+      //   th_status: "",
+      //   th_style: "",
+      //   th_initials: "",
+      //   th_playtime: "",
+      //   th_quarter: "",
+      //   th_years: "",
+      //   th_actors: "",
+      //   th_summary: "",
+      //   play_volume: ""
+      // },
       types: [],
-      status: [],
+      tags: [],
+      VGAs: [],
       initials: [],
 
       styleVisible: false,
@@ -378,46 +364,7 @@ export default {
         r_address: ""
       },
 
-      isAdding: false,
-
-      pageListC: [
-        {
-          c_uname: "MMMMMMMWWWWWWMMM",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        },
-        {
-          c_uname: "Dragon.Mr",
-          c_uavatar: "ssssssaaaaaaaaaaaaddddddddddd/*******\\",
-          c_content: "加油鸭",
-          create_time: "2010-05-09 17:50:31"
-        }
-      ]
+      isAdding: false
     };
   },
   computed: {
@@ -434,21 +381,12 @@ export default {
     this.id && this.fetch();
 
     this.types = this.$store.getters.types;
-    this.status = this.$store.getters.status;
+    this.tags = this.$store.getters.tags;
+    this.VGAs = this.$store.getters.VGAs;
     this.initials = this.$store.getters.initials;
   },
   methods: {
     async update(row) {
-      console.log("isAdding", this.isAdding);
-
-      if (this.isAdding) {
-        this.$message({
-          type: "error",
-          msg: "请先完成或取消添加视频"
-        });
-        return;
-      }
-
       console.log("row", row);
       let params = {
         r_id: row.r_id,
@@ -472,14 +410,6 @@ export default {
     },
 
     async remove(row) {
-      console.log("isAdding", this.isAdding);
-      if (this.isAdding) {
-        this.$message({
-          type: "error",
-          msg: "请先完成或取消添加视频"
-        });
-        return;
-      }
       this.$confirm(`是否确定要删除番剧 "${row.b_name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
@@ -527,40 +457,6 @@ export default {
       this.videoCurrentChange(this.videoCurrentPage);
     },
 
-    async confirmAdd(row) {
-      if (!this.isAdding) return;
-      console.log("confirmAdd", row);
-      this.$store.commit("DeleteVideo");
-      let params = this.newVideo;
-      console.log("params", params);
-      params.r_episode = Number(params.r_episode);
-      params.v_id = this.model.v_id;
-      params.t_id = this.model.t_id;
-
-      let res = await this.$http.post("/videos", params);
-      console.log("rst", res);
-
-      if (res.data.status == 200) {
-        this.$message({
-          type: "success",
-          message: res.data.msg
-        });
-        await this.fetch();
-        this.isAdding = false;
-        this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
-        this.videoCurrentChange(this.videoCurrentPage);
-        this.newVideo = {
-          r_episode: 0,
-          r_address: ""
-        };
-      } else {
-        this.$message({
-          type: "error",
-          message: res.data.msg
-        });
-      }
-    },
-
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
@@ -568,22 +464,21 @@ export default {
 
           var objString = JSON.stringify(this.model);
           var params = JSON.parse(objString);
-          let timeSlice = params.b_playtime.split("-");
-          params.b_years = timeSlice[0];
-          params.b_quarter = timeSlice[1];
+          let timeSlice = params.th_playtime.split("-");
+          params.th_years = timeSlice[0];
 
-          params.b_style = params.b_style.join("、");
-          params.b_actors = params.b_actors.join("、");
+          params.th_style = params.th_style.join("、");
+          params.th_actors = params.th_actors.join("、");
           console.log("params*************", params);
 
           let res;
 
           if (this.id) {
             console.log("更新");
-            res = await this.$http.put(`/bangumis/${this.id}`, params);
+            res = await this.$http.put(`/theaters/${this.id}`, params);
           } else {
             console.log("创建");
-            res = await this.$http.post("/bangumis", params);
+            res = await this.$http.post("/theaters", params);
           }
 
           console.log("res***********", res);
@@ -593,7 +488,7 @@ export default {
               type: "success",
               message: res.data.msg
             });
-            this.$router.push("/bangumi/list");
+            this.$router.push("/theater/list");
           } else {
             this.$message({
               type: "error",
@@ -614,14 +509,14 @@ export default {
       console.log("save");
       var objString = JSON.stringify(this.model);
       var params = JSON.parse(objString);
-      let timeSlice = params.b_playtime.split("-");
-      params.b_years = timeSlice[0];
-      params.b_quarter = timeSlice[1];
+      let timeSlice = params.th_playtime.split("-");
+      params.th_years = timeSlice[0];
+      params.th_quarter = timeSlice[1];
 
-      params.b_style = params.b_style.join("、");
-      params.b_actors = params.b_actors.join("、");
+      params.th_style = params.th_style.join("、");
+      params.th_actors = params.th_actors.join("、");
       console.log("params*************", params);
-      const res = await this.$http.post("/bangumis", params);
+      const res = await this.$http.post("/theaters", params);
       console.log("res***********", res);
 
       if (res.affectedRows === 1) {
@@ -639,37 +534,30 @@ export default {
     },
 
     async fetch() {
-      console.log("this.videoCurrentPage", this.videoCurrentPage);
-
       console.log("edit");
-      const resB = await this.$http.get(`/bangumis/${this.id}`);
-      // console.log("resB", resB.data[0].b_style.split("、"));
+      const res = await this.$http.get(`/theaters/${this.id}`);
+      console.log("res", res);
 
-      resB.data[0].b_style = resB.data[0].b_style.split("、");
-      resB.data[0].b_actors = resB.data[0].b_actors.split("、");
+      res.data[0].th_style = res.data[0].th_style.split("、");
+      res.data[0].th_actors = res.data[0].th_actors.split("、");
 
-      this.model = resB.data[0];
-      let resV = await this.$http.get(`/videos/`, {
+      this.model = res.data[0];
+      console.log("this.model", this.model);
+      let rst = await this.$http.get(`/videos/`, {
         params: { v_id: this.model.v_id, t_id: this.model.t_id }
       });
-      console.log("resV.data.list", resV.data.list);
-      // this.$store.dispatch("updateVideofoList", resV.data.list);
-      this.$store.commit("UpdateVideoList", resV.data.list);
-
+      this.$store.dispatch("updateVideofoList", rst.data.list);
+      
       if (Math.ceil(this.videoTotal / 10) < this.videoCurrentPage) {
         --this.videoCurrentPage;
       }
+
       this.videoCurrentChange(this.videoCurrentPage);
-
-      let resC = await this.$http.get(`/comments/`, {
-        params: { v_id: this.model.v_id, t_id: this.model.t_id }
-      });
-
-      console.log("resC", resC);
+      console.log("this.videoList", this.videoList);
     },
 
     styHandleClose(tag) {
-      this.model.b_style.splice(this.model.b_style.indexOf(tag), 1);
+      this.model.th_style.splice(this.model.th_style.indexOf(tag), 1);
     },
 
     styShowInput() {
@@ -682,7 +570,7 @@ export default {
     styHandleInputConfirm() {
       let styleValue = this.styleValue;
       if (styleValue) {
-        this.model.b_style.push(styleValue);
+        this.model.th_style.push(styleValue);
       }
 
       this.styleVisible = false;
@@ -690,7 +578,7 @@ export default {
     },
 
     actHandleClose(tag) {
-      this.model.b_actors.splice(this.model.b_actors.indexOf(tag), 1);
+      this.model.th_actors.splice(this.model.th_actors.indexOf(tag), 1);
     },
 
     actShowInput() {
@@ -703,19 +591,16 @@ export default {
     actHandleInputConfirm() {
       let actorsValue = this.actorsValue;
       if (actorsValue) {
-        this.model.b_actors.push(actorsValue);
+        this.model.th_actors.push(actorsValue);
       }
       this.actorsVisible = false;
       this.actorsValue = "";
     },
 
     videoCurrentChange(val) {
-      console.log("this.videoTotal", this.videoTotal);
-
       if (val < 1) {
         val = 1;
       }
-      console.log("this.videoCurrentPage", this.videoCurrentPage);
       let pageList = [];
       for (
         let i = 10 * (val - 1);
@@ -725,14 +610,6 @@ export default {
         pageList.push(this.videoList[i]);
       }
       this.pageListV = pageList;
-      console.log("this.pageListV", this.pageListV);
-    }
-  },
-  filters: {
-    videoLinkSplice(value) {
-      if (!value) return "";
-      value = value.toString();
-      return value.substring(0, 100) + "...";
     }
   },
   components: {}
@@ -744,6 +621,7 @@ export default {
   margin-right: 10px;
 }
 .button-new-tag {
+  // margin-left: 10px;
   height: 32px;
   line-height: 30px;
   padding-top: 0;
@@ -761,13 +639,6 @@ export default {
   position: relative;
   padding-bottom: 60px;
   // overflow: auto;
-}
-
-.video-pagination {
-  display: inline-block;
-  margin-top: 30px;
-  margin-left: 50%;
-  transform: translateX(-50%);
 }
 
 .video-item {
@@ -798,42 +669,5 @@ export default {
 .confirm-button {
   // margin-left: 18px;
   color: #67c23a;
-}
-
-.video-list {
-}
-
-.newVideo {
-  font-size: 14px;
-  color: #606266;
-
-  height: 23px;
-  line-height: 23px;
-  span {
-    display: inline-block;
-    min-width: 23px;
-    height: 23px;
-    text-align: center;
-  }
-  .ordinal {
-    margin-left: 8px;
-  }
-
-  .ordinal-tip-start {
-    margin-left: 20px;
-  }
-
-  .ordinal-input {
-    width: 62px;
-  }
-
-  .ordinal-tip-end {
-    margin-left: -5px;
-  }
-
-  .link-input {
-    width: 67.6%;
-    margin-left: 16px;
-  }
 }
 </style>

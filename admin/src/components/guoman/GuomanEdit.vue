@@ -1,33 +1,45 @@
 <template>
   <div>
-    <h1>{{id?'编辑':'添加'}}国漫</h1>
-    <el-form
-      :model="model"
-      :rules="rules"
-      ref="guoman"
-      label-width="120px"
-      @submit.native.prevent="save"
-      style="margin-right: 100px"
-    >
-      <el-form-item label="名称" prop="g_name">
-        <el-input v-model="model.g_name" style="width:222px" maxlength="100"></el-input>
-      </el-form-item>
-      <el-form-item label="类型" prop="t_id">
-        <el-select v-model="model.t_id" placeholder="请选择" :disabled="!id">
-          <el-option v-for="item in types" :key="item.t_id" :label="item.text" :value="item.t_id"></el-option>
-        </el-select>
-      </el-form-item>
+    <h1>{{id?'编辑国漫 ♥ '+this.model.g_name:'添加国漫'}}</h1>
+    <el-tabs v-model="activeName">
+      <el-tab-pane label="基本信息" name="first" class="panel">
+        <el-form
+          :model="model"
+          :rules="rules"
+          ref="guoman"
+          label-width="200px"
+          @submit.native.prevent="save"
+          style="margin-right: 200px"
+        >
+          <el-form-item label="名称" prop="g_name">
+            <el-input v-model="model.g_name" style="width:222px" maxlength="100"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="t_id">
+            <el-select v-model="model.t_id" placeholder="请选择" disabled>
+              <el-option
+                v-for="item in types"
+                :key="item.t_id"
+                :label="item.text"
+                :value="item.t_id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
 
-      <el-form-item label="总集数" prop="g_episodes">
-        <el-input v-model="model.g_episodes" style="width:222px" maxlength="4"></el-input>
-      </el-form-item>
-      <el-form-item label="状态" prop="g_status">
-        <el-select v-model="model.g_status" placeholder="请选择">
-          <el-option v-for="(item) in status" :key="item.id" :label="item.text" :value="item.id"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="风格" prop="g_style">
-        <el-select
+          <el-form-item label="总集数" prop="g_episodes">
+            <el-input v-model="model.g_episodes" style="width:222px" maxlength="4"></el-input>
+          </el-form-item>
+          <el-form-item label="状态" prop="g_status">
+            <el-select v-model="model.g_status" placeholder="请选择">
+              <el-option
+                v-for="(item) in status"
+                :key="item.id"
+                :label="item.text"
+                :value="item.id"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="风格" prop="g_style">
+            <!-- <el-select
           v-model="model.g_style"
           multiple
           filterable
@@ -37,23 +49,47 @@
           clearable
         >
           <el-option label="请编辑风格" value disabled></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="首字母" prop="g_initials">
-        <el-select v-model="model.g_initials" placeholder="请选择">
-          <el-option v-for="item in initials" :key="item.id" :label="item.text" :value="item.text"></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="开播时间" prop="g_playtime">
-        <el-date-picker
-          v-model="model.g_playtime"
-          type="date"
-          placeholder="选择日期"
-          value-format="yyyy-MM-dd"
-        ></el-date-picker>
-      </el-form-item>
-      <el-form-item label="声优" prop="g_actors">
-        <el-select
+            </el-select>-->
+            <el-tag
+              :key="tag"
+              v-for="tag in model.g_style"
+              closable
+              :disable-transitions="false"
+              @close="styHandleClose(tag)"
+            >{{tag}}</el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="styleVisible"
+              v-model="styleValue"
+              ref="saveStyleInput"
+              size="small"
+              @keyup.enter.native="styHandleInputConfirm"
+              @blur="styHandleInputConfirm"
+            ></el-input>
+            <el-button v-else class="button-new-tag" size="small" @click="styShowInput">
+              <i class="el-icon-plus"></i> 风格
+            </el-button>
+          </el-form-item>
+          <el-form-item label="首字母" prop="g_initials">
+            <el-select v-model="model.g_initials" placeholder="请选择">
+              <el-option
+                v-for="item in initials"
+                :key="item.id"
+                :label="item.text"
+                :value="item.text"
+              ></el-option>
+            </el-select>
+          </el-form-item>
+          <el-form-item label="开播时间" prop="g_playtime">
+            <el-date-picker
+              v-model="model.g_playtime"
+              type="date"
+              placeholder="选择日期"
+              value-format="yyyy-MM-dd"
+            ></el-date-picker>
+          </el-form-item>
+          <el-form-item label="声优" prop="g_actors">
+            <!-- <el-select
           v-model="model.g_actors"
           multiple
           filterable
@@ -63,19 +99,114 @@
           clearable
         >
           <el-option label="请编辑声优" value disabled></el-option>
-        </el-select>
-      </el-form-item>
-      <el-form-item label="图片地址" prop="g_imgSrc">
-        <el-input v-model="model.g_imgSrc" maxlength="500"></el-input>
-      </el-form-item>
-      <el-form-item label="简介" prop="g_summary">
-        <el-input type="textarea" rows="3" v-model="model.g_summary" clearable maxlength="500"></el-input>
-      </el-form-item>
-      <el-form-item>
-        <el-button type="primary" @click.native="submitForm('guoman')">保 存</el-button>
-        <el-button @click="$router.push('/guoman/list')">取 消</el-button>
-      </el-form-item>
-    </el-form>
+            </el-select>-->
+            <el-tag
+              :key="tag"
+              v-for="tag in model.g_actors"
+              closable
+              :disable-transitions="false"
+              @close="actHandleClose(tag)"
+            >{{tag}}</el-tag>
+            <el-input
+              class="input-new-tag"
+              v-if="actorsVisible"
+              v-model="actorsValue"
+              ref="saveActorInput"
+              size="small"
+              @keyup.enter.native="actHandleInputConfirm"
+              @blur="actHandleInputConfirm"
+            ></el-input>
+            <el-button v-else class="button-new-tag" size="small" @click="actShowInput">
+              <i class="el-icon-plus"></i> 声优
+            </el-button>
+          </el-form-item>
+          <el-form-item label="图片地址" prop="g_imgSrc">
+            <el-input v-model="model.g_imgSrc" maxlength="500"></el-input>
+          </el-form-item>
+          <el-form-item label="简介" prop="g_summary">
+            <el-input type="textarea" rows="3" v-model="model.g_summary" clearable maxlength="500"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="primary" @click.native="submitForm('guoman')">保 存</el-button>
+            <el-button @click="$router.push('/guoman/list')">取 消</el-button>
+          </el-form-item>
+        </el-form>
+      </el-tab-pane>
+      <el-tab-pane label="视频资源" name="second" class="panel">
+        <el-button type="text" @click="addVideo" :disabled="isAdding">
+          <i class="el-icon-plus"></i>添加视频
+        </el-button>
+        <el-table :data="pageListV" stripe class="video-list">
+          <!-- <el-table-column type="index" width="50"></el-table-column> -->
+          <!-- <el-row type="flex" style="justify-content: space-between;"> -->
+          <el-table-column type="index" width="50"></el-table-column>
+          <el-table-column prop="r_episode" label="话数" width="130">
+            <template slot-scope="scope">
+              <div class="video-item">
+                <span>第</span>
+                <el-input
+                  class="episode"
+                  v-model="scope.row.r_episode"
+                  maxlength="4"
+                  onkeyup="value=value.replace(/[^\d\.]/g,'')"
+                ></el-input>
+                <span>话</span>
+              </div>
+            </template>
+          </el-table-column>
+          <el-table-column prop="r_address" label="视频地址">
+            <template slot-scope="scope">
+              <el-input v-model="scope.row.r_address"></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column label="操作" width="200">
+            <template slot-scope="scope">
+              <div v-if="isAdding&&!scope.row.r_id">
+                <el-button
+                  type="text"
+                  class="confirm-button"
+                  icon="el-icon-check"
+                  @click="confirmAdd(scope.row)"
+                >确认</el-button>
+                <el-button
+                  type="text"
+                  class="delete-button"
+                  icon="el-icon-close"
+                  @click="cancelAdd(scope.row)"
+                >取消</el-button>
+              </div>
+              <div v-else>
+                <el-button
+                  v-if="scope.row.r_id"
+                  type="text"
+                  class="confirm-button"
+                  icon="el-icon-edit-outline"
+                  @click="update(scope.row)"
+                >修改</el-button>
+                <el-button
+                  v-if="scope.row.r_id"
+                  type="text"
+                  class="delete-button"
+                  icon="el-icon-delete"
+                  @click="remove(scope.row)"
+                >删除</el-button>
+              </div>
+            </template>
+          </el-table-column>
+          <!-- </el-row> -->
+        </el-table>
+        <div class="video-pagination">
+          <el-pagination
+            @current-change="videoCurrentChange"
+            :current-page.sync="videoCurrentPage"
+            :page-size="10"
+            layout="total, prev, pager, next"
+            :total="videoTotal"
+            background
+          ></el-pagination>
+        </div>
+      </el-tab-pane>
+    </el-tabs>
   </div>
 </template>
 
@@ -222,19 +353,147 @@ export default {
       types: [],
       status: [],
       initials: [],
-      playtime: ""
+
+      styleVisible: false,
+      styleValue: "",
+
+      actorsVisible: false,
+      actorsValue: "",
+
+      pageListV: [],
+      videoCurrentPage: 1,
+
+      activeName: "first",
+      newVideo: {
+        r_episode: 0,
+        r_address: ""
+      },
+
+      isAdding: false
     };
   },
-  computed: {},
+  computed: {
+    videoList() {
+      return this.$store.getters.videoList;
+    },
+
+    videoTotal() {
+      return this.$store.getters.videoList.length;
+    }
+  },
   watch: {},
   created() {
-    this.id && this.featch();
+    this.id && this.fetch();
 
     this.types = this.$store.getters.types;
     this.status = this.$store.getters.status;
     this.initials = this.$store.getters.initials;
   },
   methods: {
+    async update(row) {
+      console.log("row", row);
+      let params = {
+        r_id: row.r_id,
+        r_episode: row.r_episode,
+        r_address: row.r_address
+      };
+      let res = await this.$http.put(`/videos/${this.id}`, params);
+      console.log("delete", res);
+      if (res.data.status == 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg
+        });
+        this.fetch();
+      } else {
+        this.$message({
+          type: "error",
+          message: res.data.msg
+        });
+      }
+    },
+
+    async remove(row) {
+      this.$confirm(`是否确定要删除番剧 "${row.b_name}"`, "提示", {
+        confirmButtonText: "确定",
+        cancelButtonText: "取消",
+        type: "warning"
+      })
+        .then(async () => {
+          console.log("delete", `/videos/${row.r_id}`);
+          const res = await this.$http.delete(`/videos/${row.r_id}`);
+          console.log("delete", res);
+          if (res.data.status == 200) {
+            this.$message({
+              type: "success",
+              message: res.data.msg
+            });
+            await this.fetch();
+            this.videoCurrentChange(this.videoCurrentPage);
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+          }
+        })
+        .catch(() => {
+          return;
+        });
+    },
+
+    addVideo() {
+      console.log("addVideo");
+      this.isAdding = true;
+      let r_episode = this.videoTotal + 1;
+      this.newVideo.r_episode = r_episode;
+
+      this.$store.commit("AddVideo", this.newVideo);
+      this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
+      this.videoCurrentChange(this.videoCurrentPage);
+    },
+
+    cancelAdd() {
+      if (!this.isAdding) return;
+      this.$store.commit("DeleteVideo");
+      this.isAdding = false;
+      this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
+      this.videoCurrentChange(this.videoCurrentPage);
+    },
+
+    async confirmAdd(row) {
+      if (!this.isAdding) return;
+      console.log("confirmAdd", row);
+      this.$store.commit("DeleteVideo");
+      let params = this.newVideo;
+      console.log("params", params);
+      params.r_episode = Number(params.r_episode);
+      params.v_id = this.model.v_id;
+      params.t_id = this.model.t_id;
+
+      let res = await this.$http.post("/videos", params);
+      console.log("rst", res);
+
+      if (res.data.status == 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg
+        });
+        await this.fetch();
+        this.isAdding = false;
+        this.videoCurrentChange(this.videoCurrentPage);
+        this.newVideo = {
+          r_episode: 0,
+          r_address: ""
+        };
+      } else {
+        this.$message({
+          type: "error",
+          message: res.data.msg
+        });
+      }
+    },
+
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
@@ -261,7 +520,7 @@ export default {
           }
 
           console.log("res***********", res);
-          
+
           if (res.data.status == 200) {
             this.$message({
               type: "success",
@@ -312,7 +571,7 @@ export default {
       }
     },
 
-    async featch() {
+    async fetch() {
       console.log("edit");
       const res = await this.$http.get(`/guomans/${this.id}`);
       // console.log("res", res.data[0].g_style.split("、"));
@@ -322,6 +581,73 @@ export default {
 
       this.model = res.data[0];
       console.log("this.model", this.model);
+      let rst = await this.$http.get(`/videos/`, {
+        params: { v_id: this.model.v_id, t_id: this.model.t_id }
+      });
+      this.$store.dispatch("updateVideofoList", rst.data.list);
+      
+      if (Math.ceil(this.videoTotal / 10) < this.videoCurrentPage) {
+        --this.videoCurrentPage;
+      }
+      this.videoCurrentChange(this.videoCurrentPage);
+      console.log("this.videoList", this.videoList);
+    },
+
+    styHandleClose(tag) {
+      this.model.g_style.splice(this.model.g_style.indexOf(tag), 1);
+    },
+
+    styShowInput() {
+      this.styleVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveStyleInput.$refs.input.focus();
+      });
+    },
+
+    styHandleInputConfirm() {
+      let styleValue = this.styleValue;
+      if (styleValue) {
+        this.model.g_style.push(styleValue);
+      }
+
+      this.styleVisible = false;
+      this.styleValue = "";
+    },
+
+    actHandleClose(tag) {
+      this.model.g_actors.splice(this.model.g_actors.indexOf(tag), 1);
+    },
+
+    actShowInput() {
+      this.actorsVisible = true;
+      this.$nextTick(_ => {
+        this.$refs.saveActorInput.$refs.input.focus();
+      });
+    },
+
+    actHandleInputConfirm() {
+      let actorsValue = this.actorsValue;
+      if (actorsValue) {
+        this.model.g_actors.push(actorsValue);
+      }
+      this.actorsVisible = false;
+      this.actorsValue = "";
+    },
+
+    videoCurrentChange(val) {
+
+      if (val < 1) {
+        val = 1;
+      }
+      let pageList = [];
+      for (
+        let i = 10 * (val - 1);
+        i < (10 * val < this.videoTotal ? 10 * val : this.videoTotal);
+        i++
+      ) {
+        pageList.push(this.videoList[i]);
+      }
+      this.pageListV = pageList;
     }
   },
   components: {}
@@ -329,4 +655,51 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.video-item {
+  display: flex;
+  justify-content: space-between;
+  span {
+    width: 20px;
+    display: inline-block;
+    height: 40px;
+    line-height: 40px;
+  }
+
+  .episode {
+    // margin-left: -20px;
+    // margin-right: -20px;
+    width: 62px;
+  }
+}
+
+.confirm-button {
+  // margin-left: 18px;
+  color: #67c23a;
+}
+
+.delete-button {
+  color: #f56c6c;
+  margin-right: 20px;
+  padding: 0;
+  width: 40px;
+  height: 40px;
+}
+
+.el-tag {
+  margin-right: 10px;
+}
+.button-new-tag {
+  // margin-left: 10px;
+  height: 32px;
+  line-height: 30px;
+  padding-top: 0;
+  padding-bottom: 0;
+}
+.input-new-tag {
+  position: relative;
+  bottom: -1px;
+  width: 90px;
+  // margin-left: 10px;
+  vertical-align: bottom;
+}
 </style>

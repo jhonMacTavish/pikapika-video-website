@@ -1,24 +1,24 @@
 <template>
-  <div class="container">
-    <h1>番剧列表</h1>
+  <div class="content">
+    <h1>影视列表</h1>
     <div>
-      <el-button type="text" @click="$router.push('/bangumi/create')">
-        <i class="el-icon-plus"></i>添加番剧
+      <el-button type="text" @click="$router.push('/filmtv/create')">
+        <i class="el-icon-plus"></i>添加影视
       </el-button>
     </div>
-    <el-table :data="pageListB" stripe>
+    <el-table :data="pageList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="b_name" label="名称"></el-table-column>
-      <el-table-column prop="b_episodes" label="集数"></el-table-column>
-      <el-table-column prop="b_style" label="风格"></el-table-column>
-      <el-table-column prop="b_playtime" label="开播时间"></el-table-column>
+      <el-table-column prop="f_name" label="名称"></el-table-column>
+      <el-table-column prop="f_episodes" label="集数"></el-table-column>
+      <el-table-column prop="f_style" label="风格"></el-table-column>
+      <el-table-column prop="f_playtime" label="开播时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row.v_id)" class="detail">查看</el-button>
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/bangumi/eidt/${scope.row.v_id}`)"
+            @click="$router.push(`/filmtv/eidt/${scope.row.v_id}`)"
             class="deit"
           >编辑</el-button>
           <el-button type="text" size="small" @click="remove(scope.row)" class="delete">删除</el-button>
@@ -31,7 +31,7 @@
         :current-page.sync="currentPage"
         :page-size="10"
         layout="total, prev, pager, next"
-        :total="bangumiTotal"
+        :total="totalItems"
         background
       ></el-pagination>
     </div>
@@ -39,37 +39,37 @@
     <el-dialog title="番剧信息" :visible.sync="dialogFormVisible">
       <el-tabs type="border-card" v-model="activeName" @tab-click="handleClick">
         <el-tab-pane label="基本信息" name="first" class="panel">
-          <el-form :model="model" label-width="100px">
+          <el-form :model="model" label-width="100px" style="margin-right: 0;">
             <el-form-item label="名称" class="form-item">
-              <p>{{model.b_name}}</p>
+              <p>{{model.f_name}}</p>
             </el-form-item>
             <el-form-item label="类型" class="form-item">
               <p>{{model.t_id==1?"番剧":model.t_id==2?"国漫":model.t_id==3?"电影":"影视"}}</p>
             </el-form-item>
 
             <el-form-item label="总集数" class="form-item">
-              <p>{{model.b_episodes}}</p>
+              <p>{{model.f_episodes}}</p>
             </el-form-item>
             <el-form-item label="状态" class="form-item">
               <p>{{model.b_status==1?"更新中":"已完结"}}</p>
             </el-form-item>
             <el-form-item label="风格" class="form-item">
-              <p>{{model.b_style}}</p>
+              <p>{{model.f_style}}</p>
             </el-form-item>
             <el-form-item label="首字母" class="form-item">
-              <p>{{model.b_initials}}</p>
+              <p>{{model.f_initials}}</p>
             </el-form-item>
             <el-form-item label="开播时间" class="form-item">
-              <p>{{model.b_playtime}}</p>
+              <p>{{model.f_playtime}}</p>
             </el-form-item>
             <el-form-item label="声优" class="form-item">
-              <p>{{model.b_actors}}</p>
+              <p>{{model.f_actors}}</p>
             </el-form-item>
             <el-form-item label="图片地址" class="form-item">
-              <p>{{model.b_imgSrc}}</p>
+              <p>{{model.f_imgSrc}}</p>
             </el-form-item>
             <el-form-item label="简介" class="form-item">
-              <p class="lastP">{{model.b_summary | summarySplice}}</p>
+              <p>{{model.f_summary}}</p>
             </el-form-item>
           </el-form>
         </el-tab-pane>
@@ -95,35 +95,35 @@
       </el-tabs>
       <!-- <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" class="close">关 闭</el-button>
-      </div> -->
+      </div>-->
     </el-dialog>
   </div>
 </template>
 
 <script>
 export default {
-  name: "BangumiList",
+  name: "GuomanList",
   data() {
     return {
       dialogFormVisible: false,
-      pageListB: [],
+      pageList: [],
       pageListV: [],
       currentPage: 1,
       videoCurrentPage: 1,
       model: {},
-      activeName: "first",
+      activeName: "first"
     };
   },
   async created() {
     await this.fetch();
   },
   computed: {
-    bangumiList() {
-      return this.$store.getters.bangumiList;
+    filmtvList() {
+      return this.$store.getters.filmtvList;
     },
 
-    bangumiTotal() {
-      return this.$store.getters.bangumiList.length;
+    totalItems() {
+      return this.$store.getters.filmtvList.length;
     },
 
     videoList() {
@@ -132,28 +132,30 @@ export default {
 
     videoTotal() {
       return this.$store.getters.videoList.length;
-    },
+    }
   },
+  beforeUpdate() {},
   watch: {},
   methods: {
     async fetch() {
-      const res = await this.$http.get("/bangumis");
-      this.$store.dispatch("updateBangumiList", res.data.list);
+      const res = await this.$http.get("/filmtvs");
+      console.log("res", res.data.list);
+      this.$store.dispatch("updateFilmtvList", res.data.list);
 
-      if (Math.ceil(this.bangumiTotal / 10) < this.currentPage) {
+      if (Math.ceil(this.totalItems / 10) < this.currentPage) {
         --this.currentPage;
       }
       this.handleCurrentChange(this.currentPage);
     },
 
     async remove(row) {
-      this.$confirm(`是否确定要删除番剧 "${row.b_name}"`, "提示", {
+      this.$confirm(`是否确定要删除影视 "${row.f_name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-          const res = await this.$http.delete(`/bangumis/${row.v_id}`);
+          const res = await this.$http.delete(`/filmtvs/${row.v_id}`);
           console.log("delete", res);
           if (res.data.status == 200) {
             this.$message({
@@ -180,12 +182,12 @@ export default {
       let pageList = [];
       for (
         let i = 10 * (val - 1);
-        i < (10 * val < this.bangumiTotal ? 10 * val : this.bangumiTotal);
+        i < (10 * val < this.totalItems ? 10 * val : this.totalItems);
         i++
       ) {
-        pageList.push(this.bangumiList[i]);
+        pageList.push(this.filmtvList[i]);
       }
-      this.pageListB = pageList;
+      this.pageList = pageList;
       // document.querySelector("counter1").scrollIntoView(true); //这里的counter1是将要返回地方的id
     },
 
@@ -210,7 +212,7 @@ export default {
     },
 
     async detail(v_id) {
-      const res = await this.$http.get(`/bangumis/${v_id}`);
+      const res = await this.$http.get(`/filmtvs/${v_id}`);
       this.model = res.data[0];
       this.dialogFormVisible = true;
       this.getResources();
@@ -222,15 +224,11 @@ export default {
       let rst = await this.$http.get(`/videos/`, {
         params: { v_id: this.model.v_id, t_id: this.model.t_id }
       });
-      this.$store.dispatch("updateVideofoList",rst.data.list);
+      this.$store.dispatch("updateVideofoList", rst.data.list);
       this.videoCurrentChange(this.videoCurrentPage);
     },
 
-    handleClick(tab, event) {
-      // if (tab.name == "second") {
-      //   this.getResources();
-      // }
-    }
+    handleClick() {}
   },
   filters: {
     summarySplice(value) {
@@ -279,38 +277,9 @@ p {
   font-weight: normal;
   margin: 0;
   padding: 0;
-  margin-left: 30px;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-  width: 90%;
+  margin-left: 50px;
 }
-
-.lastP {
-  word-wrap: break-word;
-  white-space: pre-wrap;
-  overflow: visible;
-}
-
 .window-pagination {
-  display: inline-block;
-  margin-top: 30px;
-  margin-left: 50%;
-  transform: translateX(-50%);
-}
-
-.panel {
-  position: relative;
-  // min-height: 600px;
-  overflow: auto;
-  // margin-right: -26px;
-}
-
-.container{
-  position: relative;
-}
-
-.video-pagination{
   display: inline-block;
   margin-top: 30px;
   margin-left: 50%;

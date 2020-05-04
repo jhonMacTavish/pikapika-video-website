@@ -26,7 +26,7 @@ export default new Vuex.Store({
         status: [
             {
                 id: 1,
-                text: "连载中"
+                text: "更新中"
             },
             {
                 id: 2,
@@ -139,12 +139,38 @@ export default new Vuex.Store({
                 text: "Z"
             }
         ],
+        tags: [
+            {
+                id: 1,
+                text: '剧场版'
+            },
+            {
+                id: 2,
+                text: '电影'
+            }
+        ],
+        VGAs: [
+            {
+                id: 1,
+                text: 'BD720P'
+            },
+            {
+                id: 2,
+                text: 'BD1080P'
+            }
+        ],
+
         bangumiList: [],
         guomanList: [],
         theaterList: [],
-        fimlTVList: []
+        filmtvList:[],
+        userinfoList:[],
+        videoList:[],   
+        commentList:[]
     },
     getters: {
+        tags: state => state.tags,
+        VGAs:state => state.VGAs,
         types: state => state.types,
         status: state => state.status,
         initials: state => state.initials,
@@ -152,28 +178,58 @@ export default new Vuex.Store({
         bangumiList: state => state.bangumiList,
         guomanList: state => state.guomanList,
         theaterList: state => state.theaterList,
-        fimlTVList: state => state.fimlTVList,
+        filmtvList: state => state.filmtvList,
+        userinfoList: state => state.userinfoList,
+        videoList: state => state.videoList,
+        commentList: state => state.commentList,
     },
     mutations: {
-        updateBangumiList(state, bangumiList) {
+        UpdateBangumiList(state, bangumiList) {
             state.bangumiList = bangumiList;
         },
-        updateGuomanList(state, guomanList) {
+        UpdateGuomanList(state, guomanList) {
             state.guomanList = guomanList;
         },
-        updateTheaterList(state, theaterList) {
+        UpdateTheaterList(state, theaterList) {
             state.theaterList = theaterList;
         },
-        updateFimlTVList(state, fimlTVList) {
-            state.fimlTVList = fimlTVList;
-        }
+        UpdateFilmtvList(state,filmtvList){
+            state.filmtvList = filmtvList;
+        },
+        UpdateUserinfoList(state,userinfoList){
+            state.userinfoList = userinfoList;
+        },
+        UpdateVideoList(state,videoList){
+            state.videoList = videoList;
+        },
+        UpdateCommentList(state,commentList){
+            state.commentList = commentList;
+        },
+        AddVideo(state,video){
+            state.videoList.push(video);
+        },
+        DeleteVideo(state){
+            return state.videoList.pop();
+        },
     },
     actions: {
-        updateBangumiList({commit},bangumiList){
-            commit('updateBangumiList',bangumiList);
+        updateBangumiList({ commit }, bangumiList) {
+            commit('UpdateBangumiList', bangumiList);
         },
-        updateGuomanList({commit},guomanList){
-            commit('updateGuomanList',guomanList);
+        updateGuomanList({ commit }, guomanList) {
+            commit('UpdateGuomanList', guomanList);
+        },
+        updateTheaterList({ commit }, theaterList) {
+            commit('UpdateTheaterList', theaterList);
+        },
+        updateFilmtvList({commit},filmtvList){
+            commit('UpdateFilmtvList',filmtvList);
+        },
+        updateUserinfoList({commit},userinfoList){
+            commit('UpdateUserinfoList',userinfoList);
+        },
+        updateVideofoList({commit},videoList){
+            commit('UpdateVideoList',videoList);
         }
     }
 })
