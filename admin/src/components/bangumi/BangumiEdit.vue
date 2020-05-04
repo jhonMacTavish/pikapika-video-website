@@ -26,9 +26,9 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="总集数" prop="b_episodes">
+          <!-- <el-form-item label="总集数" prop="b_episodes">
             <el-input v-model="modelB.b_episodes" style="width:222px" maxlength="4"></el-input>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="状态" prop="b_status">
             <el-select v-model="modelB.b_status" placeholder="请选择">
               <el-option
@@ -198,6 +198,7 @@
           </el-table-column>
           <!-- </el-row> -->
         </el-table>
+        <el-button type="danger" @click="$router.push('/bangumi/list')">关 闭</el-button>
         <div class="video-pagination">
           <el-pagination
             @current-change="videoCurrentChange"
@@ -241,6 +242,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button type="danger" @click="$router.push('/bangumi/list')">关 闭</el-button>
         <div class="video-pagination">
           <el-pagination
             @current-change="commentCurrentChange"
@@ -675,21 +677,33 @@ export default {
             //   type: "success",
             //   message: res.data.msg
             // });
-            this.$confirm(`${res.data.msg},是否添加"${params.b_name}"的视频资源?`, "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "success"
-            })
-            .then(async () => {
-              this.id = res.data.v_id;
-              await this.fetch();
-              await this.fetchVideo();
-              await this.fetchComment();
-              this.activeName = 'second';
-            })
-            .catch(() => {
+            if (!this.id) {
+              this.$confirm(
+                `${res.data.msg},是否添加"${params.b_name}"的视频资源?`,
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "success"
+                }
+              )
+                .then(async () => {
+                  this.id = res.data.v_id;
+                  await this.fetch();
+                  await this.fetchVideo();
+                  await this.fetchComment();
+                  this.activeName = "second";
+                })
+                .catch(() => {
+                  this.$router.push("/bangumi/list");
+                });
+            } else {
+              this.$message({
+                type: "success",
+                message: res.data.msg
+              });
               this.$router.push("/bangumi/list");
-            });
+            }
           } else {
             this.$message({
               type: "error",
@@ -775,7 +789,7 @@ export default {
       this.videoCurrentChange(this.videoCurrentPage);
     },
 
-    async fetchComment(){
+    async fetchComment() {
       let resC = await this.$http.get(`/comments/`, {
         params: { v_id: this.modelB.v_id, t_id: this.modelB.t_id }
       });
@@ -872,17 +886,17 @@ export default {
       console.log("this.pageListC", this.pageListC);
     },
 
-    handleClick(){
+    handleClick() {
       this.cancelAdd();
-      this.isAdding=false;
+      this.isAdding = false;
 
-      if(this.activeName == "second"){
-        console.log("second", );
+      if (this.activeName == "second") {
+        console.log("second");
         this.fetchVideo();
       }
 
-      if(this.activeName == "third"){
-        console.log("third", );
+      if (this.activeName == "third") {
+        console.log("third");
         this.fetchComment();
       }
     }
@@ -920,6 +934,12 @@ export default {
   position: relative;
   padding-bottom: 60px;
   // overflow: auto;
+
+  .close-button {
+    position: absolute;
+    right: 120px;
+    bottom: 60px;
+  }
 }
 
 .video-pagination {
