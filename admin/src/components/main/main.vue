@@ -53,7 +53,7 @@
         <span>王小虎</span>
       </el-header>
 
-      <el-main>
+      <el-main class="main-container">
           <router-view></router-view>
       </el-main>
     </el-container>
@@ -61,6 +61,14 @@
 </template>
 
 <style>
+.main-container{
+  position: relative;
+}
+
+.close-button{
+  position: absolute;
+}
+
 .menu-item{
   margin: -10px 0;
   margin-left: 10px;

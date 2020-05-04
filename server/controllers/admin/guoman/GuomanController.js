@@ -1,4 +1,5 @@
 let dbconfig = require('../../../util/dbconfig');
+let util = require('../../../util/util');
 
 let getByParams = async (obj) => {
     console.log(`getBy${obj.key}`);
@@ -16,14 +17,16 @@ getOne = async (req, res) => {
     let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    result[0].g_episodes = await util.countEp(2,v_id);
+
     res.send(result);
 }
 
 getAll = (req, res) => {
     console.log("getGuomanAll")
-    let sql = 'select v_id,g_name,g_episodes,g_style,g_playtime from pk_guoman order by g_name asc';
+    let sql = 'select v_id,g_name,g_style,g_playtime from pk_guoman order by g_name asc';
     let sqlArr = [];
-    let callback = (err, data) => {
+    let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
             res.send({
@@ -33,6 +36,11 @@ getAll = (req, res) => {
         } else {
             // console.log("getAll", data);
             console.log("操作成功");
+            let t_id = 2;
+            for(let i=0; i<data.length; i++){
+                let v_id = data[i].v_id;
+                data[i].g_episodes = await util.countEp(t_id,v_id);
+            }
             res.send({
                 "list": data,
                 "status": 200,
@@ -47,7 +55,7 @@ getAll = (req, res) => {
 createOne = async (req, res) => {
     console.log("createGuoman");
 
-    let { g_name, t_id, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
+    let { g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
     let g_nameRst = await getByParams({key:'g_name',value:g_name});
     if (g_nameRst.length != 0) {
         res.send({
@@ -58,10 +66,10 @@ createOne = async (req, res) => {
     }
 
     let sql =
-        'insert into pk_guoman(g_name,t_id,g_imgSrc,g_episodes,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?,?)';
+        'insert into pk_guoman(g_name,t_id,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary) '
+        + 'values(?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [g_name, t_id, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary];
+    let sqlArr = [g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary];
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
@@ -86,10 +94,10 @@ createOne = async (req, res) => {
 
 updateOne = (req, res) => {
     console.log("updateGuomanByID");
-    let { t_id, g_name, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id } = req.body;
+    let { t_id, g_name, g_imgSrc, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id } = req.body;
 
-    sql = 'update pk_guoman set t_id=?,g_name=?,g_imgSrc=?,g_episodes=?,g_status=?,g_style=?,g_initials=?,g_playtime=?,g_years=?,g_actors=?,g_summary=? where v_id=?';
-    sqlArr = [t_id, g_name, g_imgSrc, g_episodes, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id];
+    sql = 'update pk_guoman set t_id=?,g_name=?,g_imgSrc=?,g_status=?,g_style=?,g_initials=?,g_playtime=?,g_years=?,g_actors=?,g_summary=? where v_id=?';
+    sqlArr = [t_id, g_name, g_imgSrc, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id];
 
     callback = (err, data) => {
         if (err) {

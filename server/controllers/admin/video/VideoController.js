@@ -153,6 +153,31 @@ deleteOne = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
+let deleteByFilmName = (req, res) => {
+    console.log("deleteVideoByFilmName");
+    let{t_id,v_id} = req.query;
+    let sql = 'delete from pk_resources where t_id=? and v_id=?';
+    let sqlArr = [t_id,v_id];
+
+    callback = (err, data) => {
+        if (err) {
+            console.log("操作出错")
+            res.send({
+                "status": 402,
+                'msg': "删除失败"
+            });
+        } else {
+            console.log("操作成功");
+            res.send({
+                "status": 200,
+                "msg": "删除成功"
+            });
+        }
+    }
+
+    dbconfig.sqlConnect(sql, sqlArr, callback);
+}
+
 module.exports = {
-    getAll, getOne, createOne, updateOne, deleteOne
+    getAll, getOne, createOne, updateOne, deleteOne,deleteByFilmName
 }

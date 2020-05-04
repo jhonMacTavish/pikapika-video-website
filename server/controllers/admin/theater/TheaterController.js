@@ -31,7 +31,7 @@ getAll = (req, res) => {
                 'msg': "信息获取失败"
             })
         } else {
-            console.log("getAll", data);
+            // console.log("getAll", data);
             console.log("操作成功");
             res.send({
                 "list": data,

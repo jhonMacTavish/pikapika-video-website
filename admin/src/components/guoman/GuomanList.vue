@@ -155,23 +155,61 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          const res = await this.$http.delete(`/guomans/${row.v_id}`);
-          console.log("delete", res);
-          if (res.data.status == 200) {
-            this.$message({
-              type: "success",
-              message: res.data.msg
-            });
-            this.fetch();
-          } else {
-            this.$message({
-              type: "success",
-              message: res.data.msg
-            });
-          }
+            // const resC = await this.$http.delete(`/comments/${row.v_id}`);
+            let params = {
+              t_id: 2,
+              v_id:row.v_id
+            }
+            const resC = await this.$http.delete(`/comments`,{params});
+
+            console.log("delete", resC);
+
+            if (resC.data.status == 200) {
+
+                // const resV = await this.$http.delete(`/videos/${row.v_id}`);
+                const resV = await this.$http.delete(`/videos`,{params});
+
+                console.log("delete", resV);
+
+                if (resV.data.status == 200) {
+                    const resB = await this.$http.delete(`/guomans/${row.v_id}`);
+                    console.log("delete", resB);
+
+                    if (resB.data.status == 200) {
+                        this.$message({
+                            type: "success",
+                            message: resC.data.msg
+                        });
+                        this.fetch();
+                    } else {
+                        this.$message({
+                            type: "error",
+                            message: resB.data.msg
+                        });
+                    }
+
+                } else {
+                    this.$message({
+                        type: "error",
+                        message: resV.data.msg
+                    });
+                }
+
+
+                //   this.$message({
+                //     type: "success",
+                //     message: resC.data.msg
+                //   });
+                //   this.fetch();
+            } else {
+                this.$message({
+                    type: "error",
+                    message: resC.data.msg
+                });
+            }
         })
         .catch(() => {
-          return;
+            return;
         });
     },
 

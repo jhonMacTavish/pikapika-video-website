@@ -52,12 +52,14 @@ module.exports = app => {
   router.post('/comments', Comment.createOne);
   router.put('/comments/:id', Comment.updateOne);
   router.delete('/comments/:id', Comment.deleteOne);
+  router.delete('/comments', Comment.deleteByVideo);
 
   router.get('/videos', Video.getAll);
   // router.get('/videos/:id', Video.getOne);
   router.post('/videos', Video.createOne);
   router.put('/videos/:id', Video.updateOne);
   router.delete('/videos/:id', Video.deleteOne);
+  router.delete('/videos', Video.deleteByFilmName);
 
   app.use('/admin/api', router);
 }

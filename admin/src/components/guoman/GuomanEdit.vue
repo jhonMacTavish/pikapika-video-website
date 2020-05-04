@@ -25,9 +25,9 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="总集数" prop="g_episodes">
+          <!-- <el-form-item label="总集数" prop="g_episodes">
             <el-input v-model="modelG.g_episodes" style="width:222px" maxlength="4"></el-input>
-          </el-form-item>
+          </el-form-item> -->
           <el-form-item label="状态" prop="g_status">
             <el-select v-model="modelG.g_status" placeholder="请选择">
               <el-option
@@ -195,6 +195,8 @@
           </el-table-column>
           <!-- </el-row> -->
         </el-table>
+        <el-button type="danger" @click="$router.push('/guoman/list')">关 闭</el-button>
+
         <div class="video-pagination">
           <el-pagination
             @current-change="videoCurrentChange"
@@ -238,6 +240,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button type="danger" @click="$router.push('/guoman/list')">关 闭</el-button>
+
         <div class="video-pagination">
           <el-pagination
             @current-change="commentCurrentChange"
@@ -642,22 +646,33 @@ export default {
             // });
             // this.$router.push("/guoman/list");
 
-            this.$confirm(`${res.data.msg},是否添加"${params.g_name}"的视频资源?`, "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "success"
-            })
-            .then(async () => {
-              this.id = res.data.v_id;
-              console.log("id", this.id);
-              await this.fetch();
-              await this.fetchVideo();
-              await this.fetchComment();
-              this.activeName = 'second';
-            })
-            .catch(() => {
+            if (!this.id) {
+              this.$confirm(
+                `${res.data.msg},是否添加"${params.g_name}"的视频资源?`,
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "success"
+                }
+              )
+                .then(async () => {
+                  this.id = res.data.v_id;
+                  await this.fetch();
+                  await this.fetchVideo();
+                  await this.fetchComment();
+                  this.activeName = "second";
+                })
+                .catch(() => {
+                  this.$router.push("/guoman/list");
+                });
+            } else {
+              this.$message({
+                type: "success",
+                message: res.data.msg
+              });
               this.$router.push("/guoman/list");
-            });
+            }
           } else {
             this.$message({
               type: "error",
@@ -854,6 +869,13 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.video-pagination {
+  display: inline-block;
+  margin-top: 30px;
+  margin-left: 50%;
+  transform: translateX(-50%);
+}
+
 .video-item {
   display: flex;
   justify-content: space-between;

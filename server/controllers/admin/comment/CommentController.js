@@ -14,7 +14,7 @@ let dbconfig = require('../../../util/dbconfig');
 // }
 
 let getByParams = async (obj) => {
-    console.log(`getBangumiBy${obj.key}`);
+    console.log(`getCommentBy${obj.key}`);
     console.log("obj.key",obj.key);
     let sql = `select * from pk_comments where ${obj.key}=?`;
     let sqlArr = [obj.value];
@@ -24,7 +24,7 @@ let getByParams = async (obj) => {
 }
 
 let getOne = async (req, res) => {
-    console.log("getBangumiByID");
+    console.log("getCommentByID");
     let v_id = req.params.id
     let sql = 'select * from pk_comments where v_id=?';
     let sqlArr = [v_id];
@@ -131,74 +131,74 @@ let getAll = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-let createOne = async (req, res) => {
-    console.log("createBangumi");
+// let createOne = async (req, res) => {
+//     console.log("createComment");
 
-    let { b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = req.body;
-    console.log("b_name", b_name);
+//     let { b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = req.body;
+//     console.log("b_name", b_name);
 
-    let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
-    if (b_nameRst.length != 0) {
-        res.send({
-            "status": 402,
-            "msg": "数据库中存在同名番剧"
-        });
-        return;
-    }
+//     let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
+//     if (b_nameRst.length != 0) {
+//         res.send({
+//             "status": 402,
+//             "msg": "数据库中存在同名番剧"
+//         });
+//         return;
+//     }
 
-    let sql =
-        'insert into pk_comments(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
+//     let sql =
+//         'insert into pk_comments(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
+//         + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
-    callback = (err, data) => {
-        if (err) {
-            console.log("操作出错")
-            res.send({
-                "status": 402,
-                'msg': "添加失败"
-            });
-        } else {
-            console.log("操作成功");
-            res.send({
-                "status": 200,
-                "msg": "添加成功"
-            });
-        }
-    }
+//     let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
+//     callback = (err, data) => {
+//         if (err) {
+//             console.log("操作出错")
+//             res.send({
+//                 "status": 402,
+//                 'msg': "添加失败"
+//             });
+//         } else {
+//             console.log("操作成功");
+//             res.send({
+//                 "status": 200,
+//                 "msg": "添加成功"
+//             });
+//         }
+//     }
 
-    dbconfig.sqlConnect(sql, sqlArr, callback)
+//     dbconfig.sqlConnect(sql, sqlArr, callback)
 
-}
+// }
 
-let updateOne = (req, res) => {
-    console.log("updateBangumiByID")
-    let { b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id } = req.body;
+// let updateOne = (req, res) => {
+//     console.log("updateCommentByID")
+//     let { b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id } = req.body;
 
-    sql = 'update pk_comments set b_name=?,b_imgSrc=?,b_episodes=?,b_status=?,b_style=?,b_initials=?,b_playtime=?,b_quarter=?,b_years=?,b_actors=?,b_summary=? where v_id=?';
-    sqlArr = [b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id];
+//     sql = 'update pk_comments set b_name=?,b_imgSrc=?,b_episodes=?,b_status=?,b_style=?,b_initials=?,b_playtime=?,b_quarter=?,b_years=?,b_actors=?,b_summary=? where v_id=?';
+//     sqlArr = [b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id];
 
-    callback = (err, data) => {
-        if (err) {
-            console.log("操作出错")
-            res.send({
-                "status": 402,
-                'msg': "更新失败"
-            });
-        } else {
-            console.log("操作成功");
-            res.send({
-                "status": 200,
-                "msg": "更新成功"
-            });
-        }
-    }
+//     callback = (err, data) => {
+//         if (err) {
+//             console.log("操作出错")
+//             res.send({
+//                 "status": 402,
+//                 'msg': "更新失败"
+//             });
+//         } else {
+//             console.log("操作成功");
+//             res.send({
+//                 "status": 200,
+//                 "msg": "更新成功"
+//             });
+//         }
+//     }
 
-    dbconfig.sqlConnect(sql, sqlArr, callback);
-}
+//     dbconfig.sqlConnect(sql, sqlArr, callback);
+// }
 
 let deleteOne = (req, res) => {
-    console.log("deleteBangumiByID")
+    console.log("deleteCommentByID")
     let c_id = req.params.id;
     console.log("c_id", req.params);
     let sql = 'delete from pk_comments where c_id=?';
@@ -223,6 +223,31 @@ let deleteOne = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
+let deleteByVideo = (req, res) => {
+    console.log("deleteCommentByVideo");
+    let{t_id,v_id} = req.query;
+    let sql = 'delete from pk_comments where t_id=? and v_id=?';
+    let sqlArr = [t_id,v_id];
+
+    callback = (err, data) => {
+        if (err) {
+            console.log("操作出错")
+            res.send({
+                "status": 402,
+                'msg': "删除失败"
+            });
+        } else {
+            console.log("操作成功");
+            res.send({
+                "status": 200,
+                "msg": "删除成功"
+            });
+        }
+    }
+
+    dbconfig.sqlConnect(sql, sqlArr, callback);
+}
+
 module.exports = {
-    getAll, getOne, createOne, updateOne, deleteOne
+    getAll, getOne, createOne, updateOne, deleteOne, deleteByVideo
 }

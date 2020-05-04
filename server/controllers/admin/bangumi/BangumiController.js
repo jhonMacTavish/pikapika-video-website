@@ -1,4 +1,5 @@
 let dbconfig = require('../../../util/dbconfig');
+let util = require('../../../util/util');
 
 // getByName = async (b_name) => {
 //     let sql = 'select * from pk_bangumi where b_name=?';
@@ -30,6 +31,8 @@ let getOne = async (req, res) => {
     let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    result[0].b_episodes = await util.countEp(1,v_id);
+    // console.log("result", result);
     res.send(result);
 }
 
@@ -53,7 +56,7 @@ let getOne = async (req, res) => {
 //                 rst[0].t_id = 1;
 //                 console.log("create in pk_bangumi");
 
-//                 let { b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = rst[0];
+//                 let { b_name, t_id, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = rst[0];
 
 //                 let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
 //                 if (b_nameRst.length != 0) {
@@ -68,7 +71,7 @@ let getOne = async (req, res) => {
 //                     'insert into pk_bangumi(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
 //                     + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
 
-//                 let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
+//                 let sqlArr = [b_name, t_id, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
 
 
 //                 break;
@@ -106,9 +109,9 @@ let getOne = async (req, res) => {
 
 let getAll = (req, res) => {
     console.log("getBangumiAll")
-    let sql = 'select v_id,b_name,b_episodes,b_style,b_playtime from pk_bangumi order by b_name asc';
+    let sql = 'select v_id,b_name,b_style,b_playtime from pk_bangumi order by b_name asc';
     let sqlArr = [];
-    let callback = (err, data) => {
+    let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
             res.send({
@@ -118,6 +121,12 @@ let getAll = (req, res) => {
         } else {
             // console.log("getAll", data);
             console.log("操作成功");
+            let t_id = 1;
+            for(let i=0; i<data.length; i++){
+                let v_id = data[i].v_id;
+                data[i].b_episodes = await util.countEp(t_id,v_id);
+            }
+            // console.log("data", data);
             res.send({
                 "list": data,
                 "status": 200,
@@ -132,7 +141,7 @@ let getAll = (req, res) => {
 let createOne = async (req, res) => {
     console.log("createBangumi");
 
-    let { b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = req.body;
+    let { b_name, t_id, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = req.body;
     console.log("b_name", b_name);
 
     let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
@@ -145,10 +154,10 @@ let createOne = async (req, res) => {
     }
 
     let sql =
-        'insert into pk_bangumi(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
+        'insert into pk_bangumi(b_name,t_id,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
+        + 'values(?,?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [b_name, t_id, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
+    let sqlArr = [b_name, t_id, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
@@ -173,10 +182,10 @@ let createOne = async (req, res) => {
 
 let updateOne = (req, res) => {
     console.log("updateBangumiByID")
-    let { b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id } = req.body;
+    let { b_name, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id } = req.body;
 
-    sql = 'update pk_bangumi set b_name=?,b_imgSrc=?,b_episodes=?,b_status=?,b_style=?,b_initials=?,b_playtime=?,b_quarter=?,b_years=?,b_actors=?,b_summary=? where v_id=?';
-    sqlArr = [b_name, b_imgSrc, b_episodes, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id];
+    sql = 'update pk_bangumi set b_name=?,b_imgSrc=?,b_status=?,b_style=?,b_initials=?,b_playtime=?,b_quarter=?,b_years=?,b_actors=?,b_summary=? where v_id=?';
+    sqlArr = [b_name, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary, v_id];
 
     callback = (err, data) => {
         if (err) {

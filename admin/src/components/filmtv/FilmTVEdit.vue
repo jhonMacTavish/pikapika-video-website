@@ -26,9 +26,9 @@
             </el-select>
           </el-form-item>
 
-          <el-form-item label="总集数" prop="f_episodes">
+          <!-- <el-form-item label="总集数" prop="f_episodes">
             <el-input v-model="modelF.f_episodes" style="width:222px" maxlength="4"></el-input>
-          </el-form-item>
+          </el-form-item>-->
           <el-form-item label="状态" prop="f_status">
             <el-select v-model="modelF.f_status" placeholder="请选择">
               <el-option
@@ -198,6 +198,7 @@
           </el-table-column>
           <!-- </el-row> -->
         </el-table>
+        <el-button type="danger" @click="$router.push('/filmtv/list')">关 闭</el-button>
         <div class="video-pagination">
           <el-pagination
             @current-change="videoCurrentChange"
@@ -241,6 +242,7 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button type="danger" @click="$router.push('/filmtv/list')">关 闭</el-button>
         <div class="video-pagination">
           <el-pagination
             @current-change="commentCurrentChange"
@@ -645,22 +647,33 @@ export default {
             // });
             // this.$router.push("/filmtv/list");
 
-            this.$confirm("此操作将永久删除该文件, 是否继续?", "提示", {
-              confirmButtonText: "确定",
-              cancelButtonText: "取消",
-              type: "success"
-            })
-              .then(async () => {
-                console.log("id", res.data.v_id);
-                this.id = res.data.v_id;
-                await this.fetch();
-                await this.fetchVideo();
-                await this.fetchComment();
-                this.activeName = "second";
-              })
-              .catch(() => {
-                this.$router.push("/filmtv/list");
+            if (!this.id) {
+              this.$confirm(
+                `${res.data.msg},是否添加"${params.f_name}"的视频资源?`,
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "success"
+                }
+              )
+                .then(async () => {
+                  this.id = res.data.v_id;
+                  await this.fetch();
+                  await this.fetchVideo();
+                  await this.fetchComment();
+                  this.activeName = "second";
+                })
+                .catch(() => {
+                  this.$router.push("/filmtv/list");
+                });
+            } else {
+              this.$message({
+                type: "success",
+                message: res.data.msg
               });
+              this.$router.push("/filmtv/list");
+            }
           } else {
             this.$message({
               type: "error",
@@ -840,7 +853,7 @@ export default {
 
     handleClick() {
       this.cancelAdd();
-      this.isAdding=false;
+      this.isAdding = false;
 
       if (this.activeName == "second") {
         console.log("second");

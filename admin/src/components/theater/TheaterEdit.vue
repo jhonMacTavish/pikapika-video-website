@@ -189,6 +189,8 @@
           </el-table-column>
           <!-- </el-row> -->
         </el-table>
+        <el-button type="danger" @click="$router.push('/theater/list')">关 闭</el-button>
+
         <div class="video-pagination">
           <el-pagination
             @current-change="videoCurrentChange"
@@ -233,6 +235,8 @@
             </template>
           </el-table-column>
         </el-table>
+        <el-button type="danger" @click="$router.push('/theater/list')">关 闭</el-button>
+
         <div class="video-pagination">
           <el-pagination
             @current-change="commentCurrentChange"
@@ -645,25 +649,33 @@ export default {
             // });
             // this.$router.push("/theater/list");
 
-            this.$confirm(
-              `${res.data.msg},是否添加"${params.b_name}"的视频资源?`,
-              "提示",
-              {
-                confirmButtonText: "确定",
-                cancelButtonText: "取消",
-                type: "success"
-              }
-            )
-              .then(async () => {
-                this.id = res.data.v_id;
-                await this.fetch();
-                await this.fetchVideo();
-                await this.fetchComment();
-                this.activeName = "second";
-              })
-              .catch(() => {
-                this.$router.push("/theater/list");
+            if (!this.id) {
+              this.$confirm(
+                `${res.data.msg},是否添加"${params.th_name}"的视频资源?`,
+                "提示",
+                {
+                  confirmButtonText: "确定",
+                  cancelButtonText: "取消",
+                  type: "success"
+                }
+              )
+                .then(async () => {
+                  this.id = res.data.v_id;
+                  await this.fetch();
+                  await this.fetchVideo();
+                  await this.fetchComment();
+                  this.activeName = "second";
+                })
+                .catch(() => {
+                  this.$router.push("/theater/list");
+                });
+            } else {
+              this.$message({
+                type: "success",
+                message: res.data.msg
               });
+              this.$router.push("/theater/list");
+            }
           } else {
             this.$message({
               type: "error",
@@ -882,6 +894,13 @@ export default {
   position: relative;
   padding-bottom: 60px;
   // overflow: auto;
+}
+
+.video-pagination {
+  display: inline-block;
+  margin-top: 30px;
+  margin-left: 50%;
+  transform: translateX(-50%);
 }
 
 .video-item {
