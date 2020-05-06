@@ -8,13 +8,19 @@ module.exports = app => {
   var Userinfo = require('../../controllers/admin/userinfo/UserinfoController');
   var Video = require('../../controllers/admin/video/VideoController');
   var Comment = require('../../controllers/admin/comment/CommentController');
+  var axios = require("axios");
 
-  /* GET home page. */
-  router.get('/', (req, res) => {
-    res.send({
-      status: '200',
-      message: '访问成功'
-    })
+
+  router.get('/image', async (req, res) => {
+    let rst = await axios.get("https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php?return=json");
+    // let rst = await axios.get("https://api.ixiaowai.cn/api/api.php?return=json");
+    res.send(rst.data)
+  });
+
+  router.get('/hotokoto', async (req, res) => {
+    // let rst = await axios.get("https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php?return=json");
+    let rst = await axios.get("https://v1.hitokoto.cn/?c=a&encode=json");
+    res.send(rst.data)
   });
 
   router.get('/bangumis', Bangumi.getAll);

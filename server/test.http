@@ -1,4 +1,4 @@
-@url=http://localhost:3000/admin/api
+@url=http://localhost:3000/users/api
 @json=Content-Type: application/json
 
 ###

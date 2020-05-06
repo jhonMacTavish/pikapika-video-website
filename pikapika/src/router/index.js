@@ -82,7 +82,7 @@ export default new Router({
         },
         {
           path: '/playinfo',
-          // name: 'playinfo',
+          name: 'playinfo',
           component: PlayInfo,
           children: [
             {

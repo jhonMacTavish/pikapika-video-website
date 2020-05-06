@@ -4,43 +4,44 @@
       <div class="detail-top">
         <div class="detail-top-con">
           <div class="poster-placeholder">
-            <img src="https://ae01.alicdn.com/kf/Hfaa964dd207845769bb6be9624f70585T.jpg" alt />
+            <img :src="objectInfo.b_imgSrc" alt />
           </div>
           <div class="txt-info-con">
             <div class="title">
-              <h1>公主连结！Re:Dive</h1>
-              <p>更新至03话</p>
+              <h1>{{objectInfo.b_name}}</h1>
+              <p>{{objectInfo.b_status==2?"全":"更新至"}}{{objectInfo.b_episodes}}话</p>
             </div>
             <div class="publish-time">
-              <span>2018年1月7日开播</span>
-              <span>已完结, 全22话</span>
+              <span>{{objectInfo.b_playtime}} 开播</span>
+              <span>{{objectInfo.b_status==1?"更新中":"已完结"}}</span>
             </div>
 
             <div class="player">
-              <span>声优</span>
-              <span>市道真央</span>
-              <span>立花理香</span>
-              <span>伊藤美来</span>
+              <span>主演</span>
+              <span v-for="(actor,index) in (objectInfo.b_actors||'').split('、')" :key="index">{{actor}}</span>
+              <!-- <span>立花理香</span>
+              <span>伊藤美来</span> -->
             </div>
 
             <div class="type">
               <span>类型</span>
-              <span>冒险</span>
+              <span v-for="(style,index) in (objectInfo.b_style||'').split('、')" :key="index">{{style}}</span>
+              <!-- <span>冒险</span>
               <span>奇幻</span>
               <span>战斗</span>
-              <span>魔法</span>
+              <span>魔法</span> -->
             </div>
 
             <div class="intro">
               <p>
-                <span>简介：</span>樱集齐了会给世间带来灾难的“库洛牌”，并用魔法的力量将它们变成了自己的牌。樱花盛开的4月，小樱升入了初中1年级。而后，小樱与曾返回香港的小狼重逢，并一起开心地去往学校。某个夜里，收集的牌出现了异常……而友枝町接连发生奇怪的事。小樱在梦中遇见的“钥匙”的指引下，再次开始收集卡片。这时，班里转来一个女孩子……
+                <span>简介：</span>{{objectInfo.b_summary}}
               </p>
             </div>
           </div>
         </div>
       </div>
       <div class="detail-bg">
-        <div class="detail-bg-img"></div>
+        <div class="detail-bg-img" :style="`background-image: url(${objectInfo.b_imgSrc})`"></div>
       </div>
     </div>
   </div>
@@ -52,7 +53,19 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    objectInfo(){
+      return this.$store.getters.objectInfo;
+    },
+
+    styles(){
+
+    },
+
+    actors(){
+      
+    }
+  },
   watch: {},
   methods: {},
   components: {}
@@ -77,8 +90,7 @@ export default {
         width: 110%;
         height: 420px;
         //   z-index: 10;
-        background-repeat: no-repeat;
-        background-image: url(https://ae01.alicdn.com/kf/Hfaa964dd207845769bb6be9624f70585T.jpg);
+        // background-image: url(https://ae01.alicdn.com/kf/Hfaa964dd207845769bb6be9624f70585T.jpg);
         background-repeat: no-repeat;
         background-position: center;
         background-size: cover;

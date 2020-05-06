@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        objectInfo:{},
         // 导航栏列表
         navList: [
             {
@@ -548,78 +549,7 @@ export default new Vuex.Store({
         ],
         // 番组计划
         fanzuList: [
-            {
-                id: 1,
-                title: '世界第一初恋 第一季',
-                latestChapter: '12',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 2,
-                title: '犬神',
-                latestChapter: '27',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 3,
-                title: 'Infinite Dendrogram -无尽连锁-',
-                latestChapter: '13',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 4,
-                title: 'NEW GAME!! 第二季',
-                latestChapter: '12',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 5,
-                title: 'NEW GAME!',
-                latestChapter: '13',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 6,
-                title: '苍之彼方的四重奏',
-                latestChapter: '12',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 7,
-                title: '钻石王牌 actII',
-                latestChapter: '12',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 8,
-                title: 'RADIANT',
-                latestChapter: '42',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 9,
-                title: '达尔文游戏',
-                latestChapter: '11',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 10,
-                title: '我们的爱总是只有10厘米。',
-                latestChapter: '06',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 11,
-                title: '魔术士奥芬的无赖之旅',
-                latestChapter: '14',
-                imgSrc: '@/../static/imgs/fanzu/'
-            },
-            {
-                id: 12,
-                title: '假面骑士AGITO',
-                latestChapter: '51',
-                imgSrc: '@/../static/imgs/fanzu/'
-            }
+            
         ],
         // 剧场动画
         theaterList: [
@@ -1057,7 +987,9 @@ export default new Vuex.Store({
                 userName: 'Dragon.mr',
                 subtime: '2020-04-22 15:30:05'
             }
-        ]
+        ],
+
+        episodeList:[]
 
     },
     getters: {
@@ -1071,9 +1003,16 @@ export default new Vuex.Store({
         filmTVList: state => state.filmTVList,
         serhResultList: state => state.serhResultList,
         commentList: state => state.commentList,
+        episodeList:state => state.episodeList,
+        objectInfo:state => state.objectInfo
     },
     mutations: {  //大写
-
+        UpdateEpisodeList(state, episodeList) {
+            state.episodeList = episodeList;
+        },
+        UpdateObjectInfo(state, objectInfo) {
+            state.objectInfo = objectInfo;
+        },
     },
     actions: {   //小写
 

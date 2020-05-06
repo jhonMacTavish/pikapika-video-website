@@ -95,14 +95,14 @@ updateOne = async (req, res) => {
     let t_id = VT_idRst[0].t_id;
     console.log("v_id", v_id,"t_id",t_id);
 
-    // let v_episodeRst = await getByParams({ key: 'v_id', value: v_id }, { key: 't_id', value: t_id }, { key: 'r_episode', value: r_episode });
-    // if (v_episodeRst.length != 0) {
-    //     res.send({
-    //         "status": 402,
-    //         "msg": `数据库已存在该番剧第${r_episode}话`
-    //     });
-    //     return;
-    // }
+    let v_episodeRst = await getByParams({ key: 'v_id', value: v_id }, { key: 't_id', value: t_id }, { key: 'r_episode', value: r_episode });
+    if (v_episodeRst.length != 0) {
+        res.send({
+            "status": 402,
+            "msg": `数据库已存在该番剧第${r_episode}话`
+        });
+        return;
+    }
 
     sql = 'update pk_resources set r_episode=?,r_address=? where r_id=?';
     sqlArr = [r_episode, r_address, r_id];

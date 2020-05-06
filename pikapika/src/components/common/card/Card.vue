@@ -1,26 +1,28 @@
 <template>
   <div class="card-box">
-    <div class="card-content">
-      <img :src="listItem.imgSrc+listItem.id+'.jpg'" :title="listItem.title"/>
-      <p class="name">{{listItem.title}}</p>
-      <p class="chapter">更新至{{listItem.latestChapter}}话</p>
-    </div>
+    <!-- <div class="card-content"> -->
+    <router-link :to="{path:'/playinfo',query:{t_id:listItem.t_id,v_id:listItem.v_id}}" target="_blank" tag="a" class="card-content">
+      <img :src="listItem.b_imgSrc" :title="listItem.b_name" />
+      <p class="name">{{listItem.b_name}}</p>
+      <p class="chapter">{{listItem.b_status==2?"全":"更新至"}}{{listItem.b_episodes}}话</p>
+    </router-link>
+    <!-- </div> -->
   </div>
 </template>
 
 <script>
 export default {
   name: "Card",
-  props:{
-    listItem: {
-      id: 0,
-      title: "",
-      latestChapter: "",
-      imgSrc: ""
-    }
+  props: {
+    listItem: {}
   },
   data() {
     return {};
+  },
+  methods:{
+    selectedObj(){
+      this.$store.commit("UpdateSelectedObj",listItem);
+    }
   }
 };
 </script>
@@ -38,9 +40,11 @@ export default {
   font-size: 12px;
   overflow: hidden;
   .card-content {
+    display: inline-block;
     position: relative;
     width: 170px;
     height: 100%;
+    cursor: pointer;
     img {
       display: inline-block;
       width: 170px;
@@ -57,7 +61,7 @@ export default {
       margin-top: 4px;
     }
 
-    .name{
+    .name {
       position: absolute;
       top: 228px;
     }
@@ -68,6 +72,12 @@ export default {
       width: 100%;
       background: white;
       color: red;
+    }
+  }
+
+  .card-content:hover {
+    .name {
+      color: #00a1d6;
     }
   }
 }

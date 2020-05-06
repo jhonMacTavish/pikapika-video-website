@@ -23,6 +23,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 app.use(bodyParser.urlencoded({extended:true}));
 require('./routes/admin/index')(app);
+require('./routes/users/index')(app);
 
 // app.use('/', indexRouter);
 // app.use('/users', usersRouter);

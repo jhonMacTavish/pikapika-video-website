@@ -435,7 +435,7 @@ export default {
       activeName: "first",
       newVideo: {
         r_episode: 0,
-        r_address: ""
+        r_address: "http://localhost:3000/videos/guoman/"
       },
 
       isAdding: false,
@@ -600,9 +600,17 @@ export default {
         await this.fetchVideo();
         this.isAdding = false;
         this.videoCurrentChange(this.videoCurrentPage);
+        
+        let arr = row.r_address.split(".");
+        let length = 1;
+        if(row.r_episode>=9){
+          length=2;
+        }
+        let r_address = `${arr[0].slice(0,-length)}${row.r_episode+1}.${arr[1]}`;
+
         this.newVideo = {
           r_episode: 0,
-          r_address: ""
+          r_address: r_address
         };
       } else {
         this.$message({
@@ -718,7 +726,7 @@ export default {
     },
 
     async fetch() {
-      console.log("edit");
+      // console.log("edit");
       const resG = await this.$http.get(`/guomans/${this.id}`);
       // console.log("resG", resG.data[0].g_style.split("、"));
 
@@ -726,7 +734,7 @@ export default {
       resG.data[0].g_actors = resG.data[0].g_actors.split("、");
 
       this.modelG = resG.data[0];
-      console.log("this.model", this.modelG);
+      // console.log("this.model", this.modelG);
       // let resV = await this.$http.get(`/videos/`, {
       //   params: { v_id: this.modelG.v_id, t_id: this.modelG.t_id }
       // });
@@ -753,6 +761,21 @@ export default {
       this.$store.commit("UpdateVideoList", resV.data.list);
 
       this.videoCurrentChange(this.videoCurrentPage);
+      if(this.activeName=="second" && this.videoTotal>0){
+        let lastVideo = this.videoList[this.videoTotal-1];
+        let arr = lastVideo.r_address.split(".");
+        let length = 1;
+        if(lastVideo.r_episode>=9){
+          length = 2;
+        }
+        let r_address = `${arr[0].slice(0,-length)}${lastVideo.r_episode+1}.${arr[1]}`;
+
+        this.newVideo = {
+          r_episode: 0,
+          r_address: r_address
+        };
+
+      }
     },
 
     async fetchComment(){

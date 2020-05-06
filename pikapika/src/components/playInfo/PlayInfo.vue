@@ -19,11 +19,43 @@ import Episode from '../common/episode/Episode'
 export default {
   name: "PlayInfo",
   data() {
-    return {};
+    return {
+      // params:{}
+      objectInfo:{}
+    };
   },
-  computed: {},
+  created(){
+    console.log("fetch", )
+    this.fetch();
+  },
+  computed: {
+  },
   watch: {},
-  methods: {},
+  methods: {
+    async fetch(){
+      let params = this.$route.query;
+      console.log("params", params);
+      switch(params.t_id){
+        case "1":
+          let res = await this.$http.get(`/bangumis/${params.v_id}`);
+          console.log("objinfo", res.data[0]);
+          this.objectInfo = res.data[0];
+          this.$store.commit("UpdateObjectInfo",this.objectInfo);
+          break;
+        case 2:
+          break;
+        case 3:
+          break;
+        case 4:
+          break;
+        default:
+          break;
+      }
+      let res = await this.$http.get('/videos',{params});
+      console.log("res", res.data.list);
+      this.$store.commit("UpdateEpisodeList",res.data.list);
+    }
+  },
   components: {Ad,Block,Comment,Episode}
 };
 </script>

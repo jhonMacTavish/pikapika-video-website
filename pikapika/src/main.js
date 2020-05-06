@@ -55,6 +55,8 @@ Vue.component(CommentItem.name,CommentItem);
 Vue.use(ElementUI);
 
 Vue.config.productionTip = true;
+import http from './util/http';
+Vue.prototype.$http=http;
 
 /* eslint-disable no-new */
 new Vue({

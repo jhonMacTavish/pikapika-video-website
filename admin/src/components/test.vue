@@ -80,6 +80,8 @@ export default {
     console.log("arr[0]",  arr[0]);
     brr.push(arr[0]);
     console.log("brr", brr);
+    let str = "\\\\\\\\\\\\\\\\\\";
+    console.log("str", str.replace(/\\/g, "/"));
   },
   methods: {
     handleClose(tag) {

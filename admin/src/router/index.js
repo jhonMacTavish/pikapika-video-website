@@ -1,6 +1,7 @@
 import Vue from 'vue'
 import Router from 'vue-router'
 import Main from '@/components/main/Main'
+import Index from '@/components/main/Index'
 import BangumiEdit from '@/components/bangumi/BangumiEdit'
 import BangumiList from '@/components/bangumi/BangumiList'
 import GuomanEdit from '@/components/guoman/GuomanEdit'
@@ -23,6 +24,8 @@ export default new Router({
       name: 'main',
       component: Main,
       children:[
+        {path:'',component: Index},
+
         {path:'/bangumi/create',component: BangumiEdit},
         {path:'/bangumi/eidt/:id',component: BangumiEdit,props:true},
         {path:'/bangumi/list',component: BangumiList},

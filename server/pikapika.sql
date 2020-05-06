@@ -38,7 +38,7 @@ CREATE TABLE pk_bangumi(
     play_volume INT NOT NULL DEFAULT 0,
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
-    
+/*    
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(1,1,'苍之彼方的四重奏','',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(2,1,'我们的爱只有10厘米。','',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(3,1,'苍之彼方的四s重奏','',1,'竞技、校园、科幻','C','2018-01-11',1,'2016','福圆美里、浅仓杏美、山本希望、米泽圆、逢坂良太、若林直美、近藤孝行、种田梨沙、新津和幸、仪武祐子、绪方惠美、高森奈津美',''); 
@@ -65,7 +65,7 @@ INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_p
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(241,1,'我们的爱只dgggh有10厘米。','',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(242,1,'我们的爱s只dd有10厘米。','',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
 INSERT INTO pk_bangumi(v_id,t_id,b_name,b_imgSrc,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) VALUES(243,1,'我们的爱ss只有10厘米。','',1,'校园、青春','W','2018-01-11',10,'2017','铃村健一、丰崎爱生、神谷浩史、户松遥、梶裕贵、阿澄佳奈、绿川光、Gero、木村良平、莉犬','');   
-
+*/
 
 CREATE TABLE pk_guoman(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -83,7 +83,7 @@ CREATE TABLE pk_guoman(
     play_volume INT NOT NULL DEFAULT 0,
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
-    
+/*    
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(1,2,'今天开始做明星','',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(2,2,'剑网3·侠肝55义胆沈剑心','',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(3,2,'今天开始f做s明星','',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
@@ -113,7 +113,7 @@ INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_pl
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(42,2,'剑网3·侠肝wer3er3w义胆沈剑心','',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(53,2,'今天开始做bdvfb明星ret','',1,'偶像','J','2018-01-11','2019','吟良犬、马正阳、藤新、周侗','',0);
 INSERT INTO pk_guoman(v_id,t_id,g_name,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary,play_volume) VALUES(62,2,'剑网3·侠肝义胆fff沈剑心','',1,'搞笑、战斗','J','2018-01-11','2018','宝木中阳、藤新、图特哈蒙、黎悠濛','',0);
-
+*/
 
 CREATE TABLE pk_theater(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -131,7 +131,7 @@ CREATE TABLE pk_theater(
     play_volume INT NOT NULL DEFAULT 0,
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
-    
+/*
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(1,3,1,'Re：从ddad零开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(2,3,1,'凉宫wbnv bm春日的消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(3,3,1,'Re：从零bmb开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
@@ -160,7 +160,7 @@ INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_ini
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(24,3,1,'凉宫春日的64642消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(323,3,1,'Re：从零12321开始的异世界生活 冰结之绊','',1,'穿越、战斗','R','2018-01-11','2019','高桥李依、内山夕实、小林裕介、水濑祈、村川梨衣、子安武人','',0);
 INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary,play_volume) VALUES(41,3,1,'凉宫春日的1111消失','',1,'搞笑、校园、科幻','L','2018-01-11','2010','平野绫、杉田智和、茅原实里、青木沙耶香、后藤邑子、桑谷夏子','',0);
-    
+ */   
 
  CREATE TABLE pk_filmTV(
 	v_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
@@ -180,13 +180,13 @@ INSERT INTO pk_theater(v_id,t_id,th_tag,th_name,th_imgSrc,th_VGA,th_style,th_ini
     /*create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,*/
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
 
-
+/*
 INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(1,4,'我是大54哥大','',1,'剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
 INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(2,4,'你是大654哥大','',1,'剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
 INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(3,4,'他是大64554哥大','',1,'剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
 INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(4,4,'狗是大6456543哥大','',1,'剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
 INSERT INTO pk_filmTV(v_id,t_id,f_name,f_imgSrc,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary,play_volume) VALUES(5,4,'猪是54645大哥大','',1,'剧情、喜剧','W','2018-01-11','2018','贺来贤人、伊藤健太郎、太贺、矢本悠马、清野菜名、桥本环奈、铃木伸之','',0);
-
+*/
 CREATE TABLE pk_resources(
 	r_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
 	v_id INT NOT NULL,
@@ -200,7 +200,7 @@ CREATE TABLE pk_resources(
     FOREIGN KEY(v_id) REFERENCES pk_filmTV(v_id),*/
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP ,
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
-
+/*
 INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(1,1,1,1,'http://vwecam.tc.qq.com/1006_73bd7b4141aa4aa992eb9efe5552dbbb.f0.mp4?vkey=C24CB5A21746FCDB549B55244A2E0D550523DF84743F8E478867F82CA7E3FA57D13B4D30AC7BDAA1E08D0FB6D868356DB242004886822F8C');
 INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(2,1,1,2,'http://vwecam.tc.qq.com/1006_5a17a1a7b5644faead2a156fb26ddbbb.f0.mp4?vkey=9E10CF877CF926D28DF20E9D361FB070E39F879262F1680518E98102D22D209B25494BC95BD696BC5F57E284CBFE8D0A7A0B45C578162080');
 INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(3,1,1,3,'http://vwecam.tc.qq.com/1006_dd00134fbda9401192fc6f42d442dbbb.f0.mp4?vkey=810738B28D39B0E2A7A959A33A2C7CDD6C111D60E04BB27EC69B1B5537570BEF4B69B99CCF385C60BDFF80E67A36168C327468F800D9AB17');
@@ -248,7 +248,7 @@ INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(43,2,2,11,'h
 INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(44,2,2,12,'http://photovideo.photo.qq.com/1075_0b532qaqiaabcmabsxirfzpdfvaeatkacbca.f20.mp4?dis_k=d73f167319a2b96fa167eae3d3a456dd&dis_t=1588079337&vuin=1764307762');
 INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(45,1,3,1,'https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/1250921_c7af3a2b73d03604f6421ef11134af72.mp4');
 INSERT INTO pk_resources(r_id,v_id,t_id,r_episode,r_address) VALUES(46,1,3,2,'https://gss3.baidu.com/6LZ0ej3k1Qd3ote6lo7D0j9wehsv/tieba-smallvideo/19649098_ed7d2aa6e581dc648cdc860290429735.mp4');
-
+*/
 CREATE TABLE pk_comments(
 	c_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     c_uid INT NOT NULL,
@@ -265,7 +265,7 @@ CREATE TABLE pk_comments(
     FOREIGN KEY(c_vid) REFERENCES pk_theater(ID),
     FOREIGN KEY(c_vid) REFERENCES pk_filmTV(ID),*/
     FOREIGN KEY(t_id) REFERENCES pk_type(t_id));
-    
+ /*   
 INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,1,'今天也要加油鸭1','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
 INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,1,1,'今天也要加油鸭2','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
 INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,1,1,'今天也要加油鸭3','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
@@ -313,7 +313,7 @@ INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,2,
 INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,2,4,'今天也要加油鸭3','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
 INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(1,2,4,'今天也要加油鸭4','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
 INSERT INTO pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) VALUES(2,2,4,'今天也要加油鸭5','Dragon.Mr','wwwwwwwwwwwwwwwwwwwwwwwwwww');
-
+*/
 CREATE TABLE pk_admin(
 	a_id INT UNIQUE NOT NULL AUTO_INCREMENT PRIMARY KEY,
     a_name VARCHAR(18) NOT NULL,

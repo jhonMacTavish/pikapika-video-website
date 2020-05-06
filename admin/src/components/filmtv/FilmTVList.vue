@@ -62,7 +62,7 @@
             <el-form-item label="开播时间" class="form-item">
               <p>{{model.f_playtime}}</p>
             </el-form-item>
-            <el-form-item label="声优" class="form-item">
+            <el-form-item label="主演" class="form-item">
               <p>{{model.f_actors}}</p>
             </el-form-item>
             <el-form-item label="图片地址" class="form-item">
@@ -139,7 +139,7 @@ export default {
   methods: {
     async fetch() {
       const res = await this.$http.get("/filmtvs");
-      console.log("res", res.data.list);
+      // console.log("res", res.data.list);
       this.$store.dispatch("updateFilmtvList", res.data.list);
 
       if (Math.ceil(this.totalItems / 10) < this.currentPage) {
@@ -254,11 +254,11 @@ export default {
       this.model = res.data[0];
       this.dialogFormVisible = true;
       this.getResources();
-      console.log("this.model", this.model);
+      // console.log("this.model", this.model);
     },
 
     async getResources() {
-      console.log("getVideo");
+      // console.log("getVideo");
       let rst = await this.$http.get(`/videos/`, {
         params: { v_id: this.model.v_id, t_id: this.model.t_id }
       });

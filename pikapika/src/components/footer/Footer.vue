@@ -50,7 +50,8 @@ export default {
   margin-top: 80px;
   height: 186px;
   width: 100%;
-  background: url(../../../static/imgs/footer/footer.jpg);
+  // background: url(../../../static/imgs/footer/footer.jpg);
+  background: linear-gradient(105deg, #0ecad4, #0ecad4, #50e3c2);
   overflow: hidden;
   font-size: 12px;
 

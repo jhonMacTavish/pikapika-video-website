@@ -3,8 +3,14 @@
     <div class="tip">选集</div>
     <div class="wrap">
       <ul>
-        <li v-for="item in 70" :key="item">
-          <el-button class="button-style" type="primary" size="small" @click="$router.push({name:'play'})" plain>第{{item}}话</el-button>
+        <li v-for="item in episodeList" :key="item.r_id">
+          <el-button
+            class="button-style"
+            type="primary"
+            size="small"
+            @click="$router.push({name:'play',params:item})"
+            plain
+          >第{{item.r_episode}}话</el-button>
         </li>
       </ul>
     </div>
@@ -17,7 +23,11 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    episodeList() {
+      return this.$store.getters.episodeList;
+    }
+  },
   watch: {},
   methods: {},
   components: {}
@@ -43,17 +53,17 @@ export default {
       li {
         float: left;
         display: inline-block;
-        
-          margin-bottom: 10px;
-          margin-right: 15px;
+
+        margin-bottom: 10px;
+        margin-right: 15px;
         .button-style {
           width: 100px;
         }
       }
 
-      li:nth-child(10n+0){
-          margin-right: 0;
-        }
+      li:nth-child(10n + 0) {
+        margin-right: 0;
+      }
     }
 
     ul::after {

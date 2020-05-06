@@ -85,7 +85,7 @@
               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="演员" prop="th_actors">
+          <el-form-item :label='this.modelTh.th_tag==1?"声优":"主演"' prop="th_actors">
             <!-- <el-select
           v-model="modelTh.th_actors"
           multiple
@@ -95,7 +95,7 @@
           :default-first-option="true"
           clearable
         >
-          <el-option label="请编辑演员" value disabled></el-option>
+          <el-option label="请编辑主演" value disabled></el-option>
             </el-select>-->
             <el-tag
               :key="tag"
@@ -114,7 +114,7 @@
               @blur="actHandleInputConfirm"
             ></el-input>
             <el-button v-else class="button-new-tag" size="small" @click="actShowInput">
-              <i class="el-icon-plus"></i> 演员
+              <i class="el-icon-plus"></i> {{this.modelTh.th_tag==1?"声优":"主演"}}
             </el-button>
           </el-form-item>
           <el-form-item label="图片地址" prop="th_imgSrc">
@@ -361,7 +361,7 @@ export default {
 
     let th_actors = (rule, value, callback) => {
       if (value.length == 0) {
-        callback(new Error("请编辑番剧声优")); // 请输入请输入集数
+        callback(new Error("请编辑番剧主演")); // 请输入请输入集数
       } else {
         callback();
       }
@@ -427,8 +427,8 @@ export default {
       activeName: "first",
       newVideo: {
         th_tag: 1,
-        r_address: "",
-        r_episode: 1,
+        r_address: "http://localhost:3000/videos/theater/",
+        r_episode: 1
       },
 
       isAdding: false,
@@ -596,9 +596,18 @@ export default {
         this.isAdding = false;
         this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
         this.videoCurrentChange(this.videoCurrentPage);
+        let arr = row.r_address.split(".");
+        let length = 1;
+        if (row.r_episode >= 9) {
+          length = 2;
+        }
+        let r_address = `${arr[0].slice(0, -length)}${row.r_episode + 1}.${
+          arr[1]
+        }`;
+
         this.newVideo = {
           r_episode: 0,
-          r_address: ""
+          r_address: r_address
         };
       } else {
         this.$message({
@@ -721,15 +730,15 @@ export default {
     },
 
     async fetch() {
-      console.log("edit");
+      // console.log("edit");
       const resTh = await this.$http.get(`/theaters/${this.id}`);
-      console.log("resTh", resTh);
+      // console.log("resTh", resTh);
 
       resTh.data[0].th_style = resTh.data[0].th_style.split("、");
       resTh.data[0].th_actors = resTh.data[0].th_actors.split("、");
 
       this.modelTh = resTh.data[0];
-      console.log("this.modelTh", this.modelTh);
+      // console.log("this.modelTh", this.modelTh);
       // let resV = await this.$http.get(`/videos/`, {
       //   params: { v_id: this.modelTh.v_id, t_id: this.modelTh.t_id }
       // });
@@ -760,6 +769,21 @@ export default {
       this.$store.commit("UpdateVideoList", resV.data.list);
 
       this.videoCurrentChange(this.videoCurrentPage);
+      if (this.activeName == "second" && this.videoTotal > 0) {
+        let lastVideo = this.videoList[this.videoTotal - 1];
+        let arr = lastVideo.r_address.split(".");
+        let length = 1;
+        if (lastVideo.r_episode >= 9) {
+          length = 2;
+        }
+        let r_address = `${arr[0].slice(0, -length)}${lastVideo.r_episode +
+          1}.${arr[1]}`;
+
+        this.newVideo = {
+          r_episode: 0,
+          r_address: r_address
+        };
+      }
     },
 
     async fetchComment() {

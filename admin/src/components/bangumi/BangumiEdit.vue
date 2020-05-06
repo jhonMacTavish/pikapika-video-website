@@ -448,7 +448,7 @@ export default {
       activeName: "first",
       newVideo: {
         r_episode: 0,
-        r_address: ""
+        r_address: "http://localhost:3000/videos/bangumi/"
       },
 
       isAdding: false,
@@ -632,9 +632,17 @@ export default {
         this.isAdding = false;
         this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
         this.videoCurrentChange(this.videoCurrentPage);
+        console.log("typeof", typeof row.r_address);
+        let arr = row.r_address.split(".");
+        let length = 1;
+        if(row.r_episode>=9){
+          length=2;
+        }
+        let r_address = `${arr[0].slice(0,-length)}${row.r_episode+1}.${arr[1]}`;
+        // r_address.replace(/\\/g, "/");
         this.newVideo = {
           r_episode: 0,
-          r_address: ""
+          r_address: r_address
         };
       } else {
         this.$message({
@@ -751,7 +759,7 @@ export default {
     async fetch() {
       // console.log("this.videoCurrentPage", this.videoCurrentPage);
 
-      console.log("edit");
+      // console.log("edit");
       const resB = await this.$http.get(`/bangumis/${this.id}`);
       // console.log("resB", resB.data[0].b_style.split("、"));
 
@@ -785,8 +793,22 @@ export default {
       console.log("resV.data.list", resV.data.list);
       // this.$store.dispatch("updateVideoList", resV.data.list);
       this.$store.commit("UpdateVideoList", resV.data.list);
-
       this.videoCurrentChange(this.videoCurrentPage);
+      if(this.activeName=="second" && this.videoTotal>0){
+        let lastVideo = this.videoList[this.videoTotal-1];
+        let arr = lastVideo.r_address.split(".");
+        let length = 1;
+        if(lastVideo.r_episode>=9){
+          length = 2;
+        }
+        let r_address = `${arr[0].slice(0,-length)}${lastVideo.r_episode+1}.${arr[1]}`;
+
+        this.newVideo = {
+          r_episode: 0,
+          r_address: r_address
+        };
+
+      }
     },
 
     async fetchComment() {

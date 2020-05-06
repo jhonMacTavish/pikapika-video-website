@@ -2,7 +2,7 @@
   <div class="block-box">
     <BlockHeader :title="title" />
     <div class="block-body">
-      <Card v-for="(item) in playLists" :key="item.id" :listItem="item"></Card>
+      <Card v-for="(item) in playLists" :key="item.v_id" :listItem="item"></Card>
     </div>
   </div>
 </template>
@@ -17,10 +17,43 @@ export default {
     title: ""
   },
   data() {
-    return {};
+    return {
+      playLists:[]
+    };
   },
   computed: {
-    playLists() {
+    // async playLists() {
+    //   switch (this.title) {
+    //     case "今日热播":
+    //       return this.$store.getters.hotPlayList;
+    //       break;
+    //     case "新番放送":
+    //       return this.$store.getters.rimanList;
+    //       break;
+    //     case "国产动漫":
+    //       return this.$store.getters.guochuangList;
+    //       break;
+    //     case "番组计划":
+    //       // return this.$store.getters.fanzuList;
+    //       let res = await this.$http.get("/");
+    //       console.log("res", res);
+    //       break;
+    //     case "剧场动画":
+    //       return this.$store.getters.theaterList;
+    //       break;
+    //     case "影视":
+    //       return this.$store.getters.filmTVList;
+    //       break;
+    //     default:
+    //       break;
+    //   }
+    // }
+  },
+  created(){
+    this.fetch();
+  },
+  methods:{
+    async fetch(){
       switch (this.title) {
         case "今日热播":
           return this.$store.getters.hotPlayList;
@@ -32,7 +65,10 @@ export default {
           return this.$store.getters.guochuangList;
           break;
         case "番组计划":
-          return this.$store.getters.fanzuList;
+          // return this.$store.getters.fanzuList;
+          let res = await this.$http.get("/bangumis");
+          console.log("res", res.data.list);
+          this.playLists = res.data.list;
           break;
         case "剧场动画":
           return this.$store.getters.theaterList;

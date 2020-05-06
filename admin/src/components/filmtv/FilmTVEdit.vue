@@ -89,7 +89,7 @@
               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="声优" prop="f_actors">
+          <el-form-item label="主演" prop="f_actors">
             <!-- <el-select
           v-model="modelF.f_actors"
           multiple
@@ -99,7 +99,7 @@
           :default-first-option="true"
           clearable
         >
-          <el-option label="请编辑声优" value disabled></el-option>
+          <el-option label="请编辑主演" value disabled></el-option>
             </el-select>-->
             <el-tag
               :key="tag"
@@ -118,7 +118,7 @@
               @blur="actHandleInputConfirm"
             ></el-input>
             <el-button v-else class="button-new-tag" size="small" @click="actShowInput">
-              <i class="el-icon-plus"></i> 演员
+              <i class="el-icon-plus"></i> 主演
             </el-button>
           </el-form-item>
           <el-form-item label="图片地址" prop="f_imgSrc">
@@ -370,7 +370,7 @@ export default {
 
     let f_actors = (rule, value, callback) => {
       if (value.length == 0) {
-        callback(new Error("请编辑番剧声优")); // 请输入请输入集数
+        callback(new Error("请编辑番剧主演")); // 请输入请输入集数
       } else {
         callback();
       }
@@ -436,7 +436,7 @@ export default {
       activeName: "first",
       newVideo: {
         r_episode: 0,
-        r_address: ""
+        r_address: "http://localhost:3000/videos/filmTV/"
       },
 
       isAdding: false,
@@ -601,9 +601,16 @@ export default {
         await this.fetchVideo();
         this.isAdding = false;
         this.videoCurrentChange(this.videoCurrentPage);
+        let arr = row.r_address.split(".");
+        let length = 1;
+        if(row.r_episode>=9){
+          length=2;
+        }
+        let r_address = `${arr[0].slice(0,-length)}${row.r_episode+1}.${arr[1]}`;
+
         this.newVideo = {
           r_episode: 0,
-          r_address: ""
+          r_address: r_address
         };
       } else {
         this.$message({
@@ -719,7 +726,7 @@ export default {
     },
 
     async fetch() {
-      console.log("edit");
+      // console.log("edit");
       const resF = await this.$http.get(`/filmtvs/${this.id}`);
       // console.log("resF", resF.data[0].f_style.split("、"));
 
@@ -755,6 +762,21 @@ export default {
       this.$store.commit("UpdateVideoList", resV.data.list);
 
       this.videoCurrentChange(this.videoCurrentPage);
+      if(this.activeName=="second" && this.videoTotal>0){
+        let lastVideo = this.videoList[this.videoTotal-1];
+        let arr = lastVideo.r_address.split(".");
+        let length = 1;
+        if(lastVideo.r_episode>=9){
+          length = 2;
+        }
+        let r_address = `${arr[0].slice(0,-length)}${lastVideo.r_episode+1}.${arr[1]}`;
+
+        this.newVideo = {
+          r_episode: 0,
+          r_address: r_address
+        };
+
+      }
     },
 
     async fetchComment() {
