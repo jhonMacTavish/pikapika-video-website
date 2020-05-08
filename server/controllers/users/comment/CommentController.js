@@ -15,7 +15,7 @@ let dbconfig = require('../../../util/dbconfig');
 
 let getByParams = async (obj) => {
     console.log(`getCommentBy${obj.key}`);
-    console.log("obj.key",obj.key);
+    console.log("obj.key", obj.key);
     let sql = `select * from pk_comments where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
@@ -33,57 +33,54 @@ let getOne = async (req, res) => {
     res.send(result);
 }
 
-let getAll = (req, res) => {
+let getAll = async (req, res) => {
     console.log("getCommentAll");
-    let {v_id,t_id} = req.query;
-    console.log("reqQuery", req.query);
-    let sql = 'select c_id,c_uname,c_uid,c_uavatar,c_content,create_time from pk_comments where v_id=? and t_id=? order by create_time asc';
-    let sqlArr = [v_id,t_id];
-    let callback = (err, data) => {
-        if (err) {
-            console.log("操作出错");
-            res.send({
-                'status': 402,
-                'msg': "信息获取失败"
-            })
-        } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
-            res.send({
-                "list": data,
-                "status": 200,
-                "msg": "信息获取成功"
-            })
-        }
-    }
+    // console.log("req",req.query);
 
-    dbconfig.sqlConnect(sql, sqlArr, callback);
+    let {t_id,v_id} = req.query;
+    let sql = 'select * from pk_comments where t_id=? and v_id=? order by create_time desc';
+    let sqlArr = [t_id,v_id];
+    let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
+
+    res.send({
+        "status": 200,
+        "list": list
+    })
 }
 
-let subComment = (req,res)=>{
-    console.log("subComment", );
-    console.log("req.body", req.body);
-    let {c_uid,v_id,t_id,c_content,c_uname,c_uavatar} = req.body;
-    let sql = 'insert into pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) values(?,?,?,?,?,?)';
-    let sqlArr = [c_uid,v_id,t_id,c_content,c_uname,c_uavatar];
-
-    callback = (err, data) => {
-        if (err) {
-            console.log("操作出错")
-            res.send({
-                "status": 402,
-                'msg': "发布失败"
-            });
-        } else {
-            console.log("操作成功");
-            res.send({
-                "status": 200,
-                "msg": "发布成功"
-            });
-        }
+let createOne = async (req, res) => {
+    console.log("subComment");
+    // console.log("params", req.body.params);
+    let { c_uid, v_id, t_id, c_content, c_uname, c_uavatar } = req.body.params;
+    if (!c_content) {
+        res.send({
+            "status": 422,
+            "msg": "你还没有评论"
+        })
+        return
     }
 
-    dbconfig.sqlConnect(sql,sqlArr,callback);
+    let sql = 'insert into pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) '
+        + 'values(?,?,?,?,?,?)';
+    let sqlArr = [c_uid, v_id, t_id, c_content, c_uname, c_uavatar];
+
+    let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    console.log("result", result);
+    if (result.affectedRows == 1) {
+        sql = 'select * from pk_comments where t_id=? and v_id=? order by create_time desc';
+        sqlArr = [t_id,v_id];
+        let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
+        res.send({
+            "status": "200",
+            "msg": "发布成功",
+            "list": list
+        })
+    } else {
+        res.send({
+            "status": "500",
+            "msg": "发布失败"
+        })
+    }
 }
 
 // let updateOne = (req, res) => {
@@ -112,32 +109,34 @@ let subComment = (req,res)=>{
 //     dbconfig.sqlConnect(sql, sqlArr, callback);
 // }
 
-let deleteOne = (req, res) => {
+let deleteOne = async (req, res) => {
     console.log("deleteCommentByID")
     let c_id = req.params.id;
     console.log("c_id", req.params);
     let sql = 'delete from pk_comments where c_id=?';
     let sqlArr = [c_id];
 
-    callback = (err, data) => {
-        if (err) {
-            console.log("操作出错")
-            res.send({
-                "status": 402,
-                'msg': "删除失败"
-            });
-        } else {
-            console.log("操作成功");
-            res.send({
-                "status": 200,
-                "msg": "删除成功"
-            });
-        }
+    let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+
+    if (result.affectedRows == 1) {
+        let sql = 'select * from pk_comments order by create_time desc';
+        let sqlArr = [];
+        let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
+        res.send({
+            "status":200,
+            "msg":"删除成功",
+            "list":list
+        });
+        return
+    }else{
+        res.send({
+            "status":500,
+            "msg":"删除失败",
+        });
     }
 
-    dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
 module.exports = {
-    getAll, getOne, createOne, updateOne, deleteOne,subComment
+    getAll, getOne, createOne, updateOne, deleteOne
 }

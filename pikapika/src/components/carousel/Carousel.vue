@@ -10,7 +10,9 @@
       ref="carousel"
     >
       <el-carousel-item v-for="item in imgs" :key="item.id">
-        <img :src="item.imgSrc" alt @click="$router.push({name: 'faninfo'})" />
+        <!-- <img :src="item.imgSrc" alt @click="$router.push({name: 'faninfo'})" /> -->
+        <img :src="item.imgSrc" alt @click="$router.push({name: 'faninfo',query:{t_id:1,v_id:item.id}})" />
+
       </el-carousel-item>
       <div class="carousel-indicator">
         <ul>

@@ -32,7 +32,7 @@ let getOne = async (req, res) => {
     console.log("v_id", v_id);
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    console.log("res", result);
+    // console.log("res", result);
     result[0].b_episodes = await util.countEp(1, v_id);
     // console.log("result", result);
     res.send(result);

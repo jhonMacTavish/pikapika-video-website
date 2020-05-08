@@ -237,7 +237,7 @@ let getBGrank = async (req, res) => {
     let list = Brank.concat(Grank);
     list.length = 10;
 
-    console.log("list", list);
+    // console.log("list", list);
 
     for (let i = 0; i < list.length; i++) {
         let t_id = list[i].t_id;

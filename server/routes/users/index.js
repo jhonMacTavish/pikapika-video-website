@@ -58,8 +58,9 @@ module.exports = app =>{
   router.post('/register',User.register);
   router.post('/getCaptcha',User.sendCaptcha);
 
-  router.post('/subComment',Comment.subComment);
-
+  router.get('/comments',Comment.getAll);
+  router.post('/comments',Comment.createOne);
+  router.delete('/comments/:id',Comment.deleteOne);
 
   app.use('/users/api',router);
 }

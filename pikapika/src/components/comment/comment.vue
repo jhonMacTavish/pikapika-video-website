@@ -11,9 +11,9 @@
           type="textarea"
           v-model="textarea"
           :rows="3"
-          :cols="147"
+          :cols="130"
           :maxlength="430"
-          size="mini"
+          size="medium"
           :placeholder="logged?'请自觉遵守物联网相关的政策法规，严禁发布色情、暴力、反动的言论':'请先登录'"
         ></el-input>
       </div>
@@ -23,17 +23,27 @@
       </div>
     </div>
     <div>
-      <CommentItem v-for="(item,index) in pageList" :key="index" :listItem="item" />
-      <div class="window-pagination">
-        <el-pagination
-          @current-change="handleCurrentChange"
-          :current-page.sync="currentPage"
-          :page-size="5"
-          layout="total, prev, pager, next"
-          :total="totalItems"
-          background
-        ></el-pagination>
+      <CommentItem
+        v-for="(item,index) in pageList"
+        @refreshList="handleCurrentChange"
+        :key="index"
+        :listItem="item"
+      />
+      <div v-if="!totalItems">
+        <div class="space">
+          暂未有评论
+        </div>
       </div>
+    </div>
+    <div class="window-pagination">
+      <el-pagination
+        @current-change="handleCurrentChange"
+        :current-page.sync="currentPage"
+        :page-size="5"
+        layout="total, prev, pager, next"
+        :total="totalItems"
+        background
+      ></el-pagination>
     </div>
   </div>
 </template>
@@ -48,25 +58,19 @@ export default {
       textarea: "",
       currentPage: 1,
       pageList: [],
-      avtar: "",
-      user: {}
+      avtar: ""
     };
   },
-  created() {
-    this.handleCurrentChange(this.currentPage);
-    this.user = this.logged
-      ? JSON.parse(localStorage.getItem("logged_user"))
-      : {
-          u_avatar: "../../../static/imgs/user/userAvatar.jpg"
-        };
-    this.avtar = this.user.u_avatar;
-  },
   computed: {
+    user() {
+      return JSON.parse(localStorage.getItem("logged_user"));
+    },
+
     logged() {
       return JSON.parse(localStorage.getItem("pk_user_logged"));
     },
-    
-    objectInfo(){
+
+    objectInfo() {
       return this.$store.getters.objectInfo;
     },
 
@@ -79,29 +83,69 @@ export default {
     }
   },
   watch: {},
+  async created() {
+    await this.fetch();
+    this.handleCurrentChange(this.currentPage);
+    // this.user = this.logged
+    //   ? JSON.parse(localStorage.getItem("logged_user"))
+    //   : {
+    //       u_avatar: "../../../static/imgs/user/userAvatar.jpg"
+    //     };
+    // console.log("user/****************************************************", this.user);
+    this.avtar =
+      (this.user ? this.user : {}).u_avatar ||
+      "../../../static/imgs/user/userAvatar.jpg";
+  },
   methods: {
-    async post(){
-      console.log("click", );
-      let params={
-        c_uid:this.user.u_id,
-        v_id:this.objectInfo.v_id,
-        t_id:this.objectInfo.t_id,
-        c_content:this.textarea,
-        c_uname:this.user.u_name,
-        c_uavatar:this.user.u_avatar
-      }
+    async fetch() {
+      let params = this.$route.query;
       console.log("params", params);
-      let res = this.$http.post("/subComment",{params});
+      let res = await this.$http.get("/comments", { params });
+      this.$store.commit("UpdateCommentList", res.data.list);
+      this.handleCurrentChange(this.currentPage);
+    },
+
+    async post() {
+      console.log("click");
+      console.log("this.user", this.user);
+      let params = {
+        c_uid: this.user.u_id,
+        v_id: this.objectInfo.v_id,
+        t_id: this.objectInfo.t_id,
+        c_content: this.textarea,
+        c_uname: this.user.u_name,
+        c_uavatar: this.user.u_avatar
+      };
+      console.log("params", params);
+      let res = await this.$http.post("/comments", { params });
+      // console.log("res", res);
+      if (res.data.status == 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg
+        });
+        console.log("res", res.data.list);
+        this.$store.commit("UpdateCommentList", res.data.list);
+        this.textarea = "";
+        this.currentPage = 1;
+        this.handleCurrentChange(this.currentPage);
+      } else {
+        this.$message({
+          type: "error",
+          message: res.data.msg
+        });
+      }
     },
 
     handleCurrentChange(val) {
+      // console.log("remove");
       let pageList = [];
       for (
         let i = 5 * (val - 1);
         i < (5 * val < this.totalItems ? 5 * val : this.totalItems);
         i++
       ) {
-        pageList.push(this.$store.getters.commentList[i]);
+        pageList.push(this.commentList[i]);
       }
       this.pageList = pageList;
 
@@ -118,19 +162,28 @@ export default {
 
 <style lang='less' scoped>
 .comment-box {
-  margin-top: 30px;
+  margin-top: 20px;
   .tip {
+    margin-top: 40px;
     font-size: 26px;
     font-weight: 400;
   }
 
+  .space{
+    margin-top: 40px;
+    width: 100%;
+    height: 50px;
+    line-height: 50px;
+    text-align: center;
+  }
+
   .add-comment-wrap {
-    margin-top: 10px;
+    margin-top: 30px;
     .avatar {
       float: left;
       display: inline-block;
-      width: 64px;
-      height: 64px;
+      width: 74px;
+      height: 73px;
       overflow: hidden;
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 5px;
@@ -142,37 +195,19 @@ export default {
     .text-area {
       margin-left: 20px;
       float: left;
-      // .ipt-txt {
-      //   font-size: 12px;
-      //   display: inline-block;
-      //   box-sizing: border-box;
-      //   background-color: #f4f5f7;
-      //   border: 1px solid #e5e9ef;
-      //   overflow: auto;
-      //   border-radius: 4px;
-      //   color: #555;
-      //   width: 100% !important;
-      //   height: 65px;
-      //   transition: 0s;
-      //   padding: 5px 10px;
-      //   line-height: normal;
-      // }
-
-      // .ipt-txt:hover{
-      //   background: white;
-      // }
+      height: 75px;
     }
     .publish-button {
       float: right;
       .button-style {
-        width: 70px;
-        height: 64px;
-        padding: 4px 15px;
-        font-size: 14px;
+        width: 80px;
+        height: 75px;
+        padding: 4px 20px;
+        font-size: 18px;
         color: #fff;
         border-radius: 4px;
         text-align: center;
-        min-width: 60px;
+        min-width: 70px;
         vertical-align: top;
         cursor: pointer;
         background-color: #00a1d6;

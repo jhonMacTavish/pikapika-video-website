@@ -142,7 +142,7 @@ export default {
           if (res.data.status == 200) {
             console.log("res", res);
             localStorage.setItem("logged_user", JSON.stringify(res.data.user));
-
+            // this.$store.commit("UpdateUser",res.data.user);
             localStorage.setItem("pk_user_logged", true);
 
             let pk_user = {};

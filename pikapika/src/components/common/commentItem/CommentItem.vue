@@ -1,14 +1,20 @@
 <template>
   <div class="commentItem-box">
     <div class="avatar">
-      <img :src="listItem.avatarSrc" alt />
+      <img :src="listItem.c_uavatar" alt />
     </div>
     <div class="content">
       <div class="header-wrap">
-        <div class="userid">{{listItem.userName}}</div>
-        <div class="subtime">{{listItem.subtime}}</div>
+        <div class="userid">{{listItem.c_uname}}</div>
+        <div class="subtime">{{listItem.create_time}}</div>
       </div>
-      <p>刚注册账号，第一个评论留念</p>
+      <p>{{listItem.c_content}}</p>
+      <el-button
+        v-if="listItem.c_uid==u_id"
+        type="text"
+        @click="remove(listItem.c_id)"
+        class="delete-button"
+      >删除</el-button>
     </div>
   </div>
 </template>
@@ -22,9 +28,36 @@ export default {
   data() {
     return {};
   },
-  computed: {},
+  computed: {
+    u_id() {
+      return (
+        (JSON.parse(localStorage.getItem("logged_user"))
+          ? JSON.parse(localStorage.getItem("logged_user"))
+          : {}
+        ).u_id || -1
+      );
+    }
+  },
   watch: {},
-  methods: {},
+  created() {},
+  methods: {
+    async remove(c_id) {
+      let res = await this.$http.delete(`/comments/${c_id}`);
+      if (res.data.status == 200) {
+        this.$message({
+          type: "success",
+          message: res.data.msg
+        });
+        this.$store.commit("UpdateCommentList", res.data.list);
+        this.$emit("refreshList", 1);
+      } else {
+        this.$message({
+          type: "error",
+          message: res.data.msg
+        });
+      }
+    }
+  },
   components: {}
 };
 </script>
@@ -81,7 +114,16 @@ export default {
     }
     p {
       width: 86%;
+      height: 50px;
       margin: 10px 0;
+    }
+
+    .delete-button {
+      position: absolute;
+      // background: red;
+      padding: 2px;
+      right: 10px;
+      top: 60px;
     }
   }
 }

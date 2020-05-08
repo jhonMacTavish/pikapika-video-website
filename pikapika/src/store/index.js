@@ -7,7 +7,7 @@ export default new Vuex.Store({
     state: {
         videoParams: JSON.parse(sessionStorage.getItem('videoParams')) || {},
 
-        objectInfo:{},
+        objectInfo: {},
         // 导航栏列表
         navList: [
             {
@@ -476,82 +476,82 @@ export default new Vuex.Store({
         ],
         // 国产动漫
         guomanList: [
-        //     {
-        //         id: 1,
-        //         title: '一人之下 第三季',
-        //         latestChapter: '02',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 2,
-        //         title: '我开动物园那些年',
-        //         latestChapter: '04',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 3,
-        //         title: '妖神记之黑狱篇',
-        //         latestChapter: '06',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 4,
-        //         title: '斗罗大陆 Re:RISE 第二季',
-        //         latestChapter: '100',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 5,
-        //         title: '武庚纪 第三季',
-        //         latestChapter: '90',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 6,
-        //         title: '妖精种植手册',
-        //         latestChapter: '14',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 7,
-        //         title: '今天开始做明星',
-        //         latestChapter: '12',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 8,
-        //         title: '剑网3·侠肝义胆沈剑心 第一季',
-        //         latestChapter: '12',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 9,
-        //         title: '剑网3·侠肝义胆沈剑心 第二季',
-        //         latestChapter: '12',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 10,
-        //         title: '从前有座灵剑山 第二季',
-        //         latestChapter: '12',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 11,
-        //         title: '从前有座灵剑山',
-        //         latestChapter: '12',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     },
-        //     {
-        //         id: 12,
-        //         title: '仙王的日常生活',
-        //         latestChapter: '15',
-        //         imgSrc: '@/../static/imgs/guochuang/'
-        //     }
+            //     {
+            //         id: 1,
+            //         title: '一人之下 第三季',
+            //         latestChapter: '02',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 2,
+            //         title: '我开动物园那些年',
+            //         latestChapter: '04',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 3,
+            //         title: '妖神记之黑狱篇',
+            //         latestChapter: '06',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 4,
+            //         title: '斗罗大陆 Re:RISE 第二季',
+            //         latestChapter: '100',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 5,
+            //         title: '武庚纪 第三季',
+            //         latestChapter: '90',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 6,
+            //         title: '妖精种植手册',
+            //         latestChapter: '14',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 7,
+            //         title: '今天开始做明星',
+            //         latestChapter: '12',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 8,
+            //         title: '剑网3·侠肝义胆沈剑心 第一季',
+            //         latestChapter: '12',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 9,
+            //         title: '剑网3·侠肝义胆沈剑心 第二季',
+            //         latestChapter: '12',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 10,
+            //         title: '从前有座灵剑山 第二季',
+            //         latestChapter: '12',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 11,
+            //         title: '从前有座灵剑山',
+            //         latestChapter: '12',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     },
+            //     {
+            //         id: 12,
+            //         title: '仙王的日常生活',
+            //         latestChapter: '15',
+            //         imgSrc: '@/../static/imgs/guochuang/'
+            //     }
         ],
         // 番组计划
         bangumiList: [
-            
+
         ],
         // 剧场动画
         theaterList: [
@@ -910,94 +910,18 @@ export default new Vuex.Store({
             //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1g9jvjwh5ooj307i0alq3l.jpg'
             // }
         ],
-        commentList: [
-            {
-                id: 1,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 2,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 3,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 4,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 5,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 6,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 7,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 8,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 9,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 10,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 11,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 12,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            },
-            {
-                id: 13,
-                avatarSrc: 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg',
-                userName: 'Dragon.mr',
-                subtime: '2020-04-22 15:30:05'
-            }
-        ],
+        commentList: [],
 
-        episodeList:[],
-        
-        searchParams:{},
+        episodeList: [],
 
-        conmonList:[]
+        searchParams: {},
+
+        conmonList: [],
+
+        // user:{}
     },
     getters: {
+        user: state => state.user,
         navList: state => state.navList,
         hotPlayList: state => state.hotPlayList,
         fanTimeTable: state => state.fanTimeTable,
@@ -1008,13 +932,20 @@ export default new Vuex.Store({
         filmtvList: state => state.filmtvList,
         serhResultList: state => state.serhResultList,
         commentList: state => state.commentList,
-        episodeList:state => state.episodeList,
-        objectInfo:state => state.objectInfo,
-        videoParams:state => state.videoParams,
-        searchParams:state => state.searchParams,
-        conmonList:state => state.conmonList,
+        episodeList: state => state.episodeList,
+        objectInfo: state => state.objectInfo,
+        videoParams: state => state.videoParams,
+        searchParams: state => state.searchParams,
+        conmonList: state => state.conmonList,
     },
     mutations: {  //大写
+        // UpdateUser(state, user) {
+        //     console.log("updateUser", user);
+        //     state.user = user;
+        // },
+        UpdateCommentList(state, commentList) {
+            state.commentList = commentList;
+        },
         UpdateEpisodeList(state, episodeList) {
             state.episodeList = episodeList;
         },
@@ -1022,25 +953,25 @@ export default new Vuex.Store({
             state.objectInfo = objectInfo;
         },
         UpdateVideoParams(state, videoParams) {
-            sessionStorage.setItem('videoParams',JSON.stringify(videoParams));
+            sessionStorage.setItem('videoParams', JSON.stringify(videoParams));
             state.videoParams = videoParams;
         },
-        UpdateBangumiList(state,bangumiList){
+        UpdateBangumiList(state, bangumiList) {
             state.bangumiList = bangumiList;
         },
-        UpdateGuomanList(state,guomanList){
+        UpdateGuomanList(state, guomanList) {
             state.guomanList = guomanList;
         },
-        UpdateTheaterList(state,theaterList){
+        UpdateTheaterList(state, theaterList) {
             state.theaterList = theaterList;
         },
-        UpdateFilmtvList(state,filmtvList){
+        UpdateFilmtvList(state, filmtvList) {
             state.filmtvList = filmtvList;
         },
-        UpdateSearchParams(state,params){
+        UpdateSearchParams(state, params) {
             state.searchParams[params.key] = params.value;
         },
-        UpdateConmonList(state,conmonList){
+        UpdateConmonList(state, conmonList) {
             state.conmonList = conmonList;
         },
     },
