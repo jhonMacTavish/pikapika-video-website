@@ -3,12 +3,12 @@
     <div class="tip">选集</div>
     <div class="wrap">
       <ul>
-        <li v-for="item in episodeList" :key="item.r_id">
+        <li v-for="(item,index) in episodeList" :key="item.r_id">
           <el-button
             class="button-style"
             type="primary"
             size="small"
-            @click="$router.push({name:'play',params:item})"
+            @click="handleClick(index)"
             plain
           >第{{item.r_episode}}话</el-button>
         </li>
@@ -26,10 +26,27 @@ export default {
   computed: {
     episodeList() {
       return this.$store.getters.episodeList;
+    },
+
+    objectInfo(){
+      return this.$store.getters.objectInfo;
     }
   },
   watch: {},
-  methods: {},
+  methods: {
+    async handleClick(index){
+      // $router.push({name:'play',params:item});
+      // this.$router.push({name:'play',query:{index}});
+      
+      this.$router.push(`/playinfo/play/${index+1}`);
+      let params={};
+      params.t_id = this.objectInfo.t_id;
+      params.v_id = this.objectInfo.v_id;
+      console.log("params", params);
+      
+      let res = await this.$http.put("volumes",{params});
+    }
+  },
   components: {}
 };
 </script>
@@ -48,7 +65,7 @@ export default {
     ul {
       margin: 10px 0;
       width: 100%;
-      height: 294px;
+      max-height: 294px;
       overflow: auto;
       li {
         float: left;

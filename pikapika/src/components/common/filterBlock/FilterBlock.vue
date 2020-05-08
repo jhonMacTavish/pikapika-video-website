@@ -1,115 +1,141 @@
 <template>
-  <div class="filterBlock-box">
-    <span class="type">类型</span>
-    <ul class="filter-item-box">
-      <li class="filter-item" :class="{current:item.id==selected}" @click="setCurrent(item.id)" v-for="item in filterTags" :key="item.id">{{item.title}}</li>
-    </ul>
+  <div class="searchBar-box">
+    <div class="filterBlock-box">
+      <span class="type">{{searchType}}</span>
+      <ul class="filter-item-box">
+        <li
+          class="filter-item"
+          :class="{current:index+1==selected}"
+          @click="setCurrent(index)"
+          v-for="(item,index) in filterTags"
+          :key="index"
+        >{{item}}</li>
+      </ul>
+    </div>
   </div>
 </template>
 
 <script>
 export default {
   name: "FilterBlock",
+  props: {
+    title: ""
+  },
   data() {
     return {
-      filterTags: [
-        {
-          id: 1,
-          title: "热血"
-        },
-        {
-          id: 2,
-          title: "冒险"
-        },
-        {
-          id: 3,
-          title: "搞笑"
-        },
-        {
-          id: 4,
-          title: "运动"
-        },
-        {
-          id: 5,
-          title: "竞技"
-        },
-        {
-          id: 6,
-          title: "装逼"
-        },
-        {
-          id: 7,
-          title: "剧情"
-        },
-        {
-          id: 8,
-          title: "穿越"
-        },
-        {
-          id: 9,
-          title: "青春"
-        },
-        {
-          id: 10,
-          title: "小说改"
-        },
-        {
-          id: 11,
-          title: "后宫"
-        },
-        {
-          id: 12,
-          title: "校园"
-        },
-        {
-          id: 13,
-          title: "励志"
-        },
-        {
-          id: 14,
-          title: "恋爱"
-        },
-        {
-          id: 15,
-          title: "热血"
-        },
-        {
-          id: 16,
-          title: "冒险"
-        },
-        {
-          id: 17,
-          title: "搞笑"
-        },
-        {
-          id: 18,
-          title: "运动"
-        },
-        {
-          id: 19,
-          title: "竞技"
-        },
-        {
-          id: 20,
-          title: "装逼"
-        },
-        {
-          id: 21,
-          title: "剧情"
-        },
-        {
-          id: 22,
-          title: "穿越"
-        },
-      ],
-      selected: 1
+      filterTags: [],
+      selected: 1,
+      searchType: "类型"
     };
   },
-  computed: {},
-  watch: {},
+  computed: {
+    searchParams() {
+      return this.$store.getters.searchParams;
+    }
+  },
+  watch: {
+    async $route() {
+      this.selected=1;
+      await this.fetch();
+    }
+  },
+  async created() {
+    this.init();
+    await this.fetch();
+  },
   methods: {
-    setCurrent(index){
-      this.selected=index;
+    async fetch() {
+      let title = this.title;
+      let path = this.$route.params.id;
+      if (title == "style") {
+        this.searchType = "类型";
+        let res = await this.$http.post(`/${path}s/type`);
+        this.filterTags = res.data.list;
+      }
+      if (title == "quarter") {
+        this.searchType = "季度";
+        if (path == "bangumi")
+          this.filterTags = ["全部", "1月", "4月", "7月", "10月"];
+        else this.filterTags = ["全部"];
+      }
+      if (title == "tag") {
+        this.searchType = "标签";
+        this.filterTags = ["剧场版", "电影"];
+      }
+    },
+
+    init() {
+      let title = this.title;
+      let path = this.$route.params.id;
+      // console.log("path******", path);
+      switch (title) {
+        case "years":
+          this.searchType = "时间";
+          this.filterTags = [
+            "全部",
+            "2010",
+            "2011",
+            "2012",
+            "2013",
+            "2014",
+            "2015",
+            "2016",
+            "2017",
+            "2018",
+            "2019",
+            "2020"
+          ];
+          break;
+        case "initials":
+          this.searchType = "首字母";
+          this.filterTags = [
+            "全部",
+            "A",
+            "B",
+            "C",
+            "D",
+            "E",
+            "F",
+            "G",
+            "H",
+            "I",
+            "J",
+            "K",
+            "L",
+            "M",
+            "N",
+            "O",
+            "P",
+            "Q",
+            "R",
+            "S",
+            "T",
+            "U",
+            "V",
+            "W",
+            "X",
+            "Y",
+            "Z"
+          ];
+          break;
+        default:
+          break;
+      }
+    },
+    async setCurrent(index) {
+      this.selected = index+1;
+      let searchParams = {};
+      searchParams.key = this.title;
+      searchParams.value =
+        this.filterTags[index] == "全部" ? null : this.filterTags[index];
+
+      this.$store.commit("UpdateSearchParams", searchParams);
+
+      let path = this.$route.params.id;
+      let res = await this.$http.post(`/${path}s/search`, this.searchParams);
+
+      this.$store.commit("UpdateConmonList", res.data.list);
+      // console.log("res", res.data.list);
     }
   },
   components: {}
@@ -117,12 +143,23 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.searchBar-box {
+  font-size: 12px;
+}
+
+.searchBar-box::after {
+  content: "";
+  display: block;
+  clear: both;
+  visibility: hidden;
+}
+
 .filterBlock-box {
   span.type {
     margin: 6px 0;
     width: 4%;
-      height: 24px;
-      line-height: 24px;
+    height: 24px;
+    line-height: 24px;
     display: block;
     float: left;
   }
@@ -142,8 +179,12 @@ export default {
       cursor: pointer;
     }
 
-    .current{
-      background: #FFB400;
+    .current {
+      // background: #ffb400;
+      // background: #FF8EB3;
+      background: #00a1d6;
+      // color: white;
+      // color: #00A1D6;
       color: white;
     }
   }

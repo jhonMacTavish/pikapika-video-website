@@ -3,21 +3,23 @@
     <div class="tip">评论</div>
     <div class="add-comment-wrap">
       <div class="avatar">
-        <img src="http://img2.imgtn.bdimg.com/it/u=1072996462,574877326&fm=26&gp=0.jpg" alt="">
+        <img :src="avtar" alt />
       </div>
       <div class="text-area">
         <el-input
+          :disabled="!logged"
           type="textarea"
           v-model="textarea"
           :rows="3"
           :cols="147"
           :maxlength="430"
           size="mini"
-          placeholder="请自觉遵守物联网相关的政策法规，严禁发布色情、暴力、反动的言论"
+          :placeholder="logged?'请自觉遵守物联网相关的政策法规，严禁发布色情、暴力、反动的言论':'请先登录'"
         ></el-input>
       </div>
       <div class="publish-button">
-        <button class="button-style">发表评论</button>
+        <!-- <el-button type="primary" class="button-style" :disabled="true">主要按钮</el-button> -->
+        <button class="button-style" :disabled="!logged" @click="post">发表评论</button>
       </div>
     </div>
     <div>
@@ -45,13 +47,29 @@ export default {
     return {
       textarea: "",
       currentPage: 1,
-      pageList: []
+      pageList: [],
+      avtar: "",
+      user: {}
     };
   },
   created() {
     this.handleCurrentChange(this.currentPage);
+    this.user = this.logged
+      ? JSON.parse(localStorage.getItem("logged_user"))
+      : {
+          u_avatar: "../../../static/imgs/user/userAvatar.jpg"
+        };
+    this.avtar = this.user.u_avatar;
   },
   computed: {
+    logged() {
+      return JSON.parse(localStorage.getItem("pk_user_logged"));
+    },
+    
+    objectInfo(){
+      return this.$store.getters.objectInfo;
+    },
+
     commentList() {
       return this.$store.getters.commentList;
     },
@@ -62,6 +80,20 @@ export default {
   },
   watch: {},
   methods: {
+    async post(){
+      console.log("click", );
+      let params={
+        c_uid:this.user.u_id,
+        v_id:this.objectInfo.v_id,
+        t_id:this.objectInfo.t_id,
+        c_content:this.textarea,
+        c_uname:this.user.u_name,
+        c_uavatar:this.user.u_avatar
+      }
+      console.log("params", params);
+      let res = this.$http.post("/subComment",{params});
+    },
+
     handleCurrentChange(val) {
       let pageList = [];
       for (
@@ -94,7 +126,7 @@ export default {
 
   .add-comment-wrap {
     margin-top: 10px;
-    .avatar{
+    .avatar {
       float: left;
       display: inline-block;
       width: 64px;
@@ -102,7 +134,7 @@ export default {
       overflow: hidden;
       border: 1px solid rgba(0, 0, 0, 0.1);
       border-radius: 5px;
-      img{
+      img {
         width: 100%;
         height: 100%;
       }

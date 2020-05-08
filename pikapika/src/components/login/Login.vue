@@ -17,33 +17,38 @@
       </div>
       <div class="form-wrap">
         <el-form
-          :model="userForm"
+          :model="loginForm"
           :rules="rules"
-          ref="userForm"
+          ref="loginForm"
           label-position="left"
           label-width="70px"
           class="form"
         >
-          <el-form-item label="账号" prop="account">
-            <el-input type="text" placeholder="账号" v-model="userForm.account"></el-input>
+          <el-form-item label="邮箱" prop="email">
+            <el-input type="text" placeholder="邮箱" v-model="loginForm.email"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="psw">
-            <el-input type="password" placeholder="密码" v-model="userForm.psw"></el-input>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
           </el-form-item>
 
           <el-form-item label="验证码" prop="captcha" class="captcha-wrap">
-            <el-input placeholder="验证码" v-model="userForm.captcha" maxlength="4" class="captcha"></el-input>
-            <el-button type="primary" class="captcha-button">获取验证码</el-button>
+            <el-input placeholder="验证码" v-model="loginForm.captcha" maxlength="4" class="captcha"></el-input>
+            <el-button
+              type="primary"
+              class="captcha-button"
+              :disabled="sendedCaptcha"
+              @click="getCaptcha"
+            >{{sendedCaptcha?"已发送 "+intervals:"获取验证码"}}</el-button>
           </el-form-item>
           <div class="item-wrap">
             <el-checkbox v-model="checked" class="remember">
               <span>记住我</span>
               <span>不是自己的电脑上不要勾选此项</span>
             </el-checkbox>
-            <router-link to="register/findpassword" class="forget-psw">忘记密码</router-link>
+            <router-link to="register/findpassword" class="forget-password">忘记密码</router-link>
           </div>
           <div class="button-wrap">
-            <el-button type="primary" class="login-button" @click="login">登录</el-button>
+            <el-button type="primary" class="login-button" @click.native="login('loginForm')">登录</el-button>
             <el-button type="primary" class="register-button" @click="register">注册</el-button>
           </div>
         </el-form>
@@ -59,7 +64,7 @@ import Footer from "@/components/footer/Footer";
 export default {
   name: "LoginPage",
   data() {
-    let validateAccount = (rule, value, callback) => {
+    let validateEmail = (rule, value, callback) => {
       let reg = /\w+((-w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+/;
       if (!value) {
         callback(new Error("请输入邮箱")); // 请输入绑定邮箱
@@ -91,14 +96,17 @@ export default {
 
     return {
       checked: false,
-      userForm: {
-        account: "",
-        psw: "",
+      sendedCaptcha: false,
+      intervals: 60,
+      intervalID: 0,
+      loginForm: {
+        email: "",
+        password: "",
         captcha: ""
       },
       rules: {
-        account: [{ validator: validateAccount, trigger: "blur" }],
-        psw: [{ validator: validatePsw, trigger: "change" }],
+        email: [{ validator: validateEmail, trigger: "blur" }],
+        password: [{ validator: validatePsw, trigger: "change" }],
         captcha: [{ validator: captcha, trigger: "blur" }]
       }
     };
@@ -107,14 +115,101 @@ export default {
   watch: {
     checked(val, oldVal) {}
   },
+  created() {
+    this.checked = localStorage.getItem("pk_user_remenber") || false;
+    let pk_user = JSON.parse(localStorage.getItem("pk_user")) || null;
+    if (pk_user) {
+      this.loginForm.email = pk_user.email;
+      this.loginForm.password = pk_user.password;
+    }
+  },
+  beforeDestroy() {
+    clearInterval(this.IntervalID);
+  },
   methods: {
-    login(){
-      console.log("login", )
+    async login(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let email = this.loginForm.email;
+          let password = this.loginForm.password;
+          let captcha = this.loginForm.captcha;
+
+          let res = await this.$http.post("/login", {
+            email,
+            password,
+            captcha
+          });
+          if (res.data.status == 200) {
+            console.log("res", res);
+            localStorage.setItem("logged_user", JSON.stringify(res.data.user));
+
+            localStorage.setItem("pk_user_logged", true);
+
+            let pk_user = {};
+            pk_user.email = email;
+            pk_user.password = password;
+            let pk_user_remenber = this.checked;
+            if (this.checked) {
+              localStorage.setItem("pk_user", JSON.stringify(pk_user));
+            } else {
+              localStorage.removeItem("pk_user");
+            }
+            localStorage.setItem("pk_user_remenber", pk_user_remenber);
+
+            this.$router.push("/home");
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+            return false;
+          }
+        } else {
+          // this.$message({
+          //   type: "error",
+          //   message: "请将表格填写完整"
+          // });
+          // return false;
+        }
+      });
+      // sessionStorage.setItem("pk_user",JSON.stringify(pk_user));
       // this.$router.push({path: '/login'})
     },
 
-    register(){
-      this.$router.push({path: '/register'})
+    async getCaptcha() {
+      let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      let email = this.loginForm.email;
+      if (!email || !reg.test(email)) {
+        this.$message.error("请输入正确的邮箱地址");
+        return;
+      } else {
+        console.log("eamil", email);
+        let res = await this.$http.post("/getCaptcha", { email });
+        console.log("res", res);
+        if (res.data.status == 200) {
+          this.sendedCaptcha = true;
+          sessionStorage.setItem("sendedCaptcha", this.sendedCaptcha);
+          this.IntervalID = setInterval(() => {
+            this.intervals--;
+            // sessionStorage.setItem(this.intervals);
+            console.log(this.intervals);
+            if (this.intervals <= 0) {
+              this.intervals = 60;
+              this.sendedCaptcha = false;
+              // sessionStorage.setItem("sendedCaptcha", this.sendedCaptcha);
+              clearInterval(this.IntervalID);
+            }
+          }, 1000);
+          // console.log(, )
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      }
+    },
+
+    register() {
+      this.$router.push({ path: "/register" });
+      clearInterval(this.intervalID);
     }
   },
   components: { Footer }
@@ -132,18 +227,18 @@ export default {
     background-position: center;
     background-size: cover;
     overflow: hidden;
-    .banner-button-wrap{
+    .banner-button-wrap {
       position: absolute;
       top: 20px;
       right: 180px;
       // width: 80px;
-      .banner-button{
+      .banner-button {
         // color: #00A1D6;
         border: none;
-        background: #FB7299;
+        background: #fb7299;
       }
 
-      .banner-button:hover{
+      .banner-button:hover {
         color: white;
       }
     }
@@ -213,7 +308,7 @@ export default {
             position: absolute;
             left: 0;
             span {
-          font-size: 13px;
+              font-size: 13px;
               color: #bbbbbb;
             }
 
@@ -223,7 +318,7 @@ export default {
             }
           }
 
-          .forget-psw {
+          .forget-password {
             position: absolute;
             right: 0;
             color: #00a1d6;

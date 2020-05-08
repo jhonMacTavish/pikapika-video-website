@@ -73,15 +73,8 @@ export default {
     };
   },
   mounted() {
-    console.log(!![].join(""));
-    console.log(Math.ceil(25 / 10));
-    let arr = [];
-    let brr = [];
-    console.log("arr[0]",  arr[0]);
-    brr.push(arr[0]);
-    console.log("brr", brr);
-    let str = "\\\\\\\\\\\\\\\\\\";
-    console.log("str", str.replace(/\\/g, "/"));
+    let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+    console.log(reg.test("981192661@qq.com"), );
   },
   methods: {
     handleClose(tag) {

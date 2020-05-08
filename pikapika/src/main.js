@@ -19,6 +19,8 @@ import Leaderboard from '@/components/leaderboard/Leaderboard';
 import Footer from '@/components/footer/Footer';
 import HotPlay from '@/components/hotPlay/HotPlay';
 import Comment from '@/components/comment/Comment';
+// import FanInfo from '@/components/fanInfo/FanInfo';
+
 
 import FanBox from '@/components/common/fanBox/FanBox';
 import Card from '@/components/common/card/Card';
@@ -31,6 +33,7 @@ import RankItem from '@/components/common/rankItem/RankItem';
 import Episode from './components/common/episode/Episode';
 import CommentItem from './components/common/commentItem/CommentItem';
 
+// Vue.component(FanInfo.name,FanInfo);
 Vue.component(Banner.name,Banner);
 Vue.component(Navbar.name,Navbar);
 Vue.component(Carousel.name,Carousel);

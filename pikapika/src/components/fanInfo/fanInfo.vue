@@ -4,44 +4,96 @@
       <div class="detail-top">
         <div class="detail-top-con">
           <div class="poster-placeholder">
-            <img :src="objectInfo.b_imgSrc" alt />
+            <img
+              :src="objectInfo.t_id==1?
+                objectInfo.b_imgSrc:objectInfo.t_id==2?
+                objectInfo.g_imgSrc:objectInfo.t_id==3?
+                objectInfo.th_imgSrc:objectInfo.f_imgSrc"
+              :title="objectInfo.b_name"
+            />
           </div>
           <div class="txt-info-con">
             <div class="title">
-              <h1>{{objectInfo.b_name}}</h1>
-              <p>{{objectInfo.b_status==2?"全":"更新至"}}{{objectInfo.b_episodes}}话</p>
+              <h1>
+                {{objectInfo.t_id==1?
+                objectInfo.b_name:objectInfo.t_id==2?
+                objectInfo.g_name:objectInfo.t_id==3?
+                objectInfo.th_name:objectInfo.f_name}}
+              </h1>
+              <p>
+                {{(objectInfo.t_id==1?
+                objectInfo.b_status:objectInfo.t_id==2?
+                objectInfo.g_status:objectInfo.t_id==3?
+                objectInfo.th_status:objectInfo.f_status)==2?"全":"更新至"}}
+                {{objectInfo.t_id==1?
+                objectInfo.b_episodes:objectInfo.t_id==2?
+                objectInfo.g_episodes:objectInfo.t_id==3?
+                objectInfo.th_episodes:objectInfo.f_episodes}}话
+              </p>
             </div>
             <div class="publish-time">
-              <span>{{objectInfo.b_playtime}} 开播</span>
-              <span>{{objectInfo.b_status==1?"更新中":"已完结"}}</span>
+              <span>
+                {{objectInfo.t_id==1?
+                objectInfo.b_playtime:objectInfo.t_id==2?
+                objectInfo.g_playtime:objectInfo.t_id==3?
+                objectInfo.th_playtime:objectInfo.f_playtime}} 开播
+              </span>
+              <span>
+                {{(objectInfo.t_id==1?
+                objectInfo.b_status:objectInfo.t_id==2?
+                objectInfo.g_status:objectInfo.t_id==3?
+                objectInfo.th_status:objectInfo.f_status)==1?"更新中":"已完结"}}
+              </span>
             </div>
 
             <div class="player">
               <span>主演</span>
-              <span v-for="(actor,index) in (objectInfo.b_actors||'').split('、')" :key="index">{{actor}}</span>
+              <span
+                v-for="(actor,index) in ((objectInfo.t_id==1?
+                objectInfo.b_actors:objectInfo.t_id==2?
+                objectInfo.g_actors:objectInfo.t_id==3?
+                objectInfo.th_actors:objectInfo.f_actors)||'').split('、')"
+                :key="index"
+              >{{actor}}</span>
               <!-- <span>立花理香</span>
-              <span>伊藤美来</span> -->
+              <span>伊藤美来</span>-->
             </div>
 
             <div class="type">
               <span>类型</span>
-              <span v-for="(style,index) in (objectInfo.b_style||'').split('、')" :key="index">{{style}}</span>
+              <span
+                v-for="(style,index) in ((objectInfo.t_id==1?
+                objectInfo.b_style:objectInfo.t_id==2?
+                objectInfo.g_style:objectInfo.t_id==3?
+                objectInfo.th_style:objectInfo.f_styles)||'').split('、')"
+                :key="index"
+              >{{style}}</span>
               <!-- <span>冒险</span>
               <span>奇幻</span>
               <span>战斗</span>
-              <span>魔法</span> -->
+              <span>魔法</span>-->
             </div>
 
             <div class="intro">
               <p>
-                <span>简介：</span>{{objectInfo.b_summary}}
+                <span>简介：</span>
+                {{objectInfo.t_id==1?
+                objectInfo.b_summary:objectInfo.t_id==2?
+                objectInfo.g_summary:objectInfo.t_id==3?
+                objectInfo.th_summary:objectInfo.f_summary}}
               </p>
             </div>
           </div>
         </div>
       </div>
       <div class="detail-bg">
-        <div class="detail-bg-img" :style="`background-image: url(${objectInfo.b_imgSrc})`"></div>
+        <div
+          class="detail-bg-img"
+          :style="`background-image: url(${objectInfo.t_id==1?
+                objectInfo.b_imgSrc:objectInfo.t_id==2?
+                objectInfo.g_imgSrc:objectInfo.t_id==3?
+                objectInfo.th_imgSrc:objectInfo.f_imgSrc})`"
+        ></div>
       </div>
     </div>
   </div>
@@ -54,16 +106,8 @@ export default {
     return {};
   },
   computed: {
-    objectInfo(){
+    objectInfo() {
       return this.$store.getters.objectInfo;
-    },
-
-    styles(){
-
-    },
-
-    actors(){
-      
     }
   },
   watch: {},
@@ -193,7 +237,8 @@ export default {
             bottom: 0;
             p {
               line-height: 30px;
-              span {
+              span:nth-child(1) {
+                color: #ff9900;
               }
             }
           }

@@ -39,7 +39,16 @@
       </svg>
       <span>{{title}}</span>
     </div>
-    <el-button v-if="title!='今日热播'&&title!='新番时间表'" @click="$router.push({name:'general',params:{id:type}})" class="more" size="mini">更多</el-button>
+     <router-link v-if="title!='今日热播'&&title!='新番时间表'&&title!='推荐'"
+      :to="title=='排行榜'?{path:'/rankpage'}:{name:'general',params:{id:type}}"
+      target="_blank"
+      tag="a"
+      class="card-content"
+    >
+      <el-button  class="more" size="mini">更多</el-button>
+    </router-link>
+
+    <!-- <el-button v-if="title!='今日热播'&&title!='新番时间表'&&title!='推荐'" @click="$router.push({name:'general',params:{id:type}})" class="more" size="mini">更多</el-button> -->
   </div>
 </template>
 
@@ -55,16 +64,16 @@ export default {
   computed: {
     type() {
       switch (this.title) {
-        case "番组计划":
+        case "番剧":
           return "bangumi";
           break;
-        case "国产动漫":
+        case "国漫":
           return "guoman";
           break;
-        case "剧场动画":
+        case "电影":
           return "theater";
           break;
-        case "影视":
+        case "剧集":
           return "movie";
           break;
         default:

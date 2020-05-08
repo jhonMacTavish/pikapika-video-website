@@ -24,7 +24,7 @@ getOne = async (req, res) => {
 
 getAll = (req, res) => {
     console.log("getGuomanAll")
-    let sql = 'select v_id,g_name,g_style,g_playtime from pk_guoman order by g_name asc';
+    let sql = 'select t_id,v_id,g_name,g_imgSrc,g_status from pk_guoman order by g_name asc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
@@ -52,92 +52,126 @@ getAll = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-createOne = async (req, res) => {
-    console.log("createGuoman");
+let getStyles = async (req, res) => {
+    console.log("guomanGetStyles", );
+    let sql = 'select g_style as style from pk_guoman';
+    sqlArr = [];
+    let rst = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    let arr = [];
 
-    let { g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
-    let g_nameRst = await getByParams({key:'g_name',value:g_name});
-    if (g_nameRst.length != 0) {
-        res.send({
-            "status": 402,
-            "msg": "数据库中存在同名国漫"
-        });
-        return;
+    for (let i = 0; i < rst.length; i++) {
+
+        temp = rst[i].style.split("、");
+        arr = arr.concat(temp);
+
     }
+    let styleArr = [];
+    for (let i = 0; i < arr.length; i++) {
+        if (styleArr.indexOf(arr[i]) == -1) {
+            styleArr.push(arr[i]);
+        }
+    }
+    styleArr.unshift("全部");
+    res.send({ list: styleArr });
+}
 
-    let sql =
-        'insert into pk_guoman(g_name,t_id,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?)';
-
-    let sqlArr = [g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary];
-    callback = (err, data) => {
+let search = async (req, res) => {
+    let params = req.body;
+    switch (params.quarter) {
+        case "1月":
+            params.quarter = "01";
+            break;
+        case "4月":
+            params.quarter = "04";
+            break;
+        case "7月":
+            params.quarter = "07";
+            break;
+        case "10月":
+            params.quarter = "10";
+            break;
+        default:
+            break;
+    }
+    let sql = 'select t_id,v_id,g_name,g_imgSrc,g_status,g_style from pk_guoman';
+    let sqlArr = [];
+    let keyArr = [];
+    for (let key in params) {
+        if (key == "style") continue
+        if (key == "tag") continue
+        
+        if (params[key]) {
+            keyArr.push(` g_${key}=?`);
+            sqlArr.push(params[key]);
+        }
+    }
+    let sqlCondition = keyArr.join(" and");
+    if (sqlCondition) {
+        sql = `${sql} where${sqlCondition}`;
+    }
+    console.log("sql", sql);
+    let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错")
+            console.log("操作出错");
             res.send({
-                "status": 402,
-                'msg': "添加失败"
-            });
+                'status': 402,
+                'msg': "信息获取失败"
+            })
         } else {
             console.log("操作成功");
-            console.log("data", data.insertId);
+            let t_id = 1;
+            for (let i = 0; i < data.length; i++) {
+                let v_id = data[i].v_id;
+                data[i].g_episodes = await util.countEp(t_id, v_id);
+            }
             res.send({
+                "list": data,
                 "status": 200,
-                "msg": "添加成功",
-                "v_id": data.insertId
-            });
+                "msg": "信息获取成功"
+            })
         }
     }
 
-    dbconfig.sqlConnect(sql, sqlArr, callback)
-
-}
-
-updateOne = (req, res) => {
-    console.log("updateGuomanByID");
-    let { t_id, g_name, g_imgSrc, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id } = req.body;
-
-    sql = 'update pk_guoman set t_id=?,g_name=?,g_imgSrc=?,g_status=?,g_style=?,g_initials=?,g_playtime=?,g_years=?,g_actors=?,g_summary=? where v_id=?';
-    sqlArr = [t_id, g_name, g_imgSrc, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id];
-
-    callback = (err, data) => {
-        if (err) {
-            console.log("操作出错")
-            res.send({
-                "status": 402,
-                'msg': "更新失败"
-            });
-        } else {
-            console.log("操作成功");
-            res.send({
-                "status": 200,
-                "msg": "更新成功"
-            });
+    let rst = await dbconfig.asyncSqlConnect(sql, sqlArr, callback);
+    let list = [];
+    if(params.style){
+        let length = rst.length;
+        for(let i=0; i<length; i++){
+            if(rst[i].g_style.indexOf(params.style)>=0)
+                list.push(rst[i]);
         }
+    }else{
+        list = rst;
     }
-
-    dbconfig.sqlConnect(sql, sqlArr, callback);
+    console.log("list", list);
+    res.send({list});
 }
 
-deleteOne = (req, res) => {
-    console.log("deleteGuomanByID")
-    let v_id = req.params.id;
-    console.log("v_id", req.params);
-    let sql = 'delete from pk_guoman where v_id=?';
-    let sqlArr = [v_id];
-
-    callback = (err, data) => {
+let getRank = (req, res) => {
+    console.log("getGuomanRank")
+    let sql = 'select t_id,v_id,g_name as name,g_imgSrc as imgSrc,g_status as status from pk_guoman order by play_volume desc';
+    let sqlArr = [];
+    let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错")
+            console.log("操作出错");
             res.send({
-                "status": 402,
-                'msg': "删除失败"
-            });
+                'status': 402,
+                'msg': "信息获取失败"
+            })
         } else {
+            // console.log("getAll", data);
             console.log("操作成功");
+            let t_id = 2;
+            for (let i = 0; i < data.length; i++) {
+                let v_id = data[i].v_id;
+                data[i].episodes = await util.countEp(t_id, v_id);
+            }
+            // console.log("data", data);
             res.send({
+                "list": data,
                 "status": 200,
-                "msg": "删除成功"
-            });
+                "msg": "信息获取成功"
+            })
         }
     }
 
@@ -145,5 +179,5 @@ deleteOne = (req, res) => {
 }
 
 module.exports = {
-    getAll, getOne, createOne, updateOne, deleteOne
+    getAll, getOne, getStyles,search,getRank
 }

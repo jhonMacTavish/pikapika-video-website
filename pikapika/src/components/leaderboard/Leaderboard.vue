@@ -1,14 +1,19 @@
 <template>
   <div class="leaderboard-box">
-    <BlockHeader title="月排行榜" />
+    <BlockHeader title="排行榜" />
     <div class="ledaerdata-box">
       <ul>
-        <li v-for="item in leaderData" :key="item.id">
-          <i class="rank-item">{{item.id}}</i>
-          <a href="javascript:;">
-            <p class="title">{{item.title}}</p>
-            <span class="desc">{{item.desc}}</span>
-          </a>
+        <li v-for="(item,index) in leaderData" :key="index">
+          <i class="rank-item">{{index+1}}</i>
+          <router-link
+            :to="{path:'/playinfo',query:{t_id:item.t_id,v_id:item.v_id}}"
+            target="_blank"
+            tag="a"
+            class="card-content"
+          >
+            <p class="title">{{item.name}}</p>
+            <span class="desc">{{item.status==1?"更新至":"全"}}{{item.episodes}}话</span>
+          </router-link>
         </li>
       </ul>
     </div>
@@ -23,30 +28,39 @@ export default {
   data() {
     return {
       leaderData: [
-        { id: 1, title: "火影忍者", desc: "已完结" },
-        { id: 2, title: "辉夜大小姐", desc: "已完结" },
-        { id: 3, title: "百变小樱", desc: "已完结" },
-        { id: 4, title: "犬夜叉", desc: "已完结" },
-        {
-          id: 5,
-          title: "我的青春恋爱物语果然有问题 第三季",
-          desc: "更新至1话"
-        },
-        { id: 6, title: "紫罗兰永恒花园", desc: "已完结" },
-        { id: 7, title: "吹响吧 上低音号！", desc: "已完结" },
-        { id: 8, title: "玉子市场", desc: "已完结" },
-        {
-          id: 9,
-          title: "关于我转生到一世界变成史莱姆这档事 第一季",
-          desc: "已完结"
-        },
-        { id: 10, title: "overlord", desc: "已完结" }
+        // { id: 1, title: "火影忍者", desc: "已完结" },
+        // { id: 2, title: "辉夜大小姐", desc: "已完结" },
+        // { id: 3, title: "百变小樱", desc: "已完结" },
+        // { id: 4, title: "犬夜叉", desc: "已完结" },
+        // {
+        //   id: 5,
+        //   title: "我的青春恋爱物语果然有问题 第三季",
+        //   desc: "更新至1话"
+        // },
+        // { id: 6, title: "紫罗兰永恒花园", desc: "已完结" },
+        // { id: 7, title: "吹响吧 上低音号！", desc: "已完结" },
+        // { id: 8, title: "玉子市场", desc: "已完结" },
+        // {
+        //   id: 9,
+        //   title: "关于我转生到一世界变成史莱姆这档事 第一季",
+        //   desc: "已完结"
+        // },
+        // { id: 10, title: "overlord", desc: "已完结" }
       ]
     };
   },
   computed: {},
   watch: {},
-  methods: {},
+  async created() {
+    this.fetch();
+  },
+  methods: {
+    async fetch() {
+      let res = await this.$http.get("/getBGrank");
+
+      this.leaderData = res.data.list;
+    }
+  },
   components: { BlockHeader }
 };
 </script>
@@ -102,8 +116,8 @@ export default {
             overflow: hidden;
           }
 
-          p.title:hover{
-            color: #F25D8E;
+          p.title:hover {
+            color: #f25d8e;
           }
 
           span.desc {
@@ -118,7 +132,7 @@ export default {
 
       li:nth-child(-n + 3) {
         i.rank-item {
-          background: #F25D8E;
+          background: #f25d8e;
         }
       }
     }

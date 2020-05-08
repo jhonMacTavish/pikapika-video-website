@@ -8,7 +8,7 @@
         :key="item.id"
       >{{item.title}}</span>
     </div>
-    <div v-if="true">
+    <div v-if="pageList.length>0">
       <div class="window-body">
         <Card v-for="(item,index) in pageList" :key="index" :listItem="item" />
       </div>
@@ -44,20 +44,22 @@ export default {
         },
         {
           id: 2,
-          title: "更新时间"
-        },
-        {
-          id: 3,
           title: "播放时间"
         }
+        // {
+        //   id: 3,
+        //   title: "更新时间"
+        // }
       ],
       selected: 1,
       currentPage: 1,
-      pageList: []
+      pageList: [],
+      pathArr: ["bangumi", "guoman", "theater", "filmtv"]
     };
   },
-  created() {
-    this.handleCurrentChange(this.currentPage);
+  async created() {
+    // console.log("route", this.$route);
+    await this.fetch();
   },
   mounted() {
     // console.log(this);
@@ -67,12 +69,42 @@ export default {
       return this.$store.getters.serhResultList;
     },
 
+    conmonList() {
+      return this.$store.getters.conmonList;
+    },
+
     totalItems() {
-      return this.$store.getters.serhResultList.length;
+      return this.$store.getters.conmonList.length;
     }
   },
-  watch: {},
+  watch: {
+    async $route(to, from) {
+      // console.log("to.params.id", to.params.id);
+      // console.log("this.pathArr.indexOf(to.params.id)", this.pathArr.indexOf(to.params.id));
+      if (this.pathArr.indexOf(to.params.id)!=-1) {
+        console.log("run");
+        this.currentPage = 1;
+        await this.fetch();
+      }
+    },
+
+    conmonList(newV, oldV) {
+      if (newV != oldV) {
+        this.currentPage = 1;
+        this.handleCurrentChange(this.currentPage);
+      }
+    }
+  },
   methods: {
+    async fetch() {
+      let path = this.$route.params.id;
+      let res = await this.$http.get(`/${path}s`);
+      this.$store.commit("UpdateConmonList", res.data.list);
+      this.handleCurrentChange(this.currentPage);
+      // console.log("conmonList", this.conmonList);
+      // console.log("res", res.data.list);
+    },
+
     setCurrent(index) {
       this.selected = index;
     },
@@ -84,11 +116,11 @@ export default {
         i < (24 * val < this.totalItems ? 24 * val : this.totalItems);
         i++
       ) {
-        pageList.push(this.serhResultList[i]);
+        pageList.push(this.conmonList[i]);
       }
       this.pageList = pageList;
 
-      const returnEle = document.querySelector("#window"); //window是将要跳转区域的id
+      const returnEle = document.querySelector("#banner"); //window是将要跳转区域的id
       if (!!returnEle) {
         returnEle.scrollIntoView(true); // true 是默认的
       }
@@ -157,7 +189,7 @@ export default {
       color: #99a2aa;
       text-align: center;
     }
-    .reset{
+    .reset {
       width: 160px;
       margin: 20px 0;
     }

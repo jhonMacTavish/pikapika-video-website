@@ -9,11 +9,21 @@ import FilterBlock from "../filterBlock/FilterBlock";
 
 export default {
   name: "SearchBar",
+  props:{
+    title:''
+  },
   data() {
     return {};
   },
   computed: {},
-  watch: {},
+  watch: {
+    async '$route'(to,from){
+      console.log("searchTo", to);
+    }
+  },
+  created(){
+    console.log("routeSearch", this.$route);
+  },
   methods: {},
   components: { FilterBlock }
 };

@@ -19,11 +19,14 @@
           label-width="70px"
           class="form"
         >
-          <el-form-item label="账号" prop="account">
-            <el-input type="text" placeholder="账号" v-model="regisrerForm.account"></el-input>
+          <el-form-item label="用户名" prop="username">
+            <el-input type="text" placeholder="用户名" v-model="regisrerForm.username"></el-input>
           </el-form-item>
-          <el-form-item label="密码" prop="psw">
-            <el-input type="password" placeholder="密码" v-model="regisrerForm.psw"></el-input>
+          <el-form-item label="邮箱" prop="email">
+            <el-input type="text" placeholder="邮箱" v-model="regisrerForm.email"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" placeholder="密码" v-model="regisrerForm.password"></el-input>
           </el-form-item>
           <el-form-item label="确认密码" prop="confirmPsw">
             <el-input type="password" placeholder="确认密码" v-model="regisrerForm.confirmPsw"></el-input>
@@ -35,9 +38,14 @@
               maxlength="4"
               class="captcha"
             ></el-input>
-            <el-button type="primary" class="captcha-button">获取验证码</el-button>
+            <el-button
+              type="primary"
+              class="captcha-button"
+              @click="getCaptcha"
+              :disabled="sendedCaptcha"
+            >{{sendedCaptcha?"已发送 "+intervals:"获取验证码"}}</el-button>
           </el-form-item>
-          <el-button type="primary" class="register-buttom" @click="register">注册</el-button>
+          <el-button type="primary" class="register-buttom" @click="register('regisrerForm')">注册</el-button>
           <div class="login-tip">
             <span @click="turnLogin">已有账号,知己登录></span>
           </div>
@@ -50,6 +58,7 @@
       <div class="button-wrap">
         <el-button type="primary" class="button" @click="$router.push({name:'login'})">前往登录页</el-button>
       </div>
+      <div class="second">{{this.second}}秒后 跳转到登录页面</div>
     </div>
   </div>
 </template>
@@ -58,7 +67,15 @@
 export default {
   name: "Register",
   data() {
-    let validateAccount = (rule, value, callback) => {
+    let validateUsername = (rule, value, callback) => {
+      if (!value) {
+        callback(new Error("用户名")); // 请输入用户名
+      } else {
+        callback();
+      }
+    };
+
+    let validateEmail = (rule, value, callback) => {
       let reg = /\w+((-w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+/;
       if (!value) {
         callback(new Error("请输入邮箱")); // 请输入绑定邮箱
@@ -86,7 +103,7 @@ export default {
     let confirmPsw = (rule, value, callback) => {
       if (value === "") {
         callback(new Error("请再次输入密码"));
-      } else if (value !== this.regisrerForm.psw) {
+      } else if (value !== this.regisrerForm.password) {
         callback(new Error("两次输入密码不一致!"));
       } else {
         callback();
@@ -94,7 +111,7 @@ export default {
     };
 
     let captcha = (rule, value, callback) => {
-      console.log(Number(value));
+      // console.log(Number(value));
       if (value === "") {
         callback(new Error("请输入验证码"));
       } else if (isNaN(Number(value)) || value.length < 4) {
@@ -105,16 +122,23 @@ export default {
     };
 
     return {
+      IntervalID: 0,
       success: false,
+      sendedCaptcha: false,
+      intervals: 60,
+      second: 3,
+
       regisrerForm: {
-        account: "",
-        psw: "",
+        username: "",
+        email: "",
+        password: "",
         confirmPsw: "",
         captcha: ""
       },
       rules: {
-        account: [{ validator: validateAccount, trigger: "blur" }],
-        psw: [{ validator: validatePsw, trigger: "change" }],
+        username: [{ validator: validateUsername, trigger: "blur" }],
+        email: [{ validator: validateEmail, trigger: "blur" }],
+        password: [{ validator: validatePsw, trigger: "change" }],
         confirmPsw: [{ validator: confirmPsw, trigger: "blur" }],
         captcha: [{ validator: captcha, trigger: "blur" }]
       }
@@ -127,14 +151,90 @@ export default {
   watch: {},
   beforeDestroy() {
     this.success = false;
+    clearInterval(this.IntervalID);
   },
   methods: {
     turnLogin() {
       this.$router.push({ path: "/login" });
     },
 
-    register() {
-      this.success = true;
+    async register(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let username = this.regisrerForm.username;
+          let email = this.regisrerForm.email;
+          let password = this.regisrerForm.password;
+          let captcha = this.regisrerForm.captcha;
+
+          let res = await this.$http.post("/register", {
+            username,
+            email,
+            password,
+            captcha
+          });
+          if (res.data.status == 200) {
+            console.log("res", res);
+            this.$message({
+              type: "success",
+              message: res.data.msg
+            });
+            let IntervalID = setInterval(() => {
+              this.second--;
+              console.log(this.second, );
+              if (this.second <= 0) {
+                this.second = 3;
+                this.$router.push("/login");
+                clearInterval(IntervalID);
+              }
+            }, 1000);
+            this.success = true;
+            clearInterval(this.IntervalID);
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+            return false;
+          }
+        } else {
+          // this.$message({
+          //   type: "error",
+          //   message: "请将表格填写完整"
+          // });
+          // return false;
+        }
+      });
+    },
+
+    async getCaptcha() {
+      let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
+      let email = this.regisrerForm.email;
+      if (!email || !reg.test(email)) {
+        this.$message.error("请输入正确的邮箱地址");
+        return;
+      } else {
+        let res = await this.$http.post("/getCaptcha", { email });
+        console.log("res", res);
+        if (res.data.status == 200) {
+          this.sendedCaptcha = true;
+          sessionStorage.setItem("sendedCaptcha", this.sendedCaptcha);
+          this.IntervalID = setInterval(() => {
+            this.intervals--;
+            console.log(this.intervals);
+            // sessionStorage.setItem("intervals", this.intervals);
+            // console.log("this.intervals", this.intervals);
+            if (this.intervals <= 0) {
+              this.intervals = 60;
+              this.sendedCaptcha = false;
+              // sessionStorage.setItem("sendedCaptcha", this.sendedCaptcha);
+              clearInterval(this.IntervalID);
+            }
+          }, 1000);
+          // console.log(, )
+        } else {
+          this.$message.error(res.data.msg);
+        }
+      }
     }
   },
   components: {}
@@ -191,6 +291,11 @@ export default {
     .button {
       width: 100%;
     }
+  }
+
+  .second {
+    width: 170px;
+    margin: 0 auto;
   }
 }
 

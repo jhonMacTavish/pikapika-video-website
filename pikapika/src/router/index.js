@@ -91,9 +91,10 @@ export default new Router({
               component: FanInfo,
             },
             {
-              path: 'play',
+              path: 'play/:id',
               name: 'play',
               component: Player,
+              props:true
             }
           ]
         },

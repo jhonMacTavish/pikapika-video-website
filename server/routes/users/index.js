@@ -5,7 +5,7 @@ module.exports = app =>{
   var Guoman = require('../../controllers/users/guoman/GuomanController');
   var Theater = require('../../controllers/users/theater/TheaterController');
   var FilmTV = require('../../controllers/users/filmtv/FilmtvController');
-  var userinfo = require('../../controllers/users/userinfo/userinfoController');
+  var User = require('../../controllers/users/user/userinfoController');
   var Video = require('../../controllers/users/video/VideoController');
   var Comment = require('../../controllers/users/comment/CommentController');
   var axios = require("axios");
@@ -17,19 +17,49 @@ module.exports = app =>{
     res.send(rst.data)
   });
 
+  router.get('/undefineds',(req,res)=>{
+    res.send(null);
+  })
+
+  router.post('/undefineds',(req,res)=>{
+    res.send(null);
+  })
+
+  router.get('/getBrank', Bangumi.getRank);
   router.get('/bangumis', Bangumi.getAll);
   router.get('/bangumis/:id', Bangumi.getOne);
+  router.post('/bangumis/type', Bangumi.getStyles);
+  router.post('/bangumis/search',Bangumi.search);
 
+  router.get('/getGrank', Guoman.getRank);
   router.get('/guomans', Guoman.getAll);
   router.get('/guomans/:id', Guoman.getOne);
+  router.post('/guomans/type', Guoman.getStyles);
+  router.post('/guomans/search',Guoman.search);
 
+  router.get('/getThrank', Theater.getRank);
   router.get('/theaters', Theater.getAll);
   router.get('/theaters/:id', Theater.getOne);
+  router.post('/theaters/type', Theater.getStyles);
+  router.post('/theaters/search',Theater.search);
 
+  router.get('/getFrank', FilmTV.getRank);
   router.get('/filmtvs', FilmTV.getAll);
   router.get('/filmtvs/:id', FilmTV.getOne);
+  router.post('/filmtvs/type', FilmTV.getStyles);
+  router.post('/filmtvs/search',FilmTV.search);
 
   router.get('/videos', Video.getAll);
+  router.get('/getBGrank', Video.getBGrank);
+  router.put('/volumes',Video.addVolume);
+  // router.put('/rank',Video.getVideoRank);
+
+  router.post('/login',User.login);
+  router.post('/register',User.register);
+  router.post('/getCaptcha',User.sendCaptcha);
+
+  router.post('/subComment',Comment.subComment);
+
 
   app.use('/users/api',router);
 }

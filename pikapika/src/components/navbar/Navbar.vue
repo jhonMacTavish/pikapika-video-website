@@ -2,7 +2,12 @@
   <div id="navbar" class="navbar-box">
     <!-- <div class="navbar-slider" :style="{left:sliderPos+'px'}"></div> -->
     <ul>
-      <li v-for="(item) in navList" :key="item.id">
+      <li
+        v-for="(item) in navList"
+        :key="item.id"
+        @click="cliickHandle(item.id)"
+        :class="{'active':selectedBar==item.id}"
+      >
         <!-- <router-link :to="item.name"> -->
         <router-link
           :to="item.id>1? (item.id<6? {name:'general', params:{id:item.name}}:{name:'list', params:{id:item.name}}):{name:item.name}"
@@ -32,7 +37,7 @@
               fill="#F24500"
               p-id="2093"
             />
-          </svg> -->
+          </svg>-->
           <div v-html="item.svg" class="svg"></div>
           <span @mouseover="setPos" @mouseout="setPos">{{item.title}}</span>
         </router-link>
@@ -46,15 +51,43 @@ export default {
   name: "Navbar",
   data() {
     return {
-      sliderPos: "30px"
+      sliderPos: "30px",
+      selectedBar: 1
     };
   },
-  computed:{
-    navList(){
+  computed: {
+    navList() {
       return this.$store.getters.navList;
     }
   },
+  watch: {
+    '$route'(newV,oldV){
+      if(newV!=oldV){
+        this.selectedBar = this.initSelectedBar();
+      }
+    }
+  },
+  created() {
+    this.selectedBar = /*sessionStorage.getItem("selectedBar") || */this.initSelectedBar();
+  },
   methods: {
+    initSelectedBar() {
+      let path = this.$route.fullPath;
+      // console.log("init", path);
+      if (path.indexOf("home") != -1) return 1;
+      else if (path.indexOf("bangumi") != -1) return 2;
+      else if (path.indexOf("guoman") != -1) return 3;
+      else if (path.indexOf("theater") != -1) return 4;
+      else if (path.indexOf("filmtv") != -1) return 5;
+      else if (path.indexOf("news") != -1) return 6;
+      else return 7;
+    },
+
+    cliickHandle(index) {
+      this.selectedBar = index;
+      // sessionStorage.setItem("selectedBar", index);
+    },
+
     setPos(e) {
       //   let slider = document.getElementsByClassName("navbar-slider")[0];
       //   switch(e.type){
@@ -87,7 +120,7 @@ export default {
     display: flex;
     justify-content: space-between;
     li {
-      div.svg{
+      div.svg {
         display: inline-block;
       }
 
@@ -99,16 +132,30 @@ export default {
       }
     }
 
+    li.active {
+      color: #00a1d6;
+      cursor: pointer;
+      span::after {
+        content: "";
+        position: absolute;
+        width: 50px;
+        height: 4px;
+        top: 40px;
+        left: -6px;
+        background: #00a1d6;
+      }
+    }
+
     li:hover {
       color: #00a1d6;
       cursor: pointer;
       span::after {
         content: "";
         position: absolute;
-        width: 100%;
-        height: 2px;
+        width: 50px;
+        height: 4px;
         top: 40px;
-        left: 0px;
+        left: -6px;
         background: #00a1d6;
       }
     }

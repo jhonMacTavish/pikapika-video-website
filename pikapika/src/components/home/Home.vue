@@ -2,13 +2,13 @@
   <div class="page-content">
     <Carousel />
     <Ad />
-    <Block title="今日热播"/>
+    <!-- <Block title="今日热播"/> -->
     <FanTimeTb/>
     <!-- <Block title="新番放送"/> -->
-    <Block title="番组计划"/>
-    <Block title="国产动漫"/>
-    <Block title="剧场动画"/>
-    <Block title="影视"/>
+    <Block title="番剧"/>
+    <Block title="国漫"/>
+    <Block title="电影"/>
+    <Block title="剧集"/>
   </div>
 </template>
 

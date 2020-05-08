@@ -117,7 +117,7 @@ export default {
       this.pageLists = pageLists;
       console.log(pageLists);
 
-      const returnEle = document.querySelector("#navbar"); //window是将要跳转区域的id
+      const returnEle = document.querySelector("#banner"); //window是将要跳转区域的id
       if (!!returnEle) {
         returnEle.scrollIntoView(true); // true 是默认的
       }

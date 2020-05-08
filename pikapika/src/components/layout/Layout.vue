@@ -4,7 +4,9 @@
       <Banner />
       <Navbar />
     </div>
-    <router-view/>
+    <keep-alive>
+      <router-view/>
+    </keep-alive>
     <div class="page-footer">
       <Footer/>
     </div>

@@ -1,15 +1,22 @@
 <template>
   <div class="page-content">
-      <SearchBar/>
-      <SearchBar/>
-      <SearchBar/>
-      <SearchBar/>
+      <!-- <SearchBar title="类型"/>
+      <SearchBar title="季度"/>
+      <SearchBar title="年份"/>
+      <SearchBar title="首字母"/> -->
+      <FilterBlock title="style"/>
+      <FilterBlock v-if="path!='theater'" title="quarter"/>
+      <FilterBlock v-else title="tag"/>
+      <FilterBlock title="years"/>
+      <FilterBlock title="initials"/>
+
       <ShopWindow/>
   </div>
 </template>
 
 <script>
-import SearchBar from '../common/searchBar/SearchBar'
+// import SearchBar from '../common/searchBar/SearchBar'
+import FilterBlock from "../common/filterBlock/FilterBlock";
 import ShopWindow from '../common/shopWindow/ShopWindow'
 
 export default {
@@ -25,14 +32,17 @@ export default {
     }
   },
   computed:{
-  },
-  watch:{
-    '$route'(to,from){
-      console.log(to, from);
+    path(){
+      return this.$route.params.id;
     }
   },
+  watch:{
+    // '$route'(to,from){
+    //   console.log(to, from);
+    // }
+  },
   methods: {},
-  components: {SearchBar,ShopWindow}
+  components: {FilterBlock,ShopWindow}
 };
 </script>
 

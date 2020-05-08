@@ -84,6 +84,9 @@ export default {
         margin: 10px auto;
         text-align: center;
         color: white;
+        span{
+          color: black;
+        }
       }
     }
   }
