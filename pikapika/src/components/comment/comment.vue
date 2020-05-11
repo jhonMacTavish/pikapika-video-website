@@ -11,7 +11,7 @@
           type="textarea"
           v-model="textarea"
           :rows="3"
-          :cols="130"
+          :cols="128"
           :maxlength="430"
           size="medium"
           :placeholder="logged?'请自觉遵守物联网相关的政策法规，严禁发布色情、暴力、反动的言论':'请先登录'"

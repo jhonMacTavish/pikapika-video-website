@@ -28,7 +28,7 @@ export default {
   },
   created() {
     this.fetch();
-    console.log("route", this.getParams);
+    // console.log("route", this.getParams);
   },
   methods: {
     async getBangumis(path) {
@@ -40,7 +40,7 @@ export default {
       length = length > 12 ? 12 : length < 6 ? length : 6;
       this.videoList.length = length;
 
-      console.log(path, this.videoList);
+      // console.log(path, this.videoList);
     },
 
     async recommendList() {
