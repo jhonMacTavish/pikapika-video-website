@@ -215,7 +215,11 @@
               >{{scope.row.c_uname}}</el-button>
             </template>
           </el-table-column>
-          <el-table-column prop="c_uavatar" label="用户头像" width="100"></el-table-column>
+          <el-table-column prop="c_uavatar" label="用户头像" width="100">
+            <template slot-scope="scope">
+              <img :src="scope.row.c_uavatar?scope.row.c_uavatar:userAvatar" alt />
+            </template>
+          </el-table-column>
           <el-table-column prop="c_content" label="评论内容" width="500"></el-table-column>
           <el-table-column prop="create_time" label="评论时间" width="230" fixed="right"></el-table-column>
           <el-table-column label="操作" width="200" fixed="right">
@@ -255,7 +259,10 @@
           <p>{{modelC.c_uname}}</p>
         </el-form-item>
         <el-form-item label="用户头像" class="form-item">
-          <p>{{modelC.c_uavatar}}</p>
+          <!-- <p>{{modelC.c_uavatar}}</p> -->
+          <p>
+            <img :src="modelC.c_uavatar?modelC.c_uavatar:userAvatar" alt />
+          </p>
         </el-form-item>
         <el-form-item label="评论内容" class="form-item">
           <p>{{modelC.c_content}}</p>
@@ -274,7 +281,10 @@
           <p>{{modelU.u_name}}</p>
         </el-form-item>
         <el-form-item label="用户头像" class="form-item">
-          <p>{{modelU.u_avatar}}</p>
+          <!-- <p>{{modelU.u_avatar}}</p> -->
+          <p>
+            <img :src="modelU.u_avatar?modelU.u_avatar:userAvatar" alt />
+          </p>
         </el-form-item>
         <el-form-item label="性别" class="form-item">
           <p>{{modelU.u_sex==1?"女":"男"}}</p>
@@ -384,6 +394,7 @@ export default {
     };
 
     return {
+      userAvatar:'../../../static/userAvatar.jpg',
       rules: {
         th_name: [{ validator: th_name, trigger: "blur" }],
         t_id: [{ validator: t_id, trigger: "change" }],
@@ -982,5 +993,11 @@ p {
   overflow: hidden;
   text-overflow: ellipsis;
   width: 90%;
+}
+img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>

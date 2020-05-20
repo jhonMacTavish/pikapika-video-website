@@ -5,7 +5,7 @@ CREATE TABLE pk_user(
     u_email VARCHAR(100) NOT NULL,
     u_password VARCHAR(16) NOT NULL,
     u_sex TINYINT(1) NOT NULL DEFAULT 0,
-    u_avatar VARCHAR(500) NOT NULL,
+    u_avatar VARCHAR(500),
     create_time TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP);
     
 INSERT INTO pk_user(u_id,u_name,u_email,u_password,u_sex,u_avatar) VALUES(1,'Dragon_Mr','981192661@qq.com','a981192661',0,'https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=3038277678,2828142910&fm=26&gp=0.jpg');

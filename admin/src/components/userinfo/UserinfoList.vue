@@ -13,7 +13,11 @@
       <el-table-column prop="u_sex" label="性别">
         <template slot-scope="scope">{{scope.row.u_sex==1?"女":"男"}}</template>
       </el-table-column>
-      <el-table-column prop="u_avatar" label="头像"></el-table-column>
+      <el-table-column prop="u_avatar" label="头像">
+        <template slot-scope="scope">
+          <img :src="scope.row.u_avatar?scope.row.u_avatar:userAvatar" alt />
+        </template>
+      </el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row.u_id)" class="detail">查看</el-button>
@@ -51,12 +55,15 @@
           <p>{{model.u_sex==1?"女":"男"}}</p>
         </el-form-item>
         <el-form-item label="头像" class="form-item">
-          <p>{{model.u_avatar}}</p>
+          <p>
+          <img :src="model.u_avatar?model.u_avatar:userAvatar" alt />
+          </p>
+          <!-- <p>{{model.u_avatar}}</p> -->
         </el-form-item>
       </el-form>
       <!-- <div slot="footer" class="dialog-footer">
         <el-button @click="dialogFormVisible = false" class="close">关 闭</el-button>
-      </div> -->
+      </div>-->
     </el-dialog>
   </div>
 </template>
@@ -69,7 +76,8 @@ export default {
       dialogFormVisible: false,
       pageList: [],
       currentPage: 1,
-      model: {}
+      model: {},
+      userAvatar:'../../../static/userAvatar.jpg'
     };
   },
   async created() {
@@ -114,7 +122,7 @@ export default {
             this.fetch();
           } else {
             this.$message({
-              type: "success",
+              type: "error",
               message: res.data.msg
             });
           }
@@ -188,5 +196,12 @@ p {
   margin-top: 30px;
   margin-left: 50%;
   transform: translateX(-50%);
+}
+
+img {
+  height: 40px;
+  width: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.1);
 }
 </style>

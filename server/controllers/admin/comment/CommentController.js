@@ -108,7 +108,7 @@ let getAll = (req, res) => {
     console.log("getCommentAll");
     let {v_id,t_id} = req.query;
     console.log("reqQuery", req.query);
-    let sql = 'select c_id,c_uname,c_uid,c_uavatar,c_content,create_time from pk_comments where v_id=? and t_id=? order by create_time asc';
+    let sql = 'select c_id,c_uname,c_uid,c_uavatar,c_content,create_time from pk_comments where v_id=? and t_id=? order by create_time desc';
     let sqlArr = [v_id,t_id];
     let callback = (err, data) => {
         if (err) {

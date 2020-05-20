@@ -16,7 +16,7 @@ getOne = async (req, res) => {
     let sqlArr = [u_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    console.log("userRst", result);
+    // console.log("userRst", result);
     res.send(result);
 }
 
@@ -109,12 +109,16 @@ updateOne = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
-deleteOne = (req, res) => {
+deleteOne = async (req, res) => {
     console.log("deleteUserinfoByID")
     let u_id = req.params.id;
     console.log("u_id", req.params);
-    let sql = 'delete from pk_user where u_id=?';
+    let sql = 'delete from pk_comments where c_uid=?';
     let sqlArr = [u_id];
+    let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+
+    sql = 'delete from pk_user where u_id=?';
+    sqlArr = [u_id];
 
     callback = (err, data) => {
         if (err) {

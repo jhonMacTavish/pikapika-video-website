@@ -112,15 +112,22 @@ let createOne = async (req, res) => {
 let deleteOne = async (req, res) => {
     console.log("deleteCommentByID")
     let c_id = req.params.id;
-    console.log("c_id", req.params);
-    let sql = 'delete from pk_comments where c_id=?';
+    // console.log("c_id", req.params);
+    let sql = 'select t_id,v_id from pk_comments where c_id=?';
     let sqlArr = [c_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    let {t_id,v_id} = result[0];
+
+    sql = 'delete from pk_comments where c_id=?';
+    sqlArr = [c_id];
+
+    result = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    // console.log(t_id,v_id);
 
     if (result.affectedRows == 1) {
-        let sql = 'select * from pk_comments order by create_time desc';
-        let sqlArr = [];
+        sql = 'select * from pk_comments where t_id=? and v_id=? order by create_time desc';
+        sqlArr = [t_id,v_id];
         let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
         res.send({
             "status":200,
