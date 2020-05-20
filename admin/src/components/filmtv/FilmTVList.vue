@@ -134,7 +134,6 @@ export default {
       return this.$store.getters.videoList.length;
     }
   },
-  beforeUpdate() {},
   watch: {},
   methods: {
     async fetch() {
@@ -281,7 +280,12 @@ export default {
       return value.substring(0, 100) + "...";
     }
   },
-  components: {}
+  components: {},
+  beforeRouteEnter(to,from,next){
+    next(async vm=>{
+      await vm.fetch();
+    })
+  }
 };
 </script>
 

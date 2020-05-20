@@ -54,9 +54,9 @@
       </el-header>
 
       <el-main class="main-container">
-        <!-- <keep-alive :exclude="cachedViews"> -->
+        <keep-alive :exclude="cachedViews">
         <router-view></router-view>
-        <!-- </keep-alive> -->
+        </keep-alive>
       </el-main>
     </el-container>
   </el-container>

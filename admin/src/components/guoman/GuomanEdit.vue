@@ -430,9 +430,6 @@ export default {
         g_actors: [],
         g_summary: ""
       },
-      types: [],
-      status: [],
-      initials: [],
 
       styleVisible: false,
       styleValue: "",
@@ -462,6 +459,18 @@ export default {
     };
   },
   computed: {
+    types() {
+      return this.$store.getters.types;
+    },
+
+    status() {
+      return this.$store.getters.status;
+    },
+
+    initials() {
+      return this.$store.getters.initials;
+    },
+
     videoList() {
       return this.$store.getters.videoList;
     },
@@ -481,10 +490,6 @@ export default {
   watch: {},
   created() {
     this.id && this.fetch();
-
-    this.types = this.$store.getters.types;
-    this.status = this.$store.getters.status;
-    this.initials = this.$store.getters.initials;
   },
   methods: {
     async userDetail(row) {

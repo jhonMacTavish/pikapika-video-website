@@ -421,10 +421,6 @@ export default {
         th_actors: [],
         th_summary: ""
       },
-      types: [],
-      tags: [],
-      VGAs: [],
-      initials: [],
 
       styleVisible: false,
       styleValue: "",
@@ -455,6 +451,22 @@ export default {
     };
   },
   computed: {
+    types() {
+      return this.$store.getters.types;
+    },
+
+    tags() {
+      return this.$store.getters.tags;
+    },
+
+    VGAs() {
+      return this.$store.getters.VGAs;
+    },
+
+    initials() {
+      return this.$store.getters.initials;
+    },
+
     canotAdd() {
       if (this.videoTotal > 0) {
         return true;
@@ -482,11 +494,6 @@ export default {
   watch: {},
   created() {
     this.id && this.fetch();
-
-    this.types = this.$store.getters.types;
-    this.tags = this.$store.getters.tags;
-    this.VGAs = this.$store.getters.VGAs;
-    this.initials = this.$store.getters.initials;
   },
   methods: {
     async userDetail(row) {
