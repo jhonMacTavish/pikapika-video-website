@@ -1,4 +1,5 @@
 let dbconfig = require('../../../util/dbconfig');
+let bcrypt = require('bcrypt');
 let axios = require("axios");
 
 let getByParams = async (obj) => {
@@ -29,7 +30,7 @@ sendCaptcha = async (req, res) => {
     }, 300000);
     // let sendEmail = await axios.get(`http://liuxingw.com/api/mail/api.php?address=${email}&name=PikaPika 登录验证&certno=您此次登录的验证码为：${captcha} ————皮卡皮卡二次元`)
     // console.log("sendEmail", sendEmail);
-    res.send({
+    return res.send({
         "status": 200,
         "captcha": captcha,
         "msg": "验证码发送成功"
@@ -46,14 +47,14 @@ login = async (req, res) => {
                 captchaPass = true;
                 VerifyArr.pop();
             } else {
-                res.send({
+                return res.send({
                     "status": 422,
                     "msg": "验证码错误"
                 })
                 return
             }
         } else {
-            res.send({
+            return res.send({
                 "status": 433,
                 "msg": "验证码已过期"
             })
@@ -62,33 +63,41 @@ login = async (req, res) => {
     }
 
     if (!captchaPass) {
-        res.send({
+        return res.send({
             "status": 426,
             "msg": "请重新获取验证码"
         })
         return
     }
 
-    let sql = 'select u_id,u_name,u_email,u_sex,u_avatar from pk_user where u_email=? and u_password=?';
-    let sqlArr = [email, password];
+    let sql = 'select u_password from pk_user where u_email=?';
+    let sqlArr = [email];
 
-    let user = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    if (user.length == 0) {
-        res.send({
+    let userPsw = await dbconfig.asyncSqlConnect(sql, sqlArr);
+
+    if (userPsw.length == 0) {
+        return res.send({
             "status": 411,
-            "msg": "账号或密码错误"
+            "msg": "账号不存在"
         })
     }
 
-    sql = 'select u_id from pk_user where u_email=?';
+    let isValid = bcrypt.compareSync(password,userPsw[0].u_password);
+    if(!isValid){
+        return res.send({
+            "status": 401,
+            "msg": "密码错误"
+        })
+    }
+
+    sql = 'select u_name,u_avatar from pk_user where u_email=?';
     sqlArr = [email];
 
-    let rst = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    let user = await dbconfig.asyncSqlConnect(sql, sqlArr);
 
-    res.send({
+    return res.send({
         "status": 200,
         "msg": "登陆成功",
-        "token": rst[0].u_id,
         "user":user[0]
     })
 }
@@ -105,14 +114,14 @@ register = async (req, res) => {
                 captchaPass = true;
                 VerifyArr.pop();
             // } else {
-            //     res.send({
+            //     return res.send({
             //         "status": 422,
             //         "msg": "验证码错误"
             //     })
             //     return
             // }
         } else {
-            res.send({
+            return res.send({
                 "status": 422,
                 "msg": "验证码错误"
             })
@@ -121,7 +130,7 @@ register = async (req, res) => {
     }
 
     if (!captchaPass) {
-        res.send({
+        return res.send({
             "status": 426,
             "msg": "请重新获取验证码"
         })
@@ -133,7 +142,7 @@ register = async (req, res) => {
 
     let user = await dbconfig.asyncSqlConnect(sql, sqlArr);
     if (user.length != 0) {
-        res.send({
+        return res.send({
             "status": 411,
             "msg": "该邮箱已被注册"
         })
@@ -148,12 +157,12 @@ register = async (req, res) => {
     // console.log("rst", rst);
 
     if(rst.affectedRows==1){
-        res.send({
+        return res.send({
             "status": 200,
             "msg": "注册成功",
         })
     }else{
-        res.send({
+        return res.send({
             "status": 500,
             "msg": "注册失败",
         })
@@ -167,7 +176,7 @@ createOne = async (req, res) => {
     let { u_name, u_email, u_password, u_sex, u_avatar } = req.body;
     let u_nameRst = await getByParams({ key: 'u_email', value: u_email });
     if (u_nameRst.length != 0) {
-        res.send({
+        return res.send({
             "status": 402,
             "msg": "该邮箱已被注册"
         });
@@ -182,13 +191,13 @@ createOne = async (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "添加成功"
             });
@@ -209,13 +218,13 @@ updateOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "更新成功"
             });

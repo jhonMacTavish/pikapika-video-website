@@ -29,14 +29,14 @@ getAll = (req, res) => {
     let callback = (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
             // console.log("getAll", data);
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -53,7 +53,7 @@ createOne = async (req, res) => {
     let { v_id, t_id, r_episode, r_address } = req.body;
     let v_episodeRst = await getByParams({ key: 'v_id', value: v_id }, { key: 't_id', value: t_id }, { key: 'r_episode', value: r_episode });
     if (v_episodeRst.length != 0) {
-        res.send({
+        return res.send({
             "status": 402,
             "msg": `数据库已存在该番剧第${r_episode}话`
         });
@@ -69,13 +69,13 @@ createOne = async (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "添加成功"
             });
@@ -98,7 +98,7 @@ updateOne = async (req, res) => {
 
     let v_episodeRst = await getByParams({ key: 'v_id', value: v_id }, { key: 't_id', value: t_id }, { key: 'r_episode', value: r_episode });
     if (v_episodeRst.length != 0) {
-        res.send({
+        return res.send({
             "status": 402,
             "msg": `数据库已存在该番剧第${r_episode}话`
         });
@@ -111,13 +111,13 @@ updateOne = async (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "更新成功"
             });
@@ -138,13 +138,13 @@ deleteOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });
@@ -163,13 +163,13 @@ let deleteByFilmName = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });
@@ -203,13 +203,13 @@ addVolume = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "播放失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "播放成功"
             });
@@ -244,7 +244,7 @@ let getBGrank = async (req, res) => {
         let v_id = list[i].v_id;
         list[i].episodes = await util.countEp(t_id, v_id);
     }
-    res.send({"list":list});
+    return res.send({"list":list});
 }
 
 module.exports = {

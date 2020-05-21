@@ -5,6 +5,7 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
+        superAdmin: 0,
         types: [
             {
                 t_id: 1,
@@ -169,6 +170,7 @@ export default new Vuex.Store({
         commentList:[]
     },
     getters: {
+        superAdmin: state => state.superAdmin,
         tags: state => state.tags,
         VGAs:state => state.VGAs,
         types: state => state.types,
@@ -184,6 +186,9 @@ export default new Vuex.Store({
         commentList: state => state.commentList,
     },
     mutations: {
+        UpdateSuperAdmin(state, superAdmin) {
+            state.superAdmin = superAdmin;
+        },
         UpdateBangumiList(state, bangumiList) {
             state.bangumiList = bangumiList;
         },

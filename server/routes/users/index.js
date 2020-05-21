@@ -14,15 +14,15 @@ module.exports = app =>{
   router.get('/image', async (req, res) => {
     let rst = await axios.get("https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php?return=json");
     console.log("data", rst.data);
-    res.send(rst.data)
+    return res.send(rst.data)
   });
 
   router.get('/undefineds',(req,res)=>{
-    res.send(null);
+    return res.send(null);
   })
 
   router.post('/undefineds',(req,res)=>{
-    res.send(null);
+    return res.send(null);
   })
 
   router.get('/getBrank', Bangumi.getRank);

@@ -30,7 +30,7 @@ let getOne = async (req, res) => {
     let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    res.send(result);
+    return res.send(result);
 }
 
 // let format = async (table, v_id, t_id) => {
@@ -57,7 +57,7 @@ let getOne = async (req, res) => {
 
 //                 let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
 //                 if (b_nameRst.length != 0) {
-//                     res.send({
+//                     return res.send({
 //                         "status": 402,
 //                         "msg": "数据库中存在同名番剧"
 //                     });
@@ -85,13 +85,13 @@ let getOne = async (req, res) => {
 //         callback = (err, data) => {
 //             if (err) {
 //                 console.log("操作出错")
-//                 res.send({
+//                 return res.send({
 //                     "status": 402,
 //                     'msg': "修改失败"
 //                 });
 //             } else {
 //                 console.log("操作成功");
-//                 res.send({
+//                 return res.send({
 //                     "status": 200,
 //                     "msg": "修改成功"
 //                 });
@@ -113,14 +113,14 @@ let getAll = (req, res) => {
     let callback = (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
             // console.log("getAll", data);
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -139,7 +139,7 @@ let getAll = (req, res) => {
 
 //     let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
 //     if (b_nameRst.length != 0) {
-//         res.send({
+//         return res.send({
 //             "status": 402,
 //             "msg": "数据库中存在同名番剧"
 //         });
@@ -154,13 +154,13 @@ let getAll = (req, res) => {
 //     callback = (err, data) => {
 //         if (err) {
 //             console.log("操作出错")
-//             res.send({
+//             return res.send({
 //                 "status": 402,
 //                 'msg': "添加失败"
 //             });
 //         } else {
 //             console.log("操作成功");
-//             res.send({
+//             return res.send({
 //                 "status": 200,
 //                 "msg": "添加成功"
 //             });
@@ -181,13 +181,13 @@ let getAll = (req, res) => {
 //     callback = (err, data) => {
 //         if (err) {
 //             console.log("操作出错")
-//             res.send({
+//             return res.send({
 //                 "status": 402,
 //                 'msg': "更新失败"
 //             });
 //         } else {
 //             console.log("操作成功");
-//             res.send({
+//             return res.send({
 //                 "status": 200,
 //                 "msg": "更新成功"
 //             });
@@ -207,13 +207,13 @@ let deleteOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });
@@ -232,13 +232,13 @@ let deleteByVideo = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });

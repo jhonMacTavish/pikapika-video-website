@@ -30,7 +30,7 @@ let getOne = async (req, res) => {
     let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    res.send(result);
+    return res.send(result);
 }
 
 let getAll = async (req, res) => {
@@ -42,7 +42,7 @@ let getAll = async (req, res) => {
     let sqlArr = [t_id,v_id];
     let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
 
-    res.send({
+    return res.send({
         "status": 200,
         "list": list
     })
@@ -53,7 +53,7 @@ let createOne = async (req, res) => {
     // console.log("params", req.body.params);
     let { c_uid, v_id, t_id, c_content, c_uname, c_uavatar } = req.body.params;
     if (!c_content) {
-        res.send({
+        return res.send({
             "status": 422,
             "msg": "你还没有评论"
         })
@@ -70,13 +70,13 @@ let createOne = async (req, res) => {
         sql = 'select * from pk_comments where t_id=? and v_id=? order by create_time desc';
         sqlArr = [t_id,v_id];
         let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
-        res.send({
+        return res.send({
             "status": "200",
             "msg": "发布成功",
             "list": list
         })
     } else {
-        res.send({
+        return res.send({
             "status": "500",
             "msg": "发布失败"
         })
@@ -93,13 +93,13 @@ let createOne = async (req, res) => {
 //     callback = (err, data) => {
 //         if (err) {
 //             console.log("操作出错")
-//             res.send({
+//             return res.send({
 //                 "status": 402,
 //                 'msg': "更新失败"
 //             });
 //         } else {
 //             console.log("操作成功");
-//             res.send({
+//             return res.send({
 //                 "status": 200,
 //                 "msg": "更新成功"
 //             });
@@ -129,14 +129,14 @@ let deleteOne = async (req, res) => {
         sql = 'select * from pk_comments where t_id=? and v_id=? order by create_time desc';
         sqlArr = [t_id,v_id];
         let list = await dbconfig.asyncSqlConnect(sql, sqlArr);
-        res.send({
+        return res.send({
             "status":200,
             "msg":"删除成功",
             "list":list
         });
         return
     }else{
-        res.send({
+        return res.send({
             "status":500,
             "msg":"删除失败",
         });

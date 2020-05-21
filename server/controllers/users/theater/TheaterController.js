@@ -16,7 +16,7 @@ getOne = async (req, res) => {
     let sqlArr = [v_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    res.send(result);
+    return res.send(result);
 }
 
 getAll = (req, res) => {
@@ -26,14 +26,14 @@ getAll = (req, res) => {
     let callback = (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
             // console.log("getAll", data);
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -62,7 +62,7 @@ let getStyles = async (req, res) => {
         }
     }
     styleArr.unshift("全部");
-    res.send({ list: styleArr });
+    return res.send({ list: styleArr });
 }
 
 let search = async (req, res) => {
@@ -111,7 +111,7 @@ let search = async (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -122,7 +122,7 @@ let search = async (req, res) => {
                 let v_id = data[i].v_id;
                 data[i].th_episodes = await util.countEp(t_id, v_id);
             }
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -142,7 +142,7 @@ let search = async (req, res) => {
         list = rst;
     }
     // console.log("list", list);
-    res.send({list});
+    return res.send({list});
 }
 
 let getRank = (req, res) => {
@@ -152,7 +152,7 @@ let getRank = (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -160,7 +160,7 @@ let getRank = (req, res) => {
             // console.log("getAll", data);
             console.log("操作成功");
             // console.log("data", data);
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"

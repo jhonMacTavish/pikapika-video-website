@@ -1,30 +1,28 @@
 <template>
   <div>
-    <h1>用户列表</h1>
+    <h1>管理员列表</h1>
     <div>
-      <el-button type="text" @click="$router.push('/userinfo/create')">
-        <i class="el-icon-plus"></i>添加用户
+      <el-button type="text" @click="$router.push('/adminuser/create')">
+        <i class="el-icon-plus"></i>添加管理员
       </el-button>
     </div>
     <el-table :data="pageList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="u_name" label="名称"></el-table-column>
-      <el-table-column prop="u_email" label="邮箱"></el-table-column>
-      <el-table-column prop="u_sex" label="性别">
-        <template slot-scope="scope">{{scope.row.u_sex==1?"女":"男"}}</template>
-      </el-table-column>
-      <el-table-column prop="u_avatar" label="头像">
-        <template slot-scope="scope">
-          <img :src="scope.row.u_avatar?scope.row.u_avatar:userAvatar" alt />
-        </template>
-      </el-table-column>
+      <el-table-column prop="a_name" label="姓名" width="200"></el-table-column>
+      <el-table-column prop="a_email" label="邮箱"></el-table-column>
+      <el-table-column prop="create_time" label="创建时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="detail(scope.row.u_id)" class="detail">查看</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="$router.push(`/adminuser/eidt/${scope.row.a_id}`)"
+            class="edit"
+          >编辑</el-button>
           <!-- <el-button
             type="text"
             size="small"
-            @click="$router.push(`/userinfo/eidt/${scope.row.u_id}`)"
+            @click="$router.push(`/adminuser/eidt/${scope.row.a_id}`)"
             class="deit"
           >编辑</el-button>-->
           <el-button type="text" size="small" @click="remove(scope.row)" class="delete">删除</el-button>
@@ -42,26 +40,14 @@
       ></el-pagination>
     </div>
 
-    <el-dialog title="用户信息" :visible.sync="dialogFormVisible">
+    <el-dialog title="管理员信息" :visible.sync="dialogFormVisible">
       <el-form :model="model" label-width="100px" style="margin-right: 0;">
-        <el-form-item label="名称" class="form-item">
-          <p>{{model.u_name}}</p>
+        <el-form-item label="姓名" class="form-item">
+          <p>{{model.a_name}}</p>
         </el-form-item>
 
         <el-form-item label="邮箱" class="form-item">
-          <p>{{model.u_email}}</p>
-        </el-form-item>
-        <el-form-item label="性别" class="form-item">
-          <p>{{model.u_sex==1?"女":"男"}}</p>
-        </el-form-item>
-        <el-form-item label="头像" class="form-item">
-          <p>
-          <img :src="model.u_avatar?model.u_avatar:userAvatar" alt />
-          </p>
-          <!-- <p>{{model.u_avatar}}</p> -->
-        </el-form-item>
-        <el-form-item label="创建时间" class="form-item">
-          <p>{{model.create_time}}</p>
+          <p>{{model.a_email}}</p>
         </el-form-item>
       </el-form>
       <!-- <div slot="footer" class="dialog-footer">
@@ -80,26 +66,20 @@ export default {
       pageList: [],
       currentPage: 1,
       model: {},
-      userAvatar:'../../../static/userAvatar.jpg'
+      adminUserList: [],
+      totalItems: 0
     };
   },
   async created() {
     // await this.fetch();
   },
-  computed: {
-    userinfoList() {
-      return this.$store.getters.userinfoList;
-    },
-
-    totalItems() {
-      return this.$store.getters.userinfoList.length;
-    }
-  },
+  computed: {},
   watch: {},
   methods: {
     async fetch() {
-      const res = await this.$http.get("/userinfos");
-      this.$store.dispatch("updateUserinfoList", res.data.list);
+      const res = await this.$http.get("/adminusers");
+      this.adminUserList = res.data.list;
+      this.totalItems = res.data.list.length;
 
       if (Math.ceil(this.totalItems / 10) < this.currentPage) {
         --this.currentPage;
@@ -108,20 +88,21 @@ export default {
     },
 
     async remove(row) {
-      this.$confirm(`是否确定要删除用户 "${row.u_name}"`, "提示", {
+      this.$confirm(`是否确定要删除管理员 "${row.a_name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-          const res = await this.$http.delete(`/userinfos/${row.u_id}`);
+          console.log("row.a_id", row.a_id);
+          const res = await this.$http.delete(`/adminusers/${row.a_id}`);
           console.log("delete", res);
           if (res.data.status == 200) {
             this.$message({
               type: "success",
               message: res.data.msg
             });
-            this.fetch();
+            await this.fetch();
           } else {
             this.$message({
               type: "error",
@@ -144,30 +125,23 @@ export default {
         i < (10 * val < this.totalItems ? 10 * val : this.totalItems);
         i++
       ) {
-        pageList.push(this.userinfoList[i]);
+        pageList.push(this.adminUserList[i]);
       }
       this.pageList = pageList;
       // document.querySelector("counter1").scrollIntoView(true); //这里的counter1是将要返回地方的id
-    },
-
-    async detail(u_id) {
-      const res = await this.$http.post(`/userinfos/${u_id}`);
-      this.model = res.data[0];
-      this.dialogFormVisible = true;
-      console.log("this.model", this.model);
     }
   },
   components: {},
-  beforeRouteEnter(to,from,next){
-    next(async vm=>{
+  beforeRouteEnter(to, from, next) {
+    next(async vm => {
       await vm.fetch();
-    })
+    });
   }
 };
 </script>
 
 <style lang='less' scoped>
-.detail {
+.edit {
   color: #409eff;
 }
 

@@ -1,40 +1,28 @@
 <template>
   <div>
-    <h1>{{id?'编辑':'添加'}}用户</h1>
+    <h1>{{id?'编辑':'添加'}}管理员</h1>
     <el-form
       :model="model"
       :rules="rules"
-      ref="userinfo"
+      ref="adminusers"
       label-width="200px"
       @submit.native.prevent="save"
       style="margin-right: 200px"
+      class="adminusers"
     >
-      <el-form-item label="名称" prop="u_name">
-        <el-input v-model="model.u_name" style="width:222px" maxlength="48"></el-input>
+      <el-form-item label="姓名" prop="a_name">
+        <el-input v-model="model.a_name" style="width:222px" maxlength="48"></el-input>
       </el-form-item>
 
-      <el-form-item label="邮箱" prop="u_email">
-        <el-input v-model="model.u_email" style="width:222px" maxlength="100"></el-input>
+      <el-form-item label="邮箱" prop="a_email">
+        <el-input v-model="model.a_email" style="width:222px" maxlength="100"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="u_password">
-        <el-input type="password" v-model="model.u_password" style="width:222px" maxlength="16"></el-input>
+      <el-form-item label="密码" prop="a_password">
+        <el-input type="password" v-model="model.a_password" style="width:222px" maxlength="16"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="u_sex">
-        <template>
-          <el-radio-group v-model="model.u_sex">
-            <el-radio :label="0">男</el-radio>
-            <el-radio :label="1">女</el-radio>
-          </el-radio-group>
-        </template>
-      </el-form-item>
-
-      <el-form-item label="头像地址" prop="u_avatar">
-        <el-input v-model="model.u_avatar" maxlength="500"></el-input>
-      </el-form-item>
-
       <el-form-item>
-        <el-button type="primary" @click.native="submitForm('userinfo')">保 存</el-button>
-        <el-button @click="$router.push('/userinfo/list')">取 消</el-button>
+        <el-button type="primary" @click.native="submitForm('adminusers')">保 存</el-button>
+        <el-button @click="$router.push('/adminuser/list')">取 消</el-button>
       </el-form-item>
     </el-form>
   </div>
@@ -47,15 +35,15 @@ export default {
     id: {}
   },
   data() {
-    let u_name = (rule, value, callback) => {
+    let a_name = (rule, value, callback) => {
       if (!value) {
-        callback(new Error("请输入番名")); // 请输入番名
+        callback(new Error("请输入管理员姓名")); // 请输入番名
       } else {
         callback();
       }
     };
 
-    let u_email = (rule, value, callback) => {
+    let a_email = (rule, value, callback) => {
       let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       if (!value) {
         callback(new Error("请输入邮箱")); // 请输入请输入集数
@@ -66,9 +54,11 @@ export default {
       }
     };
 
-    let u_password = (rule, value, callback) => {
+    let a_password = (rule, value, callback) => {
       let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
-      if (!value) {
+      if (!value && this.id) {
+        callback(); // 请输入请输入集数
+      } else if (!value && !this.id) {
         callback(new Error("请输入密码")); // 请输入请输入集数
       } else if (reg.test(value)) {
         callback();
@@ -77,27 +67,17 @@ export default {
       }
     };
 
-    let u_avatar = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error("请添加图片路径")); // 请输入请输入集数
-      } else {
-        callback();
-      }
-    };
-
     return {
       rules: {
-        u_name: [{ validator: u_name, trigger: "blur" }],
-        u_email: [{ validator: u_email, trigger: "blur" }],
-        u_password: [{ validator: u_password, trigger: "blur" }],
+        a_name: [{ validator: a_name, trigger: "blur" }],
+        a_email: [{ validator: a_email, trigger: "blur" }],
+        a_password: [{ validator: a_password, trigger: "blur" }]
       },
 
       model: {
-        u_name: "",
-        u_email: "",
-        u_password: "",
-        u_sex: 0,
-        u_avatar: ""
+        a_name: "",
+        a_email: "",
+        a_password: ""
       },
 
       styleVisible: false,
@@ -125,10 +105,10 @@ export default {
 
           if (this.id) {
             console.log("更新");
-            res = await this.$http.put(`/userinfos/${this.id}`, params);
+            res = await this.$http.put(`/adminusers/${this.id}`, params);
           } else {
             console.log("创建");
-            res = await this.$http.post("/userinfos", params);
+            res = await this.$http.post("/adminusers", params);
           }
 
           console.log("res***********", res);
@@ -138,7 +118,7 @@ export default {
               type: "success",
               message: res.data.msg
             });
-            this.$router.push("/userinfo/list");
+            this.$router.push("/adminuser/list");
           } else {
             this.$message({
               type: "error",
@@ -161,7 +141,7 @@ export default {
       var params = JSON.parse(objString);
 
       console.log("params*************", params);
-      const res = await this.$http.post("/userinfos", params);
+      const res = await this.$http.post("/adminusers", params);
       console.log("res***********", res);
 
       if (res.affectedRows === 1) {
@@ -169,7 +149,7 @@ export default {
           type: "success",
           message: res.msg
         });
-        this.$router.push("/userinfo/list");
+        this.$router.push("/adminusers/list");
       } else {
         this.$message({
           type: "error",
@@ -180,14 +160,14 @@ export default {
 
     async featch() {
       console.log("edit");
-      const res = await this.$http.post(`/userinfos/${this.id}`);
+      const res = await this.$http.post(`/adminusers/${this.id}`);
 
       this.model = res.data[0];
       console.log("this.model", this.model);
     },
 
     styHandleClose(tag) {
-      this.model.u_style.splice(this.model.u_style.indexOf(tag), 1);
+      this.model.a_style.splice(this.model.a_style.indexOf(tag), 1);
     },
 
     styShowInput() {
@@ -200,7 +180,7 @@ export default {
     styHandleInputConfirm() {
       let styleValue = this.styleValue;
       if (styleValue) {
-        this.model.u_style.push(styleValue);
+        this.model.a_style.push(styleValue);
       }
 
       this.styleVisible = false;
@@ -208,7 +188,7 @@ export default {
     },
 
     actHandleClose(tag) {
-      this.model.u_actors.splice(this.model.u_actors.indexOf(tag), 1);
+      this.model.a_actors.splice(this.model.a_actors.indexOf(tag), 1);
     },
 
     actShowInput() {
@@ -221,7 +201,7 @@ export default {
     actHandleInputConfirm() {
       let actorsValue = this.actorsValue;
       if (actorsValue) {
-        this.model.u_actors.push(actorsValue);
+        this.model.a_actors.push(actorsValue);
       }
       this.actorsVisible = false;
       this.actorsValue = "";
@@ -248,5 +228,9 @@ export default {
   width: 90px;
   // margin-left: 10px;
   vertical-align: bottom;
+}
+
+.adminusers {
+  margin-top: 40px;
 }
 </style>

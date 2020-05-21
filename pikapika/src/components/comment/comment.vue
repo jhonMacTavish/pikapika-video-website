@@ -86,12 +86,7 @@ export default {
   async created() {
     await this.fetch();
     this.handleCurrentChange(this.currentPage);
-    // this.user = this.logged
-    //   ? JSON.parse(localStorage.getItem("logged_user"))
-    //   : {
-    //       u_avatar: "../../../static/imgs/user/userAvatar.jpg"
-    //     };
-    // console.log("user/****************************************************", this.user);
+    
     this.avtar =
       (this.user ? this.user : {}).u_avatar ||
       "../../../static/imgs/user/userAvatar.jpg";

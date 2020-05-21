@@ -35,7 +35,7 @@ let getOne = async (req, res) => {
     // console.log("res", result);
     result[0].b_episodes = await util.countEp(1, v_id);
     // console.log("result", result);
-    res.send(result);
+    return res.send(result);
 }
 
 // let format = async (table, v_id, t_id) => {
@@ -62,7 +62,7 @@ let getOne = async (req, res) => {
 
 //                 let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
 //                 if (b_nameRst.length != 0) {
-//                     res.send({
+//                     return res.send({
 //                         "status": 402,
 //                         "msg": "数据库中存在同名番剧"
 //                     });
@@ -90,13 +90,13 @@ let getOne = async (req, res) => {
 //         callback = (err, data) => {
 //             if (err) {
 //                 console.log("操作出错")
-//                 res.send({
+//                 return res.send({
 //                     "status": 402,
 //                     'msg': "修改失败"
 //                 });
 //             } else {
 //                 console.log("操作成功");
-//                 res.send({
+//                 return res.send({
 //                     "status": 200,
 //                     "msg": "修改成功"
 //                 });
@@ -116,7 +116,7 @@ let getAll = (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -129,7 +129,7 @@ let getAll = (req, res) => {
                 data[i].b_episodes = await util.countEp(t_id, v_id);
             }
             // console.log("data", data);
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -166,7 +166,7 @@ let getStyles = async (req, res) => {
     }
     styleArr.unshift("全部");
     // console.log("styleArr", styleArr);
-    res.send({ list: styleArr });
+    return res.send({ list: styleArr });
 }
 
 let search = async (req, res) => {
@@ -206,7 +206,7 @@ let search = async (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -219,7 +219,7 @@ let search = async (req, res) => {
                 data[i].b_episodes = await util.countEp(t_id, v_id);
             }
             // console.log("data", data);
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -239,7 +239,7 @@ let search = async (req, res) => {
         list = rst;
     }
     console.log("list", list);
-    res.send({list});
+    return res.send({list});
 }
 // getBangumiType();
 let bangumiQuarter = async () => {
@@ -304,7 +304,7 @@ let getRank = (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -317,7 +317,7 @@ let getRank = (req, res) => {
                 data[i].episodes = await util.countEp(t_id, v_id);
             }
             // console.log("data", data);
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"

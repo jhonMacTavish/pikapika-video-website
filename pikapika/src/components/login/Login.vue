@@ -106,7 +106,7 @@ export default {
       },
       rules: {
         email: [{ validator: validateEmail, trigger: "blur" }],
-        password: [{ validator: validatePsw, trigger: "change" }],
+        password: [{ validator: validatePsw, trigger: "blur" }],
         captcha: [{ validator: captcha, trigger: "blur" }]
       }
     };

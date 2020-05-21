@@ -1,4 +1,5 @@
 let dbconfig = require('../../../util/dbconfig');
+let bcrypt = require('bcrypt');
 
 let getByParams = async (obj) => {
     console.log(`getBy${obj.key}`);
@@ -12,12 +13,12 @@ let getByParams = async (obj) => {
 getOne = async (req, res) => {
     console.log("getUserinfoByID");
     let u_id = req.params.id;
-    let sql = 'select u_name,u_email,u_sex,u_avatar from pk_user where u_id=?';
+    let sql = 'select u_name,u_email,u_sex,u_avatar,create_time from pk_user where u_id=?';
     let sqlArr = [u_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     // console.log("userRst", result);
-    res.send(result);
+    return res.send(result);
 }
 
 getAll = (req, res) => {
@@ -27,14 +28,14 @@ getAll = (req, res) => {
     let callback = (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
             // console.log("getAll", data);
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -49,30 +50,31 @@ createOne = async (req, res) => {
     console.log("createUserinfo");
 
     let { u_name, u_email,u_password,u_sex,u_avatar} = req.body;
+    u_password = bcrypt.hashSync(u_password,10);
+
     let u_nameRst = await getByParams({ key: 'u_email', value: u_email });
     if (u_nameRst.length != 0) {
-        res.send({
+        return res.send({
             "status": 402,
             "msg": "该邮箱已被注册"
         });
-        return;
     }
 
     let sql =
         'insert into pk_user(u_name, u_email,u_password,u_sex,u_avatar) '
         + 'values(?,?,?,?,?)';
-
+    
     let sqlArr = [u_name, u_email,u_password,u_sex,u_avatar];
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "添加成功"
             });
@@ -93,13 +95,13 @@ updateOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "更新成功"
             });
@@ -123,13 +125,13 @@ deleteOne = async (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });

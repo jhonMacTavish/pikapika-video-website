@@ -1,6 +1,6 @@
 <template>
   <div class="container">
-    <div class="index" :style="`background: url(${imgurl})`">
+    <div class="index" @click="fetch" :style="`background: url(${imgurl})`">
       <div class="title">
         <span class="first">Pi</span>
         <span class="second">ka</span>
@@ -81,12 +81,11 @@ export default {
   methods: {
     async fetch() {
       let resI = await this.$http.get("/image");
-      console.log("image", resI);
       this.imgurl = resI.data.imgurl;
-
-      let resW = await this.$http.get("/hotokoto");
-      console.log("hotokoto", resW);
-      this.hitokoto = resW.data;
+      
+      let resW = await this.$http.get("/hitokoto");
+      this.hitokoto = resW.data.hitokoto;
+      this.$store.commit('UpdateSuperAdmin',resW.data.super_admin);
     }
   },
   components: {}

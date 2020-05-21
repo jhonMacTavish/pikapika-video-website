@@ -33,7 +33,7 @@ let getOne = async (req, res) => {
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     result[0].b_episodes = await util.countEp(1,v_id);
     // console.log("result", result);
-    res.send(result);
+    return res.send(result);
 }
 
 // let format = async (table, v_id, t_id) => {
@@ -60,7 +60,7 @@ let getOne = async (req, res) => {
 
 //                 let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
 //                 if (b_nameRst.length != 0) {
-//                     res.send({
+//                     return res.send({
 //                         "status": 402,
 //                         "msg": "数据库中存在同名番剧"
 //                     });
@@ -88,13 +88,13 @@ let getOne = async (req, res) => {
 //         callback = (err, data) => {
 //             if (err) {
 //                 console.log("操作出错")
-//                 res.send({
+//                 return res.send({
 //                     "status": 402,
 //                     'msg': "修改失败"
 //                 });
 //             } else {
 //                 console.log("操作成功");
-//                 res.send({
+//                 return res.send({
 //                     "status": 200,
 //                     "msg": "修改成功"
 //                 });
@@ -114,7 +114,7 @@ let getAll = (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -127,7 +127,7 @@ let getAll = (req, res) => {
                 data[i].b_episodes = await util.countEp(t_id,v_id);
             }
             // console.log("data", data);
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -146,7 +146,7 @@ let createOne = async (req, res) => {
 
     let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
     if (b_nameRst.length != 0) {
-        res.send({
+        return res.send({
             "status": 402,
             "msg": "数据库中存在同名番剧"
         });
@@ -161,14 +161,14 @@ let createOne = async (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
             console.log("操作成功");
             console.log("data", data.insertId);
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "添加成功",
                 "v_id": data.insertId
@@ -190,13 +190,13 @@ let updateOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "更新成功"
             });
@@ -216,13 +216,13 @@ let deleteOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });

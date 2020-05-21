@@ -4,6 +4,7 @@
       <img :src="avtar" alt @click="handleClick" />
       <div class="button-wrap">
         <el-button v-if="!logged" class="button" type="text" @click="handleClick">登录</el-button>
+        <el-button v-else class="button" type="text" @click="null">{{user.u_name}}</el-button>
         <el-button v-if="!logged" class="button" type="text" @click="register">注册</el-button>
         <el-button v-else class="button" type="text" @click="logout">注销</el-button>
       </div>
@@ -79,7 +80,7 @@ export default {
     height: 40px;
     position: absolute;
     top: 20px;
-    right: 10%;
+    right: 40px;
     border-radius: 10px;
     background: rgba(0, 0, 0, 0.2);
     img {
@@ -102,6 +103,10 @@ export default {
         color: white;
         font-size: 18px;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
+      }
+
+      .button:hover{
+        color: #F25D8E;
       }
     }
   }

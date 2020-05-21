@@ -31,11 +31,16 @@
           <template slot="title">
             <i class="el-icon-user"></i>用户管理
           </template>
-          <!-- <el-menu-item-group> -->
-          <!-- <template slot="title">番剧</template> -->
-          <el-menu-item index="/userinfo/list" class="menu-item">用户信息</el-menu-item>
-          <!-- <el-menu-item index="/bangumi/create">添加番剧</el-menu-item> -->
-          <!-- </el-menu-item-group> -->
+          <el-menu-item-group>
+            <template slot="title">普通用户</template>
+            <el-menu-item index="/userinfo/list" class="menu-item">用户列表</el-menu-item>
+            <!-- <el-menu-item index="/bangumi/create">添加番剧</el-menu-item> -->
+          </el-menu-item-group>
+          <el-menu-item-group v-if="super_admin==1">
+            <template slot="title">管理员用户</template>
+            <el-menu-item index="/adminuser/list" class="menu-item">管理员列表</el-menu-item>
+            <!-- <el-menu-item index="/bangumi/create">添加番剧</el-menu-item> -->
+          </el-menu-item-group>
         </el-submenu>
       </el-menu>
     </el-aside>
@@ -45,17 +50,17 @@
         <el-dropdown>
           <i class="el-icon-setting" style="margin-right: 15px"></i>
           <el-dropdown-menu slot="dropdown">
-            <el-dropdown-item>退出</el-dropdown-item>
+            <el-dropdown-item @click.native="$router.push('/')">退出</el-dropdown-item>
             <!-- <el-dropdown-item>新增</el-dropdown-item> -->
-            <el-dropdown-item @click.native="$router.push('/')">返回首页</el-dropdown-item>
+            <el-dropdown-item @click.native="logout">注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-        <span style="color:black">Dragon.Mr</span>
+        <span style="color:black">管理员：{{user.a_name}}</span>
       </el-header>
 
       <el-main class="main-container">
         <keep-alive :exclude="cachedViews">
-        <router-view></router-view>
+          <router-view></router-view>
         </keep-alive>
       </el-main>
     </el-container>
@@ -95,15 +100,32 @@ i {
 export default {
   data() {
     return {
+      user: {},
       // tableData: Array(20).fill(item),
       cachedViews: [
         "BangumiEdit",
         "GuomanEdit",
         "TheaterEdit",
         "FilmTVEdit",
-        "UserinfoEdit"
-      ]
+        "UserinfoEdit",
+        "AdminUserEdit"
+      ],
     };
+  },
+  created() {
+    this.user = JSON.parse(sessionStorage.getItem("adminUser")) || {};
+  },
+  computed:{
+    super_admin(){
+      return this.$store.getters.superAdmin;
+    }
+  },
+  methods: {
+    logout() {
+      sessionStorage.removeItem("adminUser");
+      localStorage.clear();
+      this.$router.push("/login");
+    }
   }
 };
 </script>

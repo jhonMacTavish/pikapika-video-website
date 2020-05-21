@@ -19,7 +19,7 @@ getOne = async (req, res) => {
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     result[0].g_episodes = await util.countEp(2,v_id);
 
-    res.send(result);
+    return res.send(result);
 }
 
 getAll = (req, res) => {
@@ -29,7 +29,7 @@ getAll = (req, res) => {
     let callback = async (err, data) => {
         if (err) {
             console.log("操作出错");
-            res.send({
+            return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
@@ -41,7 +41,7 @@ getAll = (req, res) => {
                 let v_id = data[i].v_id;
                 data[i].g_episodes = await util.countEp(t_id,v_id);
             }
-            res.send({
+            return res.send({
                 "list": data,
                 "status": 200,
                 "msg": "信息获取成功"
@@ -58,7 +58,7 @@ createOne = async (req, res) => {
     let { g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
     let g_nameRst = await getByParams({key:'g_name',value:g_name});
     if (g_nameRst.length != 0) {
-        res.send({
+        return res.send({
             "status": 402,
             "msg": "数据库中存在同名国漫"
         });
@@ -73,14 +73,14 @@ createOne = async (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
             console.log("操作成功");
             console.log("data", data.insertId);
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "添加成功",
                 "v_id": data.insertId
@@ -102,13 +102,13 @@ updateOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "更新成功"
             });
@@ -128,13 +128,13 @@ deleteOne = (req, res) => {
     callback = (err, data) => {
         if (err) {
             console.log("操作出错")
-            res.send({
+            return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
             console.log("操作成功");
-            res.send({
+            return res.send({
                 "status": 200,
                 "msg": "删除成功"
             });

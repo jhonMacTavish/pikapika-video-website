@@ -115,7 +115,7 @@ export default {
     };
   },
   async created() {
-    await this.fetch();
+    // await this.fetch();
   },
   computed: {
     bangumiList() {
