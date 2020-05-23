@@ -1,6 +1,8 @@
 let dbconfig = require('../../../util/dbconfig');
 let bcrypt = require('bcrypt');
-let axios = require("axios");
+let { secretkey } = require('../../../util/secretkey');
+let jwt = require('jsonwebtoken');
+var assert = require('http-assert');
 
 let getByParams = async (obj) => {
     console.log(`getBy${obj.key}`);
@@ -82,37 +84,43 @@ login = async (req, res) => {
         })
     }
 
-    let isValid = bcrypt.compareSync(password,userPsw[0].u_password);
-    if(!isValid){
+    let isValid = bcrypt.compareSync(password, userPsw[0].u_password);
+    if (!isValid) {
         return res.send({
             "status": 401,
             "msg": "密码错误"
         })
     }
 
-    sql = 'select u_name,u_avatar from pk_user where u_email=?';
+    sql = 'select u_id,u_name,u_avatar from pk_user where u_email=?';
     sqlArr = [email];
 
-    let user = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    let userRst = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    console.log("userRst", userRst);
+    let token = jwt.sign({ u_id: userRst[0].u_id }, secretkey);
+
+    let { u_name, u_avatar } = userRst[0];
+    let user = { u_name, u_avatar };
+    user.token = token;
 
     return res.send({
         "status": 200,
         "msg": "登陆成功",
-        "user":user[0]
+        "user": user
     })
 }
 
 register = async (req, res) => {
-    
+
     console.log("register");
     let captchaPass = false;
-    console.log("VerifyArr", VerifyArr);
+    // console.log("VerifyArr", VerifyArr);
     let { username, email, password, captcha } = req.body;
     for (let i = 0; i < VerifyArr.length; i++) {
         if (VerifyArr[i].email && VerifyArr[i].email == email && VerifyArr[i].captcha == captcha) {
-                console.log("验证成功", );
-                captchaPass = true;
-                VerifyArr.pop();
+            console.log("验证成功");
+            captchaPass = true;
+            VerifyArr.pop();
             // } else {
             //     return res.send({
             //         "status": 422,
@@ -137,6 +145,9 @@ register = async (req, res) => {
         return
     }
 
+
+
+
     let sql = 'select u_id from pk_user where u_email=?';
     let sqlArr = [email];
 
@@ -149,6 +160,8 @@ register = async (req, res) => {
         return
     }
 
+    password = bcrypt.hashSync(password, 10);
+
     sql = 'insert into pk_user(u_name,u_email,u_password) values(?,?,?)';
     sqlArr = [username, email, password];
 
@@ -156,18 +169,18 @@ register = async (req, res) => {
 
     // console.log("rst", rst);
 
-    if(rst.affectedRows==1){
+    if (rst.affectedRows == 1) {
         return res.send({
             "status": 200,
             "msg": "注册成功",
         })
-    }else{
+    } else {
         return res.send({
             "status": 500,
             "msg": "注册失败",
         })
     }
-    
+
 }
 
 createOne = async (req, res) => {
@@ -212,8 +225,8 @@ updateOne = (req, res) => {
     console.log("updateUserinfoByID", req.body);
     let { u_name, t_id, u_tag, u_imgSrc, u_VGA, u_style, u_initials, u_playtime, /*u_quarter,*/ u_years, u_actors, u_summary, u_id } = req.body;
 
-    sql = 'update pk_user set u_name=?,t_id=?,u_tag=?,u_imgSrc=?,u_VGA=?,u_style=?,u_initials=?,u_playtime=?,u_years=?,u_actors=?,u_summary=? where u_id=?';
-    sqlArr = [u_name, t_id, u_tag, u_imgSrc, u_VGA, u_style, u_initials, u_playtime, /*u_quarter,*/ u_years, u_actors, u_summary, u_id];
+    let sql = 'update pk_user set u_name=?,t_id=?,u_tag=?,u_imgSrc=?,u_VGA=?,u_style=?,u_initials=?,u_playtime=?,u_years=?,u_actors=?,u_summary=? where u_id=?';
+    let sqlArr = [u_name, t_id, u_tag, u_imgSrc, u_VGA, u_style, u_initials, u_playtime, /*u_quarter,*/ u_years, u_actors, u_summary, u_id];
 
     callback = (err, data) => {
         if (err) {
@@ -234,7 +247,62 @@ updateOne = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
+getInfos = async (req, res) => {
+    let token = String(req.headers.authorization || '').split(' ').pop();
+    assert(token, 401, "请先登录");
+    try {
+        var { u_id } = jwt.verify(token, secretkey);
+    } catch (err) {
+        if (err.message == "jwt malformed")
+            u_id = null;
+        assert(u_id, 422, "请先登录");
+    }
+    assert(u_id, 401, "请先登录");
+    let sql = 'select u_name,u_email,u_sex,u_avatar,create_time from pk_user where u_id=?';
+    let sqlArr = [u_id];
+    let userRst = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    return res.send({
+        "user": userRst[0]
+    })
+}
+
+updateInfos = (req, res) => {
+    console.log("req", req.body);
+    let { u_name, u_sex, u_avatar } = req.body;
+
+    let token = String(req.headers.authorization || '').split(' ').pop();
+    assert(token, 401, "请先登录");
+    try {
+        var { u_id } = jwt.verify(token, secretkey);
+    } catch (err) {
+        if (err.message == "jwt malformed")
+            u_id = null;
+        assert(u_id, 422, "请先登录");
+    }
+    assert(u_id, 401, "请先登录");
+
+    let sql = 'update pk_user set u_name=?,u_sex=?,u_avatar=? where u_id=?';
+    let sqlArr = [u_name, u_sex, u_avatar, u_id];
+
+    callback = (err, data) => {
+        if (err) {
+            console.log("操作出错")
+            return res.send({
+                "status": 402,
+                'msg': "更新失败"
+            });
+        } else {
+            console.log("操作成功");
+            return res.send({
+                "status": 200,
+                "msg": "更新成功"
+            });
+        }
+    }
+
+    dbconfig.sqlConnect(sql, sqlArr, callback);
+}
 
 module.exports = {
-    getAll, login, createOne, updateOne, sendCaptcha,register
+    getAll, login, createOne, updateOne, sendCaptcha, register, getInfos, updateInfos
 }

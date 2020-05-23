@@ -1,10 +1,21 @@
 <template>
   <div id="banner" class="banner-box">
     <div class="user-wrap">
-      <img :src="avtar" alt @click="handleClick" />
+      <span @click="$router.push('/userinfo')">
+        <router-link :to="{path:'/userinfo'}" target="_blank" tag="a" class="avatar">
+          <img :src="avtar" alt @click="handleClick" />
+        </router-link>
+      </span>
       <div class="button-wrap">
         <el-button v-if="!logged" class="button" type="text" @click="handleClick">登录</el-button>
-        <el-button v-else class="button" type="text" @click="null">{{user.u_name}}</el-button>
+        <router-link
+          v-else
+          :to="{path:'/userinfo'}"
+          target="_blank"
+          tag="a"
+          class="usermame"
+        >{{user.u_name}}</router-link>
+        <!-- <el-button v-else class="button" type="text" @click="$router.push('/userinfo')">{{user.u_name}}</el-button> -->
         <el-button v-if="!logged" class="button" type="text" @click="register">注册</el-button>
         <el-button v-else class="button" type="text" @click="logout">注销</el-button>
       </div>
@@ -33,7 +44,7 @@ export default {
       : {
           u_avatar: "../../../static/imgs/user/userAvatar.jpg"
         };
-    this.avtar = this.user.u_avatar;
+    this.avtar = this.user.u_avatar?this.user.u_avatar:"../../../static/imgs/user/userAvatar.jpg";
   },
   methods: {
     handleClick() {
@@ -44,13 +55,14 @@ export default {
       }
     },
 
-    register(){
+    register() {
       this.$router.push("/register");
     },
 
     logout() {
-      localStorage.removeItem("logged_user");
-      localStorage.removeItem("pk_user_logged");
+      // localStorage.removeItem("logged_user");
+      // localStorage.removeItem("pk_user_logged");
+      localStorage.clear();
       location.reload(true);
     }
   }
@@ -63,6 +75,7 @@ export default {
   position: relative;
   z-index: 0;
   min-height: 155px;
+  // min-height: 180px;
   min-width: 999px;
   background-color: #f9f9f9;
   display: -ms-flexbox;
@@ -70,9 +83,10 @@ export default {
   -ms-flex-pack: center;
   justify-content: center;
   background-repeat: no-repeat;
-  background-position: center 0;
+  background-position: center 20%;
   background-size: cover;
   background-image: url(../../../static/imgs/banner/banner.png);
+  // background-image: url(https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1590062962660&di=b38e96aafd34ce829ee9900e79d0cbed&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F-Po3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fpic%2Fitem%2F9825bc315c6034a8cd678f21cc1349540823768c.jpg);
 
   .user-wrap {
     // width: 100px;
@@ -99,14 +113,24 @@ export default {
       margin-left: 10px;
       top: -13px;
       display: inline-block;
+      .usermame {
+        color: white !important;
+        font-size: 18px;
+        text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
+      }
+
+      .usermame:hover {
+        color: #f25d8e !important;
+      }
+
       .button {
         color: white;
         font-size: 18px;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
       }
 
-      .button:hover{
-        color: #F25D8E;
+      .button:hover {
+        color: #f25d8e;
       }
     }
   }

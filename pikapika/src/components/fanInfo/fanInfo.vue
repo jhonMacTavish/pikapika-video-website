@@ -46,7 +46,7 @@
               </span>
             </div>
 
-            <div class="player">
+            <p class="player">
               <span>主演</span>
               <span
                 v-for="(actor,index) in ((objectInfo.t_id==1?
@@ -57,9 +57,9 @@
               >{{actor}}</span>
               <!-- <span>立花理香</span>
               <span>伊藤美来</span>-->
-            </div>
+            </p>
 
-            <div class="type">
+            <p class="type">
               <span>类型</span>
               <span
                 v-for="(style,index) in ((objectInfo.t_id==1?
@@ -72,11 +72,11 @@
               <span>奇幻</span>
               <span>战斗</span>
               <span>魔法</span>-->
-            </div>
+            </p>
 
             <div class="intro">
               <p>
-                <span>简介：</span>
+                <span>简介</span>
                 {{objectInfo.t_id==1?
                 objectInfo.b_summary:objectInfo.t_id==2?
                 objectInfo.g_summary:objectInfo.t_id==3?
@@ -119,8 +119,8 @@ export default {
 <style lang='less' scoped>
 .fanInfo-box {
   .detail-info-box {
-    margin-left: -180px;
-    margin-right: -180px;
+    // margin-left: -180px;
+    // margin-right: -180px;
     position: relative;
     .detail-bg {
       overflow: hidden;
@@ -205,6 +205,16 @@ export default {
             }
           }
 
+          p {
+            margin-top: 10px;
+            span:first-child {
+              border: 1px solid #ff9900;
+              padding: 0 2px;
+              border-radius: 2px;
+              background: rgba(0, 0, 0, 0.1);
+            }
+          }
+
           .publish-time {
             margin-top: 10px;
             span {
@@ -213,21 +223,31 @@ export default {
           }
 
           .player {
-            margin-top: 20px;
+            padding: 2px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 2;
             span {
-              margin-right: 20px;
+              margin-right: 16px;
             }
             span:nth-child(1) {
+              margin-right: 20px;
               color: #ff9900;
             }
           }
 
           .type {
-            margin-top: 10px;
+            padding: 2px 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            white-space: nowrap;
             span {
-              margin-right: 20px;
+              margin-right: 16px;
             }
             span:nth-child(1) {
+              margin-right: 20px;
               color: #ff9900;
             }
           }
@@ -236,8 +256,15 @@ export default {
             position: absolute;
             bottom: 0;
             p {
-              line-height: 30px;
+              line-height: 26px;
+              padding: 2px 0;
+              overflow: hidden;
+              text-overflow: ellipsis;
+              display: -webkit-box;
+              -webkit-box-orient: vertical;
+              -webkit-line-clamp: 6;
               span:nth-child(1) {
+                margin-right: 20px;
                 color: #ff9900;
               }
             }

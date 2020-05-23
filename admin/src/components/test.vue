@@ -1,52 +1,23 @@
 <template>
   <div>
-    <div class="block">
-      <span class="demonstration">默认</span>
-      <el-date-picker v-model="value1" type="date" placeholder="选择日期" value-format="yyyy-MM-dd"></el-date-picker>
-    </div>
-
-    <!-- Form -->
-    <el-button type="text" @click="dialogFormVisible = true">打开嵌套表单的 Dialog</el-button>
-
-    <el-dialog title="收货地址" :visible.sync="dialogFormVisible">
-      <el-form :model="form">
-        <el-form-item label="活动名称" :label-width="formLabelWidth">
-          <el-input v-model="form.name" autocomplete="off"></el-input>
-        </el-form-item>
-        <el-form-item label="活动区域" :label-width="formLabelWidth">
-          <el-select v-model="form.region" placeholder="请选择活动区域">
-            <el-option label="区域一" value="shanghai"></el-option>
-            <el-option label="区域二" value="beijing"></el-option>
-          </el-select>
-        </el-form-item>
-      </el-form>
-      <div slot="footer" class="dialog-footer">
-        <el-button @click="dialogFormVisible = false">取 消</el-button>
-        <el-button type="primary" @click="dialogFormVisible = false">确 定</el-button>
-      </div>
-    </el-dialog>
-
-    <el-tag
-      :key="tag"
-      v-for="tag in model.b_style"
-      closable
-      :disable-transitions="false"
-      @close="handleClose(tag)"
-    >{{tag}}</el-tag>
-    <el-input
-      class="input-new-tag"
-      v-if="inputVisible"
-      v-model="inputValue"
-      ref="saveTagInput"
-      size="small"
-      @keyup.enter.native="handleInputConfirm"
-      @blur="handleInputConfirm"
-    ></el-input>
-    <el-button v-else class="button-new-tag" size="small" @click="showInput">+ New Tag</el-button>
+    <!-- <iframe class="video-container" src="https://iqiyi.cdn9-okzy.com/share/73740ea85c4ec25f00f9acbd859f861d" frameborder="0">
+      <p>Your browser does not support iframes.</p>
+    </iframe>-->
+    <!-- <video id="video" ref="video" controls="true" width="500px" height="400px">
+      <p>Your browser does not support HTML5 video tag.</p>
+    </video>-->
+    <video
+      id="video"
+      ref="video"
+      class="video-js vjs-default-skin vjs-big-play-centered"
+      controls
+      preload="auto"
+    ></video>
   </div>
 </template>
 
 <script>
+let Hls = require("hls.js");
 export default {
   data() {
     return {
@@ -66,15 +37,36 @@ export default {
       formLabelWidth: "120px",
 
       model: {
-        b_style:["校园", "日常", "恋爱"]
+        b_style: ["校园", "日常", "恋爱"]
       },
       inputVisible: false,
       inputValue: ""
     };
   },
   mounted() {
-    let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
-    console.log(reg.test("981192661@qq.com"), );
+    if (Hls.isSupported()) {
+      let video = this.$refs.video;
+      let hls = new Hls();
+      hls.loadSource(
+        "https://youku.cdn4-okzy.com/20200112/3776_b17033ba/index.m3u8"
+      );
+      hls.attachMedia(video);
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        console.log("加载成功");
+        this.$refs.video.play();
+      });
+      hls.on(Hls.Events.ERROR, (event, data) => {
+        // console.log(event, data);
+        // 监听出错事件
+        console.log("加载失败");
+      });
+    } else if (this.$refs.video.canPlayType("application/vnd.apple.mpegurl")) {
+      this.$refs.video.src =
+        "https://video-dev.github.io/streams/x36xhzz/x36xhzz.m3u8";
+      this.$refs.video.addEventListener("loadedmetadata", function() {
+        this.$refs.video.play();
+      });
+    }
   },
   methods: {
     handleClose(tag) {
@@ -101,19 +93,8 @@ export default {
 </script>
 
 <style lang="less" scoped>
-  .el-tag + .el-tag {
-    margin-left: 10px;
-  }
-  .button-new-tag {
-    margin-left: 10px;
-    height: 32px;
-    line-height: 30px;
-    padding-top: 0;
-    padding-bottom: 0;
-  }
-  .input-new-tag {
-    width: 90px;
-    margin-left: 10px;
-    vertical-align: bottom;
-  }
+.video-container {
+  width: 400px;
+  height: 300px;
+}
 </style>

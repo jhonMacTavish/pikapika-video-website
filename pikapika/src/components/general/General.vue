@@ -37,9 +37,9 @@ export default {
     }
   },
   watch:{
-    // '$route'(to,from){
-    //   console.log(to, from);
-    // }
+    '$route'(to,from){
+      this.$store.commit("UpdateSearchParams","reset");
+    }
   },
   methods: {},
   components: {FilterBlock,ShopWindow}

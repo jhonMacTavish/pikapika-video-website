@@ -17,9 +17,9 @@ export default {
   },
   computed: {},
   watch: {
-    async '$route'(to,from){
-      console.log("searchTo", to);
-    }
+    // async '$route'(to,from){
+    //   console.log("searchTo", to);
+    // }
   },
   created(){
     console.log("routeSearch", this.$route);

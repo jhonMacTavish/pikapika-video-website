@@ -2,6 +2,7 @@ import Vue from 'vue'
 import Router from 'vue-router'
 
 import Layout from '@/components/layout/Layout'
+import Userinfo from '@/components/userinfo/Userinfo'
 import Home from '@/components/home/Home'
 import Login from '@/components/login/Login'
 import RegisterPage from '@/components/registerPage/RegisterPage'
@@ -75,6 +76,11 @@ export default new Router({
       path: '',
       component: Layout,
       children: [
+        {
+          path: '/userinfo',
+          name: 'userinfo',
+          component: Userinfo
+        },
         {
           path: '/home',
           name: 'home',

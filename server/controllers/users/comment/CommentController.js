@@ -1,5 +1,7 @@
 let dbconfig = require('../../../util/dbconfig');
-
+let { secretkey } = require('../../../util/secretkey');
+let jwt = require('jsonwebtoken');
+var assert = require('http-assert');
 // getByName = async (b_name) => {
 //     let sql = 'select * from pk_comments where b_name=?';
 //     let sqlArr = [b_name];
@@ -51,7 +53,18 @@ let getAll = async (req, res) => {
 let createOne = async (req, res) => {
     console.log("subComment");
     // console.log("params", req.body.params);
-    let { c_uid, v_id, t_id, c_content, c_uname, c_uavatar } = req.body.params;
+    let token = String(req.headers.authorization || '').split(' ').pop();
+    assert(token, 401, "请先登录");
+    try {
+        var { u_id } = jwt.verify(token, secretkey);
+    } catch (err) {
+        if (err.message == "jwt malformed")
+            u_id = null;
+        assert(u_id, 422, "请先登录");
+    }
+    assert(u_id, 401, "请先登录");
+
+    let {v_id, t_id, c_content, c_uname, c_uavatar } = req.body.params;
     if (!c_content) {
         return res.send({
             "status": 422,
@@ -62,10 +75,9 @@ let createOne = async (req, res) => {
 
     let sql = 'insert into pk_comments(c_uid,v_id,t_id,c_content,c_uname,c_uavatar) '
         + 'values(?,?,?,?,?,?)';
-    let sqlArr = [c_uid, v_id, t_id, c_content, c_uname, c_uavatar];
+    let sqlArr = [u_id, v_id, t_id, c_content, c_uname, c_uavatar];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    console.log("result", result);
     if (result.affectedRows == 1) {
         sql = 'select * from pk_comments where t_id=? and v_id=? order by create_time desc';
         sqlArr = [t_id,v_id];

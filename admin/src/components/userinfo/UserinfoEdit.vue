@@ -110,7 +110,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.id && this.featch();
+    this.id && this.fetch();
   },
   methods: {
     submitForm(formName) {
@@ -178,7 +178,7 @@ export default {
       }
     },
 
-    async featch() {
+    async fetch() {
       console.log("edit");
       const res = await this.$http.post(`/userinfos/${this.id}`);
 

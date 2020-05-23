@@ -12,7 +12,7 @@
           v-model="textarea"
           :rows="3"
           :cols="128"
-          :maxlength="430"
+          :maxlength="500"
           size="medium"
           :placeholder="logged?'请自觉遵守物联网相关的政策法规，严禁发布色情、暴力、反动的言论':'请先登录'"
         ></el-input>
@@ -30,9 +30,7 @@
         :listItem="item"
       />
       <div v-if="!totalItems">
-        <div class="space">
-          暂未有评论
-        </div>
+        <div class="space">暂未有评论</div>
       </div>
     </div>
     <div class="window-pagination">
@@ -86,7 +84,7 @@ export default {
   async created() {
     await this.fetch();
     this.handleCurrentChange(this.currentPage);
-    
+
     this.avtar =
       (this.user ? this.user : {}).u_avatar ||
       "../../../static/imgs/user/userAvatar.jpg";
@@ -96,6 +94,7 @@ export default {
       let params = this.$route.query;
       console.log("params", params);
       let res = await this.$http.get("/comments", { params });
+      console.log("res", res);
       this.$store.commit("UpdateCommentList", res.data.list);
       this.handleCurrentChange(this.currentPage);
     },
@@ -104,7 +103,7 @@ export default {
       console.log("click");
       console.log("this.user", this.user);
       let params = {
-        c_uid: this.user.u_id,
+        // c_uid: this.user.u_id,
         v_id: this.objectInfo.v_id,
         t_id: this.objectInfo.t_id,
         c_content: this.textarea,
@@ -124,6 +123,11 @@ export default {
         this.textarea = "";
         this.currentPage = 1;
         this.handleCurrentChange(this.currentPage);
+
+        // const returnEle = document.querySelector("#comment"); //window是将要跳转区域的id
+        // if (!!returnEle) {
+        //   returnEle.scrollIntoView(true); // true 是默认的
+        // }
       } else {
         this.$message({
           type: "error",
@@ -143,11 +147,6 @@ export default {
         pageList.push(this.commentList[i]);
       }
       this.pageList = pageList;
-
-      const returnEle = document.querySelector("#comment"); //window是将要跳转区域的id
-      if (!!returnEle) {
-        returnEle.scrollIntoView(true); // true 是默认的
-      }
       // document.querySelector("counter1").scrollIntoView(true); //这里的counter1是将要返回地方的id
     }
   },
@@ -164,7 +163,7 @@ export default {
     font-weight: 400;
   }
 
-  .space{
+  .space {
     margin-top: 40px;
     width: 100%;
     height: 50px;

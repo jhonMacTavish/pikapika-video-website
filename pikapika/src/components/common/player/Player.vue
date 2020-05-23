@@ -133,7 +133,7 @@ export default {
       .video-box {
         margin: 0 auto;
         width: 1160px;
-        height: 652px;
+        // height: 652px;
 
         .video {
           width: 100%;

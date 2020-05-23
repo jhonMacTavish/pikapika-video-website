@@ -1,6 +1,6 @@
 <template>
   <div class="newsList-box">
-    <NewsItem v-for="(item) in pageLists" :key="item.id" :text="item"/>
+    <NewsItem v-for="(item) in pageList" :key="item.id" :text="item" />
     <div class="window-pagination">
       <el-pagination
         @current-change="handleCurrentChange"
@@ -22,100 +22,43 @@ export default {
   data() {
     return {
       currentPage: 1,
-      newsList: [
-        {
-          id: 1,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 2,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 3,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 4,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 5,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 6,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 7,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 8,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 9,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 10,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 11,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        },
-        {
-          id: 12,
-          title: "住手！之不是真正的打牌！",
-          content:
-            "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
-        }
-      ],
-      pageLists: []
+      pageList: []
     };
   },
   created() {
-    this.handleCurrentChange(this.currentPage);
+    this.fetch();
   },
-  computed: {},
-  watch: {},
+  computed: {
+    newsList() {
+      if (this.$route.path.indexOf("news") != -1) {
+        return this.$store.getters.newsList;
+      } else if (this.$route.path.indexOf("announce") != -1) {
+        return this.$store.getters.announceList;
+      }
+    }
+  },
+  watch: {
+    '$route'(to, from) {
+      this.fetch();
+    }
+  },
   methods: {
+    fetch() {
+      this.handleCurrentChange(this.currentPage);
+    },
+
     handleCurrentChange(val) {
-      let pageLists = [];
+      let pageList = [];
+      console.log("this.newsList", this.newsList);
       for (
         let i = 5 * (val - 1);
         i < (5 * val < this.newsList.length ? 5 * val : this.newsList.length);
         i++
       ) {
-        pageLists.push(this.newsList[i]);
+        pageList.push(this.newsList[i]);
       }
-      this.pageLists = pageLists;
-      console.log(pageLists);
+      this.pageList = pageList;
+      console.log(pageList);
 
       const returnEle = document.querySelector("#banner"); //window是将要跳转区域的id
       if (!!returnEle) {

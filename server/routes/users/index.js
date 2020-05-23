@@ -57,6 +57,8 @@ module.exports = app =>{
   router.post('/login',User.login);
   router.post('/register',User.register);
   router.post('/getCaptcha',User.sendCaptcha);
+  router.post('/userinfos',User.getInfos);
+  router.put('/userinfos',User.updateInfos);
 
   router.get('/comments',Comment.getAll);
   router.post('/comments',Comment.createOne);

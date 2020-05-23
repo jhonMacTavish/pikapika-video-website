@@ -475,441 +475,15 @@ export default new Vuex.Store({
             }
         ],
         // 国产动漫
-        guomanList: [
-            //     {
-            //         id: 1,
-            //         title: '一人之下 第三季',
-            //         latestChapter: '02',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 2,
-            //         title: '我开动物园那些年',
-            //         latestChapter: '04',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 3,
-            //         title: '妖神记之黑狱篇',
-            //         latestChapter: '06',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 4,
-            //         title: '斗罗大陆 Re:RISE 第二季',
-            //         latestChapter: '100',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 5,
-            //         title: '武庚纪 第三季',
-            //         latestChapter: '90',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 6,
-            //         title: '妖精种植手册',
-            //         latestChapter: '14',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 7,
-            //         title: '今天开始做明星',
-            //         latestChapter: '12',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 8,
-            //         title: '剑网3·侠肝义胆沈剑心 第一季',
-            //         latestChapter: '12',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 9,
-            //         title: '剑网3·侠肝义胆沈剑心 第二季',
-            //         latestChapter: '12',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 10,
-            //         title: '从前有座灵剑山 第二季',
-            //         latestChapter: '12',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 11,
-            //         title: '从前有座灵剑山',
-            //         latestChapter: '12',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     },
-            //     {
-            //         id: 12,
-            //         title: '仙王的日常生活',
-            //         latestChapter: '15',
-            //         imgSrc: '@/../static/imgs/guochuang/'
-            //     }
-        ],
+        guomanList: [],
         // 番组计划
-        bangumiList: [
-
-        ],
+        bangumiList: [],
         // 剧场动画
-        theaterList: [
-            // {
-            //     id: 1,
-            //     title: '只想受你欢迎',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 2,
-            //     title: '假面骑士时王：盖茨王权',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 3,
-            //     title: '假面骑士Agito 特别篇 新的变身',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 4,
-            //     title: '路人女主的养成方法 Fine',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 5,
-            //     title: '你好世界',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 6,
-            //     title: '星际牛仔：天国之门',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 7,
-            //     title: 'Re：从零开始的异世界生活 冰结之绊',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 8,
-            //     title: '星游记之风暴法米拉Ⅱ',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 9,
-            //     title: '圣诞老人公司',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 10,
-            //     title: '心理测量者3：第一监视者',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 11,
-            //     title: '我们的七日战争',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // },
-            // {
-            //     id: 12,
-            //     title: '为美好的世界献上祝福！红传说',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/theater/'
-            // }
-        ],
+        theaterList: [],
         // 影视
-        filmtvList: [
-            // {
-            //     id: 1,
-            //     title: '清平乐',
-            //     latestChapter: '19',
-            //     imgSrc: '@/../static/imgs/filmTV/'            },
-            // {
-            //     id: 2,
-            //     title: '龙岭迷窟',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 3,
-            //     title: '刺猬索尼克',
-            //     latestChapter: 'HD1080P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 4,
-            //     title: '我是大哥大',
-            //     latestChapter: '10',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 5,
-            //     title: '误杀',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 6,
-            //     title: '三生三世枕上书',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 7,
-            //     title: '无心法师',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 8,
-            //     title: '叶问4：完结篇',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 9,
-            //     title: '唐人街探案',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 10,
-            //     title: '将夜2',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 11,
-            //     title: '小丑',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             },
-            // {
-            //     id: 12,
-            //     title: '爱宠大机密2',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: '@/../static/imgs/filmTV/'             }
-        ],
+        filmtvList: [],
         // 搜索结果
-        serhResultList: [
-            // {
-            //     id: 1,
-            //     title: '清平乐',
-            //     latestChapter: '19',
-            //     imgSrc: 'http://img1.doubanio.com/view/photo/l/public/p2593859919.jpg'
-            // },
-            // {
-            //     id: 2,
-            //     title: '龙岭迷窟',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'http://img9.doubanio.com/view/photo/l/public/p2593664928.jpg'
-            // },
-            // {
-            //     id: 3,
-            //     title: '刺猬索尼克',
-            //     latestChapter: 'HD1080P',
-            //     imgSrc: 'http://img9.doubanio.com/view/photo/l/public/p2582485085.jpg'
-            // },
-            // {
-            //     id: 4,
-            //     title: '我是大哥大',
-            //     latestChapter: '10',
-            //     imgSrc: 'https://tva3.sinaimg.cn/large/006MDjU7gy1g0dyt3a1mwj307i08o0ta.jpg'
-            // },
-            // {
-            //     id: 5,
-            //     title: '误杀',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gcwsp1znj8j307i0ah74m.jpg'
-            // },
-            // {
-            //     id: 6,
-            //     title: '三生三世枕上书',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gck9hru5ucj307i0aiq31.jpg'
-            // },
-            // {
-            //     id: 7,
-            //     title: '无心法师',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gcbh2htiozj307i0b9q3i.jpg'
-            // },
-            // {
-            //     id: 8,
-            //     title: '叶问4：完结篇',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gbri3jipdtj307i0ahjru.jpg'
-            // },
-            // {
-            //     id: 9,
-            //     title: '唐人街探案',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gbjm4fq6uwj307i0ah0ss.jpg'
-            // },
-            // {
-            //     id: 10,
-            //     title: '将夜2',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gb2cwufe2hj307i0aiaag.jpg'
-            // },
-            // {
-            //     id: 11,
-            //     title: '小丑',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1g8t5g2yhqxj307i0b4t92.jpg'
-            // },
-            // {
-            //     id: 12,
-            //     title: '爱宠大机密2',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1g7vs0msu93j307i0apglk.jpg'
-            // },
-            // {
-            //     id: 13,
-            //     title: '攻壳机动队：SAC_2045',
-            //     latestChapter: '12',
-            //     imgSrc: 'https://sc01.alicdn.com/kf/U2c166924eddd4483b918a94dfc42e2c5A.jpg'
-            // },
-            // {
-            //     id: 14,
-            //     title: '隐瞒之事',
-            //     latestChapter: '04',
-            //     imgSrc: 'https://sc01.alicdn.com/kf/Udf16cdc1555e4552a9b47b5e9611885e7.jpg'
-            // },
-            // {
-            //     id: 15,
-            //     title: '八男？别闹了！',
-            //     latestChapter: '04',
-            //     imgSrc: 'http://img3.doubanio.com/view/photo/l/public/p2561728381.jpg'
-            // },
-            // {
-            //     id: 16,
-            //     title: '高达创形者 Re:RISE 第二季',
-            //     latestChapter: '03',
-            //     imgSrc: 'http://img1.doubanio.com/view/photo/l/public/p2588442169.jpg'
-            // },
-            // {
-            //     id: 17,
-            //     title: '星掠者',
-            //     latestChapter: '15',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gapo5e5dvej306908c0t2.jpg'
-            // },
-            // {
-            //     id: 18,
-            //     title: '神之塔',
-            //     latestChapter: '04',
-            //     imgSrc: 'http://img3.doubanio.com/view/photo/l/public/p2589007083.jpg'
-            // },
-            // {
-            //     id: 19,
-            //     title: '球咏',
-            //     latestChapter: '04',
-            //     imgSrc: 'https://sc01.alicdn.com/kf/U32dbe3137d0246e19611760899e987bby.jpg'
-            // },
-            // {
-            //     id: 20,
-            //     title: '篮球少年王',
-            //     latestChapter: '27',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1g7q2k5ty29j307i0ac74v.jpg'
-            // },
-            // {
-            //     id: 21,
-            //     title: '放学后海堤日记',
-            //     latestChapter: '03',
-            //     imgSrc: 'https://sc01.alicdn.com/kf/U75ecd8f60d904635998d534bb9186650t.jpg'
-            // },
-            // {
-            //     id: 22,
-            //     title: '黑色五叶草',
-            //     latestChapter: '131',
-            //     imgSrc: 'http://img9.doubanio.com/view/photo/l/public/p2496389055.jpg'
-            // },
-            // {
-            //     id: 23,
-            //     title: '影之诗',
-            //     latestChapter: '03',
-            //     imgSrc: 'http://img3.doubanio.com/view/photo/l/public/p2579946731.jpg'
-            // },
-            // {
-            //     id: 24,
-            //     title: '水果篮子 第二季',
-            //     latestChapter: '03',
-            //     imgSrc: 'http://img3.doubanio.com/view/photo/l/public/p2589217560.jpg'
-            // },
-            // {
-            //     id: 25,
-            //     title: '只想受你欢迎',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://img3.doubanio.com/view/photo/l/public/p2567242893.jpg'
-            // },
-            // {
-            //     id: 26,
-            //     title: '假面骑士时王：盖茨王权',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://sc01.alicdn.com/kf/Udd6e34351ed34dd2a4606c13504122c5y.jpg'
-            // },
-            // {
-            //     id: 27,
-            //     title: '假面骑士Agito 特别篇 新的变身',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'http://img1.doubanio.com/view/photo/l/public/p2551844248.jpg'
-            // },
-            // {
-            //     id: 28,
-            //     title: '路人女主的养成方法 Fine',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'http://img1.doubanio.com/view/photo/l/public/p2543633829.jpg'
-            // },
-            // {
-            //     id: 29,
-            //     title: '你好世界',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'http://img1.doubanio.com/view/photo/l/public/p2594764469.jpg'
-            // },
-            // {
-            //     id: 30,
-            //     title: '星际牛仔：天国之门',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'http://img3.doubanio.com/view/photo/l/public/p454096953.jpg'
-            // },
-            // {
-            //     id: 31,
-            //     title: 'Re：从零开始的异世界生活 冰结之绊',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'http://img9.doubanio.com/view/photo/l/public/p2564850964.jpg'
-            // },
-            // {
-            //     id: 32,
-            //     title: '星游记之风暴法米拉Ⅱ',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gdb5673as5j307i0ait97.jpg'
-            // },
-            // {
-            //     id: 33,
-            //     title: '圣诞老人公司',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gd8z2c6o1yj307i0alq3s.jpg'
-            // },
-            // {
-            //     id: 34,
-            //     title: '心理测量者3：第一监视者',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gd9jon7tmjj307i0al0t8.jpg'
-            // },
-            // {
-            //     id: 35,
-            //     title: '我们的七日战争',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1gd61oyks6tj307i0ajaad.jpg'
-            // },
-            // {
-            //     id: 36,
-            //     title: '为美好的世界献上祝福！红传说',
-            //     latestChapter: 'BD720P',
-            //     imgSrc: 'https://wxt.sinaimg.cn/large/006MDjU7ly1g9jvjwh5ooj307i0alq3l.jpg'
-            // }
-        ],
+        serhResultList: [],
         commentList: [],
 
         episodeList: [],
@@ -918,6 +492,103 @@ export default new Vuex.Store({
 
         conmonList: [],
 
+        newsList: [
+            {
+                id: 1,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                create_time: '2020-4-21 18:00:24',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 2,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Jhon',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 3,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Ethan',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 4,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 5,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 6,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 7,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 8,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 9,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 10,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 11,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            },
+            {
+                id: 12,
+                title: "住手！之不是真正的打牌！",
+                editor: 'Dragon.Mr',
+                content:
+                    "开播之前我对此番还是挺感兴趣的，毕竟隔壁牌佬都已经退化成小学生了，如今能有人能教卡婊打牌还是挺好的。但是开播后迅速被满屏的尬点塞满了。草，生了出来。"
+            }],
+
+        announceList: [
+            {
+                id: 1,
+                title: "网址更换通知",
+                editor: 'Dragon.Mr',
+                create_time: '2020-4-21 18:00:24',
+                content:
+                    "原域名www.bimibimi.tv已被墙，做了处理暂时性可访问，5月4日后切断跳转，网址替换为www.bimibimi.me；请牢记！！！"
+            }
+        ]
         // user:{}
     },
     getters: {
@@ -937,6 +608,8 @@ export default new Vuex.Store({
         videoParams: state => state.videoParams,
         searchParams: state => state.searchParams,
         conmonList: state => state.conmonList,
+        newsList: state => state.newsList,
+        announceList: state => state.announceList
     },
     mutations: {  //大写
         // UpdateUser(state, user) {
@@ -969,10 +642,21 @@ export default new Vuex.Store({
             state.filmtvList = filmtvList;
         },
         UpdateSearchParams(state, params) {
-            state.searchParams[params.key] = params.value;
+            if (params == "reset") {
+                state.searchParams = {};
+            } else {
+                state.searchParams[params.key] = params.value;
+            }
+
         },
         UpdateConmonList(state, conmonList) {
             state.conmonList = conmonList;
+        },
+        UpdateNewsList(state, newsList) {
+            state.newsList = newsList;
+        },
+        UpdateAnnounceList(state, announceList) {
+            state.announceList = announceList;
         },
     },
     actions: {   //小写

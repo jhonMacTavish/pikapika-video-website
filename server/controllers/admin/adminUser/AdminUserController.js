@@ -190,7 +190,7 @@ login = async (req, res) => {
     sqlArr = [a_email];
 
     let userRst = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    let token = jwt.sign({ a_id: userRst[0].a_id }, secretkey)
+    let token = jwt.sign({ a_id: userRst[0].a_id }, secretkey);
 
     let { a_name, super_admin } = userRst[0];
     let user = { token, a_name, super_admin };

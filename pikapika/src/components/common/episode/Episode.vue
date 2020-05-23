@@ -38,6 +38,10 @@ export default {
       // $router.push({name:'play',params:item});
       // this.$router.push({name:'play',query:{index}});
       
+      if(this.$route.path.split('/').pop()-1 == index){
+        return
+      }
+      console.log("play", index+1);
       this.$router.push(`/playinfo/play/${index+1}`);
       let params={};
       params.t_id = this.objectInfo.t_id;

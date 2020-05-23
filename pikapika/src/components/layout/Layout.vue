@@ -1,6 +1,6 @@
 <template>
   <div id="layout">
-    <div class="page-header">
+    <div class="page-header" v-if="path!='/userinfo'">
       <Banner />
       <Navbar />
     </div>
@@ -19,7 +19,12 @@ import Navbar from "@/components/navbar/Navbar";
 import Footer from "@/components/footer/Footer";
 
 export default {
-  name: 'App'
+  name: 'Layout',
+  computed:{
+    path(){
+      return this.$route.path;
+    }
+  }
 }
 </script>
 

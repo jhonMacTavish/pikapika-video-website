@@ -1,15 +1,13 @@
 <template>
-  <router-link :to='{name:"detail",query:{id:text.id}}'>
+  <router-link :to="{name:'detail',query:{id:text.id}}">
     <div class="news-item-box">
       <div class="item-image"></div>
       <div class="item-content">
         <p class="title-box">
           <span class="title">{{text.title}}</span>
-          <span class="publishDate">2020-4-21</span>
+          <span class="publishDate">{{text.create_time}}</span>
         </p>
-        <p
-          class="artical"
-        >{{text.content}}</p>
+        <p class="artical">{{text.content}}</p>
       </div>
     </div>
   </router-link>
@@ -18,9 +16,8 @@
 <script>
 export default {
   name: "NewsItem",
-  props:{
-    text: {},
-    index: 0
+  props: {
+    text: {}
   },
   data() {
     return {};
@@ -67,6 +64,13 @@ export default {
     }
 
     .artical {
+      line-height: 26px;
+      padding: 2px 0;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      display: -webkit-box;
+      -webkit-box-orient: vertical;
+      -webkit-line-clamp: 2;
       line-height: 28px;
     }
   }

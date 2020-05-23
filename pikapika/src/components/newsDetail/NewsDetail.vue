@@ -3,20 +3,20 @@
     <div class="news-wrap">
       <div class="newsDetail-box">
         <div class="news-header">
-          <p class="news-title">住手！之不是真正的打牌！</p>
+          <p class="news-title">{{detail(index).title}}</p>
           <p class="publish-info">
-            <span>动漫杂谈</span>
-            <span>2020-4-21 18:00:24</span>
+            <span>{{detail(index).editor}}</span>
+            <span>{{detail(index).create_time}}</span>
           </p>
         </div>
         <div class="news-content">
-          <p>原域名www.bimibimi.tv已被墙，做了处理暂时性可访问，5月4日后切断跳转，网址替换为www.bimibimi.me；请牢记！！！</p>
+          <p>{{detail(index).content}}</p>
         </div>
       </div>
     </div>
     <!-- <div class="rank-wrap">
       <Leaderboard />
-    </div> -->
+    </div>-->
   </div>
 </template>
 
@@ -27,15 +27,28 @@ import NewsItem from "../common/newsItem/NewsItem";
 export default {
   name: "NewsDetail",
   data() {
-    return {};
+    return {
+      index: 0
+    };
   },
-  created(){
-    console.log(this.$route);
-  },
+  created() {},
   computed: {},
   watch: {},
-  methods: {},
-  components: { Leaderboard, NewsItem }
+  methods: {
+    detail(index) {
+      if (this.$route.path.indexOf("news")!=-1) {
+        return this.$store.getters.newsList[index];
+      }else if(this.$route.path.indexOf("announce")!=-1){
+        return this.$store.getters.announceList[index];
+      }
+    }
+  },
+  components: { Leaderboard, NewsItem },
+  beforeRouteEnter(to, from, next) {
+    next(vm => {
+      vm.index = vm.$route.query.id - 1;
+    });
+  }
 };
 </script>
 <style lang='less' scoped>
@@ -65,8 +78,8 @@ export default {
         }
       }
 
-      .news-content{
-        p{
+      .news-content {
+        p {
           text-indent: 2em;
           line-height: 30px;
         }

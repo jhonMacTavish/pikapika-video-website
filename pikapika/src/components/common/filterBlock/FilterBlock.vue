@@ -123,6 +123,7 @@ export default {
       }
     },
     async setCurrent(index) {
+      console.log("searchParams", this.$store.getters.searchParams);
       this.selected = index+1;
       let searchParams = {};
       searchParams.key = this.title;

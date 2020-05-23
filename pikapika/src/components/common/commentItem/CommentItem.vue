@@ -114,7 +114,7 @@ export default {
     }
     p {
       width: 86%;
-      height: 50px;
+      min-height: 50px;
       margin: 10px 0;
     }
 
@@ -123,7 +123,7 @@ export default {
       // background: red;
       padding: 2px;
       right: 10px;
-      top: 60px;
+      bottom: 8px;
     }
   }
 }

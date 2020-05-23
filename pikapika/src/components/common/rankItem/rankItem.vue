@@ -1,5 +1,5 @@
 <template>
-  <el-tabs type="card" v-model="activeName" @tab-click="handleClick">
+  <el-tabs v-model="activeName" @tab-click="handleClick">
     <el-tab-pane label="番剧榜" name="first">
       <div class="rankItem-box">
         <ul class="rank-list">
@@ -10,11 +10,13 @@
               tag="a"
               class="card-content"
             >
-              <div class="num">{{index+1}}</div>
-              <img :src="item.imgSrc" alt />
-              <div class="desc">
-                <p class="title">{{item.name}}</p>
-                <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+              <div class="link-div">
+                <div class="num">{{index+1}}</div>
+                <img :src="item.imgSrc" alt />
+                <div class="desc">
+                  <p class="title">{{item.name}}</p>
+                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                </div>
               </div>
             </router-link>
           </li>
@@ -31,11 +33,13 @@
               tag="a"
               class="card-content"
             >
-              <div class="num">{{index+1}}</div>
-              <img :src="item.imgSrc" alt />
-              <div class="desc">
-                <p class="title">{{item.name}}</p>
-                <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+              <div class="link-div">
+                <div class="num">{{index+1}}</div>
+                <img :src="item.imgSrc" alt />
+                <div class="desc">
+                  <p class="title">{{item.name}}</p>
+                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                </div>
               </div>
             </router-link>
           </li>
@@ -52,11 +56,13 @@
               tag="a"
               class="card-content"
             >
-              <div class="num">{{index+1}}</div>
-              <img :src="item.imgSrc" alt />
-              <div class="desc">
-                <p class="title">{{item.name}}</p>
-                <span class="VGA">{{item.VGA==1?"BD720P":"BD1080P"}}</span>
+              <div class="link-div">
+                <div class="num">{{index+1}}</div>
+                <img :src="item.imgSrc" alt />
+                <div class="desc">
+                  <p class="title">{{item.name}}</p>
+                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                </div>
               </div>
             </router-link>
           </li>
@@ -73,11 +79,13 @@
               tag="a"
               class="card-content"
             >
-              <div class="num">{{index+1}}</div>
-              <img :src="item.imgSrc" alt />
-              <div class="desc">
-                <p class="title">{{item.name}}</p>
-                <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+              <div class="link-div">
+                <div class="num">{{index+1}}</div>
+                <img :src="item.imgSrc" alt />
+                <div class="desc">
+                  <p class="title">{{item.name}}</p>
+                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                </div>
               </div>
             </router-link>
           </li>
@@ -151,13 +159,18 @@ export default {
 .rankItem-box {
   .rank-list {
     li.rank-item {
-      padding: 20px 0;
-      padding-left: 20px;
-      width: 100%;
+      margin: 0 auto;
+      width: 1156px;
       border-bottom: 1px solid #e5e9ef;
       div,
       img {
         float: left;
+      }
+
+      div.link-div {
+        padding: 20px;
+        width: 100%;
+        height: 100%;
       }
 
       div.num {
@@ -189,9 +202,13 @@ export default {
         color: #99a2aa;
       }
 
-      .VGA{
-        color: #FF5C7C;
+      .VGA {
+        color: #ff5c7c;
       }
+    }
+
+    li.rank-item:first-child {
+      margin-top: 10px;
     }
 
     li.rank-item:hover {
