@@ -2,7 +2,7 @@ let dbconfig = require('../../../util/dbconfig');
 let bcrypt = require('bcrypt');
 
 let getByParams = async (obj) => {
-    console.log(`getBy${obj.key}`);
+    //console.log(`getBy${obj.key}`);
     let sql = `select * from pk_user where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
@@ -11,30 +11,30 @@ let getByParams = async (obj) => {
 }
 
 getOne = async (req, res) => {
-    console.log("getUserinfoByID");
-    let u_id = req.params.id;
-    let sql = 'select u_name,u_email,u_sex,u_avatar,create_time from pk_user where u_id=?';
-    let sqlArr = [u_id];
+    //console.log("getUserinfoByID");
+    let user_id = req.params.id;
+    let sql = 'select username,email,is_man,avatar,create_time from pk_user where user_id=?';
+    let sqlArr = [user_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    // console.log("userRst", result);
+    // //console.log("userRst", result);
     return res.send(result);
 }
 
 getAll = (req, res) => {
-    console.log("getUserinfoAll")
-    let sql = 'select u_id,u_name,u_email,u_sex,u_avatar from pk_user order by u_id asc';
+    //console.log("getUserinfoAll")
+    let sql = 'select user_id,username,email,is_man,avatar,is_banned from pk_user order by user_id asc';
     let sqlArr = [];
     let callback = (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error",err.message);
             return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
+            // //console.log("getAll", data);
+            //console.log("操作成功");
             return res.send({
                 "list": data,
                 "status": 200,
@@ -47,12 +47,12 @@ getAll = (req, res) => {
 }
 
 createOne = async (req, res) => {
-    console.log("createUserinfo");
+    //console.log("createUserinfo");
 
-    let { u_name, u_email,u_password,u_sex,u_avatar} = req.body;
-    u_password = bcrypt.hashSync(u_password,10);
+    let { username, email,password,is_man,avatar} = req.body;
+    password = bcrypt.hashSync(password,10);
 
-    let u_nameRst = await getByParams({ key: 'u_email', value: u_email });
+    let u_nameRst = await getByParams({ key: 'email', value: email });
     if (u_nameRst.length != 0) {
         return res.send({
             "status": 402,
@@ -61,19 +61,19 @@ createOne = async (req, res) => {
     }
 
     let sql =
-        'insert into pk_user(u_name, u_email,u_password,u_sex,u_avatar) '
+        'insert into pk_user(username, email,password,is_man,avatar) '
         + 'values(?,?,?,?,?)';
     
-    let sqlArr = [u_name, u_email,u_password,u_sex,u_avatar];
+    let sqlArr = [username, email,password,is_man,avatar];
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "添加成功"
@@ -85,52 +85,26 @@ createOne = async (req, res) => {
 
 }
 
-updateOne = (req, res) => {
-    console.log("updateUserinfoByID", req.body);
-    let { u_name, t_id, u_tag, u_imgSrc, u_VGA, u_style, u_initials, u_playtime, /*u_quarter,*/ u_years, u_actors, u_summary, u_id } = req.body;
-
-    sql = 'update pk_user set u_name=?,t_id=?,u_tag=?,u_imgSrc=?,u_VGA=?,u_style=?,u_initials=?,u_playtime=?,u_years=?,u_actors=?,u_summary=? where u_id=?';
-    sqlArr = [u_name, t_id, u_tag, u_imgSrc, u_VGA, u_style, u_initials, u_playtime, /*u_quarter,*/ u_years, u_actors, u_summary, u_id];
-
-    callback = (err, data) => {
-        if (err) {
-            console.log("操作出错")
-            return res.send({
-                "status": 402,
-                'msg': "更新失败"
-            });
-        } else {
-            console.log("操作成功");
-            return res.send({
-                "status": 200,
-                "msg": "更新成功"
-            });
-        }
-    }
-
-    dbconfig.sqlConnect(sql, sqlArr, callback);
-}
-
 deleteOne = async (req, res) => {
-    console.log("deleteUserinfoByID")
-    let u_id = req.params.id;
-    console.log("u_id", req.params);
-    let sql = 'delete from pk_comments where c_uid=?';
-    let sqlArr = [u_id];
+    //console.log("deleteUserinfoByID")
+    let user_id = req.params.id;
+    //console.log("user_id", req.params);
+    let sql = 'delete from pk_comment where user_id=?';
+    let sqlArr = [user_id];
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
 
-    sql = 'delete from pk_user where u_id=?';
-    sqlArr = [u_id];
+    sql = 'delete from pk_user where user_id=?';
+    sqlArr = [user_id];
 
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "删除成功"
@@ -141,6 +115,32 @@ deleteOne = async (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
+banUser = (req, res) => {
+    //console.log("banUserByID");
+    let {is_banned} = req.body.params;
+    let user_id = req.params.id;
+    let sql = 'update pk_user set is_banned=? where user_id=?';
+    let sqlArr = [is_banned,user_id];
+
+    callback = (err, data) => {
+        if (err) {
+            //console.log("error",err.message)
+            return res.send({
+                "status": 402,
+                'msg': "封禁失败"
+            });
+        } else {
+            //console.log("操作成功");
+            return res.send({
+                "status": 200,
+                "msg": "封禁成功"
+            });
+        }
+    }
+
+    dbconfig.sqlConnect(sql, sqlArr, callback);
+}
+
 module.exports = {
-    getAll, getOne, createOne, updateOne, deleteOne
+    getAll, getOne, createOne, updateOne, deleteOne,banUser
 }

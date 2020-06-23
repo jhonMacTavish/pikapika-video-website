@@ -1,5 +1,5 @@
 <template>
-  <router-link :to="{name:'detail',query:{id:text.id}}">
+  <router-link :to="{name:'detail',query:{id:text.announce_id}}">
     <div class="news-item-box">
       <div class="item-image"></div>
       <div class="item-content">
@@ -80,7 +80,8 @@ export default {
   cursor: pointer;
   .item-content {
     .title {
-      color: #00a1d6;
+      // color: #00a1d6;
+      color: #39C5BB;
     }
   }
 }

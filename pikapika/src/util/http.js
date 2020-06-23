@@ -1,3 +1,4 @@
+import Vue from 'vue'
 import axios from 'axios'
 
 const http = axios.create({
@@ -18,15 +19,16 @@ http.interceptors.request.use(function (config) {
 http.interceptors.response.use(res => {
     return res;
 }, err => {
+    //console.log("err", );
     if (err.response.data.message) {
         Vue.prototype.$message({
             type: 'error',
             message: err.response.data.message
         });
 
-        if (err.response.status == 401) {
-            router.push('/login');
-        }
+        // if (err.response.status == 401) {
+        //     router.push('/login');
+        // }
     }
 });
 

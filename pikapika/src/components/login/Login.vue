@@ -25,14 +25,25 @@
           class="form"
         >
           <el-form-item label="邮箱" prop="email">
-            <el-input type="text" placeholder="邮箱" v-model="loginForm.email"></el-input>
+            <el-input
+              @keyup.enter.native="login('loginForm')"
+              type="text"
+              placeholder="邮箱"
+              v-model="loginForm.email"
+            ></el-input>
           </el-form-item>
           <el-form-item label="密码" prop="password">
             <el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
           </el-form-item>
 
           <el-form-item label="验证码" prop="captcha" class="captcha-wrap">
-            <el-input placeholder="验证码" v-model="loginForm.captcha" maxlength="4" class="captcha"></el-input>
+            <el-input
+              @keyup.enter.native="login('loginForm')"
+              placeholder="验证码"
+              v-model="loginForm.captcha"
+              maxlength="4"
+              class="captcha"
+            ></el-input>
             <el-button
               type="primary"
               class="captcha-button"
@@ -84,7 +95,7 @@ export default {
     };
 
     let captcha = (rule, value, callback) => {
-      console.log(Number(value));
+      //console.log(Number(value));
       if (value === "") {
         callback(new Error("请输入验证码"));
       } else if (isNaN(Number(value)) || value.length < 4) {
@@ -108,15 +119,15 @@ export default {
         email: [{ validator: validateEmail, trigger: "blur" }],
         password: [{ validator: validatePsw, trigger: "blur" }],
         captcha: [{ validator: captcha, trigger: "blur" }]
-      }
+      },
+      turnTo:''
     };
   },
   computed: {},
-  watch: {
-    checked(val, oldVal) {}
-  },
+  watch: {},
   created() {
-    this.checked = localStorage.getItem("pk_user_remenber") || false;
+    this.checked =
+      JSON.parse(localStorage.getItem("pk_user_remenber")) || false;
     let pk_user = JSON.parse(localStorage.getItem("pk_user")) || null;
     if (pk_user) {
       this.loginForm.email = pk_user.email;
@@ -140,11 +151,7 @@ export default {
             captcha
           });
           if (res.data.status == 200) {
-            console.log("res", res);
-            localStorage.token = res.data.user.token;
-            localStorage.setItem("logged_user", JSON.stringify(res.data.user));
-            // this.$store.commit("UpdateUser",res.data.user);
-            localStorage.setItem("pk_user_logged", true);
+            localStorage.token = res.data.token;
 
             let pk_user = {};
             pk_user.email = email;
@@ -156,8 +163,8 @@ export default {
               localStorage.removeItem("pk_user");
             }
             localStorage.setItem("pk_user_remenber", pk_user_remenber);
-
-            this.$router.push("/home");
+            
+            this.$router.push(this.turnTo);
           } else {
             this.$message({
               type: "error",
@@ -184,16 +191,16 @@ export default {
         this.$message.error("请输入正确的邮箱地址");
         return;
       } else {
-        console.log("eamil", email);
+        //console.log("eamil", email);
         let res = await this.$http.post("/getCaptcha", { email });
-        console.log("res", res);
+        //console.log("res", res);
         if (res.data.status == 200) {
           this.sendedCaptcha = true;
           sessionStorage.setItem("sendedCaptcha", this.sendedCaptcha);
           this.IntervalID = setInterval(() => {
             this.intervals--;
             // sessionStorage.setItem(this.intervals);
-            console.log(this.intervals);
+            //console.log(this.intervals);
             if (this.intervals <= 0) {
               this.intervals = 60;
               this.sendedCaptcha = false;
@@ -201,7 +208,7 @@ export default {
               clearInterval(this.IntervalID);
             }
           }, 1000);
-          // console.log(, )
+          // //console.log(, )
         } else {
           this.$message.error(res.data.msg);
         }
@@ -213,7 +220,12 @@ export default {
       clearInterval(this.intervalID);
     }
   },
-  components: { Footer }
+  components: { Footer },
+  beforeRouteEnter(to, from, next) {
+    next(async vm => {
+      vm.turnTo = from.fullPath;
+    });
+  }
 };
 </script>
 

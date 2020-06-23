@@ -8,12 +8,15 @@ module.exports = app =>{
   var User = require('../../controllers/users/user/userinfoController');
   var Video = require('../../controllers/users/video/VideoController');
   var Comment = require('../../controllers/users/comment/CommentController');
+  var Announce = require('../../controllers/users/announce/AnnounceController');
+  var Review = require('../../controllers/users/review/ReviewController');
+  var Carousel = require('../../controllers/users/carousel/CarouselController');
   var axios = require("axios");
-
+  var authMiddleware = require('../../middleware/userAuth');
 
   router.get('/image', async (req, res) => {
     let rst = await axios.get("https://api.dongmanxingkong.com/suijitupian/acg/1080p/index.php?return=json");
-    console.log("data", rst.data);
+    //console.log("data", rst.data);
     return res.send(rst.data)
   });
 
@@ -57,12 +60,22 @@ module.exports = app =>{
   router.post('/login',User.login);
   router.post('/register',User.register);
   router.post('/getCaptcha',User.sendCaptcha);
-  router.post('/userinfos',User.getInfos);
-  router.put('/userinfos',User.updateInfos);
+  router.post('/userinfos',authMiddleware(),User.getInfos);
+  router.put('/userinfos',authMiddleware(),User.updateInfos);
+  router.get('/getUserinfo',authMiddleware(),User.getUserinfo);
 
   router.get('/comments',Comment.getAll);
-  router.post('/comments',Comment.createOne);
-  router.delete('/comments/:id',Comment.deleteOne);
+  router.post('/comments',authMiddleware(),Comment.createOne);
+  router.post('/comments/report',authMiddleware(),Comment.report);
+  router.post('/comments/like',authMiddleware(),Comment.like);
+  router.delete('/comments/:id',authMiddleware(),Comment.deleteOne);
+
+  router.post("/review",authMiddleware(),Review.review);
+  router.get("/review/getRate",Review.getRate);
+
+  router.get('/announces', Announce.getAll);
+
+  router.get('/carousels', Carousel.getAll);
 
   app.use('/users/api',router);
 }

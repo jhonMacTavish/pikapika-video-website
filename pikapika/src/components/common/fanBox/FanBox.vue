@@ -56,6 +56,10 @@ export default {
     border-radius: 5px;
   }
 
+  img:hover{
+    cursor: pointer;
+  }
+
   .desc {
     width: 100%;
     height: 100%;
@@ -66,7 +70,14 @@ export default {
       position: absolute;
       top: 0;
       span{
+        display: inline-block;
+        width: 100%;
+        height: 80px;
         line-height: 18px;
+      }
+
+      span:hover{
+        color: #00a1d6;
       }
     }
     

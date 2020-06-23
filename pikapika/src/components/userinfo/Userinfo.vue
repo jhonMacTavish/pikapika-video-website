@@ -14,28 +14,28 @@
                 @submit.native.prevent="save"
                 style="margin-right: 200px"
               >
-                <el-form-item label="用户名：" prop="u_name">
-                  <el-input v-model="model.u_name" style="width:222px" maxlength="48"></el-input>
+                <el-form-item label="用户名：" prop="username">
+                  <el-input v-model="model.username" style="width:222px" maxlength="48"></el-input>
                 </el-form-item>
 
-                <el-form-item label="邮箱：" prop="u_email">
-                  <span>{{model.u_email}}</span>
+                <el-form-item label="邮箱：" prop="email">
+                  <span>{{model.email}}</span>
                 </el-form-item>
-                <el-form-item label="性别：" prop="u_sex">
+                <el-form-item label="性别：" prop="is_man">
                   <template>
-                    <el-radio-group v-model="model.u_sex">
-                      <el-radio :label="0">男</el-radio>
-                      <el-radio :label="1">女</el-radio>
+                    <el-radio-group v-model="model.is_man">
+                      <el-radio :label="1">男</el-radio>
+                      <el-radio :label="0">女</el-radio>
                     </el-radio-group>
                   </template>
                 </el-form-item>
 
-                <el-form-item label="头像：" prop="u_avatar">
-                  <img class="avatar" :src="model.u_avatar" />
+                <el-form-item label="头像：" prop="avatar">
+                  <img class="avatar" :src="model.avatar" />
                 </el-form-item>
 
-                <el-form-item label="头像地址：" prop="u_avatar">
-                  <el-input v-model="model.u_avatar"></el-input>
+                <el-form-item label="头像地址：" prop="avatar">
+                  <el-input v-model="model.avatar"></el-input>
                 </el-form-item>
 
                 <el-form-item label="创建时间：" prop="create_time">
@@ -56,7 +56,7 @@
 export default {
   name: "Userinfo",
   data() {
-    let u_name = (rule, value, callback) => {
+    let username = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入用户名")); // 请输入番名
       } else {
@@ -64,7 +64,7 @@ export default {
       }
     };
 
-    let u_password = (rule, value, callback) => {
+    let password = (rule, value, callback) => {
       let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
       if (!value) {
         callback(new Error("请输入密码")); // 请输入请输入集数
@@ -75,7 +75,7 @@ export default {
       }
     };
 
-    let u_avatar = (rule, value, callback) => {
+    let avatar = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请添加图片路径")); // 请输入请输入集数
       } else {
@@ -86,16 +86,16 @@ export default {
     return {
       activeName: "first",
       rules: {
-        u_name: [{ validator: u_name, trigger: "blur" }],
-        u_password: [{ validator: u_password, trigger: "blur" }]
+        username: [{ validator: username, trigger: "blur" }],
+        password: [{ validator: password, trigger: "blur" }]
       },
 
       model: {
-        u_name: "",
-        u_email: "",
-        u_password: "",
-        u_sex: 0,
-        u_avatar: "",
+        username: "",
+        email: "",
+        password: "",
+        is_man: 0,
+        avatar: "",
         create_time: ""
       }
     };
@@ -109,14 +109,14 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          console.log("save");
+          //console.log("save");
 
           var objString = JSON.stringify(this.model);
           var params = JSON.parse(objString);
 
           let res = await this.$http.put(`/userinfos`, params);
 
-          console.log("res***********", res);
+          //console.log("res***********", res);
 
           if (res.data.status == 200) {
             this.$message({
@@ -140,13 +140,13 @@ export default {
     },
 
     async save() {
-      console.log("save");
+      //console.log("save");
       var objString = JSON.stringify(this.model);
       var params = JSON.parse(objString);
 
-      console.log("params*************", params);
+      //console.log("params*************", params);
       const res = await this.$http.post("/userinfos", params);
-      console.log("res***********", res);
+      //console.log("res***********", res);
 
       if (res.affectedRows === 1) {
         this.$message({
@@ -163,11 +163,11 @@ export default {
     },
 
     async fetch() {
-      console.log("edit");
+      //console.log("edit");
       const res = await this.$http.post(`/userinfos`);
 
-      this.model = res.data.user;
-      console.log("this.model", this.model);
+      res.data[0]?this.model = res.data.user:'';
+      //console.log("this.model", this.model);
     },
     handleClick() {}
   },

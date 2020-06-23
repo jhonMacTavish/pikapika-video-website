@@ -8,19 +8,19 @@
     </div>
     <el-table :data="pageList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="th_name" label="名称"></el-table-column>
-      <el-table-column prop="th_tag" label="标签">
-        <template slot-scope="scope">{{scope.row.th_tag==1?"剧场版":"电影"}}</template>
+      <el-table-column prop="name" label="名称"></el-table-column>
+      <el-table-column prop="tag" label="标签" width="120">
+        <template slot-scope="scope">{{scope.row.tag==1?"剧场版":"电影"}}</template>
       </el-table-column>
-      <el-table-column prop="th_style" label="风格"></el-table-column>
-      <el-table-column prop="th_playtime" label="开播时间"></el-table-column>
+      <el-table-column prop="style" label="风格"></el-table-column>
+      <el-table-column prop="playtime" label="开播时间" width="160"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="detail(scope.row.v_id)" class="detail">查看</el-button>
+          <el-button type="text" size="small" @click="detail(scope.row.film_id)" class="detail">查看</el-button>
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/theater/eidt/${scope.row.v_id}`)"
+            @click="$router.push(`/theater/eidt/${scope.row.film_id}`)"
             class="deit"
           >编辑</el-button>
           <el-button type="text" size="small" @click="remove(scope.row)" class="delete">删除</el-button>
@@ -43,43 +43,43 @@
         <el-tab-pane label="基本信息" name="first" class="panel">
           <el-form :model="model" label-width="100px" style="margin-right: 0;">
             <el-form-item label="名称" class="form-item">
-              <p>{{model.th_name}}</p>
+              <p>{{model.name}}</p>
             </el-form-item>
             <el-form-item label="类型" class="form-item">
-              <p>{{model.t_id==1?"番剧":model.t_id==2?"国漫":model.t_id==3?"电影":"影视"}}</p>
+              <p>{{model.type_id==1?"番剧":model.type_id==2?"国漫":model.type_id==3?"电影":"影视"}}</p>
             </el-form-item>
             <el-form-item label="标签" class="form-item">
-              <p>{{model.th_tag==1?"剧场版":"电影"}}</p>
+              <p>{{model.tag==1?"剧场版":"电影"}}</p>
             </el-form-item>
             <el-form-item label="画质" class="form-item">
-              <p>{{model.th_VGA==1?"BD720P":"BD1080P"}}</p>
+              <p>{{model.VGA==1?"BD720P":"BD1080P"}}</p>
             </el-form-item>
             <el-form-item label="风格" class="form-item">
-              <p>{{model.th_style}}</p>
+              <p>{{model.style}}</p>
             </el-form-item>
             <el-form-item label="首字母" class="form-item">
-              <p>{{model.th_initials}}</p>
+              <p>{{model.initials}}</p>
             </el-form-item>
             <el-form-item label="上映时间" class="form-item">
-              <p>{{model.th_playtime}}</p>
+              <p>{{model.playtime}}</p>
             </el-form-item>
             <el-form-item label="主演" class="form-item">
-              <p>{{model.th_actors}}</p>
+              <p>{{model.actors}}</p>
             </el-form-item>
             <el-form-item label="图片地址" class="form-item">
-              <p>{{model.th_imgSrc}}</p>
+              <p>{{model.imgSrc}}</p>
             </el-form-item>
             <el-form-item label="简介" class="form-item">
-              <p>{{model.th_summary}}</p>
+              <p>{{model.summary}}</p>
             </el-form-item>
           </el-form>
         </el-tab-pane>
         <el-tab-pane label="视频资源" name="second" class="panel">
           <el-table :data="pageListV" stripe>
             <!-- <el-table-column type="index" width="50"></el-table-column> -->
-            <el-table-column prop="r_episode" label="章节" width="50"></el-table-column>
-            <el-table-column prop="r_address" label="视频链接">
-              <template slot-scope="scope">{{scope.row.r_address | videoLinkSplice}}</template>
+            <el-table-column prop="episode" label="章节" width="50"></el-table-column>
+            <el-table-column prop="src" label="视频链接">
+              <template slot-scope="scope">{{scope.row.src | videoLinkSplice}}</template>
             </el-table-column>
           </el-table>
           <div class="video-pagination">
@@ -140,7 +140,7 @@ export default {
   methods: {
     async fetch() {
       const res = await this.$http.get("/theaters");
-      // console.log("res", res.data.list);
+      // //console.log("res", res.data.list);
       this.$store.dispatch("updateTheaterList", res.data.list);
 
       if (Math.ceil(this.totalItems / 10) < this.currentPage) {
@@ -150,31 +150,31 @@ export default {
     },
 
     async remove(row) {
-      this.$confirm(`是否确定要删除电影 "${row.th_name}"`, "提示", {
+      this.$confirm(`是否确定要删除电影 "${row.name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-            // const resC = await this.$http.delete(`/comments/${row.v_id}`);
+            // const resC = await this.$http.delete(`/comments/${row.film_id}`);
             let params = {
-              t_id: 3,
-              v_id:row.v_id
+              type_id: 3,
+              film_id:row.film_id
             }
             const resC = await this.$http.delete(`/comments`,{params});
 
-            console.log("delete", resC);
+            //console.log("delete", resC);
 
             if (resC.data.status == 200) {
 
-                // const resV = await this.$http.delete(`/videos/${row.v_id}`);
+                // const resV = await this.$http.delete(`/videos/${row.film_id}`);
                 const resV = await this.$http.delete(`/videos`,{params});
 
-                console.log("delete", resV);
+                //console.log("delete", resV);
 
                 if (resV.data.status == 200) {
-                    const resB = await this.$http.delete(`/theaters/${row.v_id}`);
-                    console.log("delete", resB);
+                    const resB = await this.$http.delete(`/theaters/${row.film_id}`);
+                    //console.log("delete", resB);
 
                     if (resB.data.status == 200) {
                         this.$message({
@@ -250,18 +250,18 @@ export default {
       // document.querySelector("counter1").scrollIntoView(true); //这里的counter1是将要返回地方的id
     },
 
-    async detail(v_id) {
-      const res = await this.$http.get(`/theaters/${v_id}`);
-      this.model = res.data[0];
+    async detail(film_id) {
+      const res = await this.$http.get(`/theaters/${film_id}`);
+      res.data[0]?this.model = res.data[0]:'';
       this.dialogFormVisible = true;
       this.getResources();
-      // console.log("this.model", this.model);
+      // //console.log("this.model", this.model);
     },
 
     async getResources() {
-      // console.log("getVideo");
+      // //console.log("getVideo");
       let rst = await this.$http.get(`/videos/`, {
-        params: { v_id: this.model.v_id, t_id: this.model.t_id }
+        params: { film_id: this.model.film_id, type_id: this.model.type_id }
       });
       this.$store.dispatch("updateVideoList", rst.data.list);
       this.videoCurrentChange(this.videoCurrentPage);

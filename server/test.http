@@ -1,4 +1,4 @@
-@url=http://localhost:3000/users/api
+@url=http://localhost:3000/admin/api
 @json=Content-Type: application/json
 
 ###
@@ -8,6 +8,9 @@ get {{url}}/
 get {{url}}/bangumis
 
 ###
+delete {{url}}/removeCsl
+
+###
 get {{url}}/bangumis/3
 
 ###
@@ -15,18 +18,18 @@ post {{url}}/bangumis
 {{json}}
 
 {
-    "b_name": "33333333333333333333",
-    "t_id": 1,
-    "b_imgSrc": "dawdawdw",
-    "b_episodes": "12",
-    "b_status": 2,
-    "b_style": "战斗、热血",
-    "b_initials": "D",
-    "b_playtime": "2019-10-07",
-    "b_quarter":"10",
-    "b_years": "2019",
-    "b_actors":"户松遥、松冈祯丞",
-    "b_summary":"虚拟游戏战斗番"
+    "name": "33333333333333333333",
+    "type_id": 1,
+    "imgSrc": "dawdawdw",
+    "episodes": "12",
+    "status": 2,
+    "style": "战斗、热血",
+    "initials": "D",
+    "playtime": "2019-10-07",
+    "quarter":"10",
+    "years": "2019",
+    "actors":"户松遥、松冈祯丞",
+    "summary":"虚拟游戏战斗番"
 }
 
 ###

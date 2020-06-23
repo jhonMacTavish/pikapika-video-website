@@ -2,7 +2,7 @@ let dbconfig = require('../../../util/dbconfig');
 let util = require('../../../util/util');
 
 let getByParams = async (obj) => {
-    console.log(`getBy${obj.key}`);
+    //console.log(`getBy${obj.key}`);
     let sql = `select * from pk_guoman where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
@@ -11,35 +11,35 @@ let getByParams = async (obj) => {
 }
 
 getOne = async (req, res) => {
-    console.log("getGuomanByID", )
-    let v_id = req.params.id
-    let sql = 'select * from pk_guoman where v_id=?';
-    let sqlArr = [v_id];
+    //console.log("getGuomanByID", )
+    let film_id = req.params.id
+    let sql = 'select guoman_id as film_id,name,searchUrl,type_id,imgSrc,is_ended,style,initials,playtime,years,actors,summary from pk_guoman where guoman_id=?';
+    let sqlArr = [film_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    result[0].g_episodes = await util.countEp(2,v_id);
+    result[0].episodes = await util.countEp(2,film_id);
 
     return res.send(result);
 }
 
 getAll = (req, res) => {
-    console.log("getGuomanAll")
-    let sql = 'select v_id,g_name,g_style,g_playtime from pk_guoman order by g_name asc';
+    //console.log("getGuomanAll")
+    let sql = 'select guoman_id as film_id,name,style,playtime from pk_guoman order by create_time desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error",err.message);
             return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
-            let t_id = 2;
+            // //console.log("getAll", data);
+            //console.log("操作成功");
+            let type_id = 2;
             for(let i=0; i<data.length; i++){
-                let v_id = data[i].v_id;
-                data[i].g_episodes = await util.countEp(t_id,v_id);
+                let film_id = data[i].film_id;
+                data[i].episodes = await util.countEp(type_id,film_id);
             }
             return res.send({
                 "list": data,
@@ -53,11 +53,11 @@ getAll = (req, res) => {
 }
 
 createOne = async (req, res) => {
-    console.log("createGuoman");
+    //console.log("createGuoman");
 
-    let { g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary } = req.body;
-    let g_nameRst = await getByParams({key:'g_name',value:g_name});
-    if (g_nameRst.length != 0) {
+    let { searchUrl, name, type_id, imgSrc, is_ended, style, initials, playtime,   years, actors, summary,weekday } = req.body;
+    let nameRst = await getByParams({key:'name',value:name});
+    if (nameRst.length != 0) {
         return res.send({
             "status": 402,
             "msg": "数据库中存在同名国漫"
@@ -66,24 +66,24 @@ createOne = async (req, res) => {
     }
 
     let sql =
-        'insert into pk_guoman(g_name,t_id,g_imgSrc,g_status,g_style,g_initials,g_playtime,g_years,g_actors,g_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?)';
+        'insert into pk_guoman(searchUrl,name,type_id,imgSrc,is_ended,style,initials,playtime,years,actors,summary,admin_id,weekday) '
+        + 'values(?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [g_name, t_id, g_imgSrc, g_status, g_style, g_initials, g_playtime, /*g_quarter,*/ g_years, g_actors, g_summary];
+    let sqlArr = [searchUrl,name, type_id, imgSrc, is_ended, style, initials, playtime,   years, actors, summary,req.admin_id,weekday];
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
-            console.log("操作成功");
-            console.log("data", data.insertId);
+            //console.log("操作成功");
+            //console.log("data", data.insertId);
             return res.send({
                 "status": 200,
                 "msg": "添加成功",
-                "v_id": data.insertId
+                "film_id": data.insertId
             });
         }
     }
@@ -93,21 +93,20 @@ createOne = async (req, res) => {
 }
 
 updateOne = (req, res) => {
-    console.log("updateGuomanByID");
-    let { t_id, g_name, g_imgSrc, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id } = req.body;
+    let { searchUrl,type_id, name, imgSrc, is_ended, style, initials, playtime, years, actors, summary, film_id } = req.body;
 
-    sql = 'update pk_guoman set t_id=?,g_name=?,g_imgSrc=?,g_status=?,g_style=?,g_initials=?,g_playtime=?,g_years=?,g_actors=?,g_summary=? where v_id=?';
-    sqlArr = [t_id, g_name, g_imgSrc, g_status, g_style, g_initials, g_playtime,/*g_quarter,*/g_years, g_actors, g_summary, v_id];
+    let sql = 'update pk_guoman set searchUrl=?,type_id=?,name=?,imgSrc=?,is_ended=?,style=?,initials=?,playtime=?,years=?,actors=?,summary=?,admin_id=? where guoman_id=?';
+    let sqlArr = [searchUrl,type_id, name, imgSrc, is_ended, style, initials, playtime, years, actors, summary, req.admin_id, film_id];
 
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "更新成功"
@@ -119,21 +118,21 @@ updateOne = (req, res) => {
 }
 
 deleteOne = (req, res) => {
-    console.log("deleteGuomanByID")
-    let v_id = req.params.id;
-    console.log("v_id", req.params);
-    let sql = 'delete from pk_guoman where v_id=?';
-    let sqlArr = [v_id];
+    //console.log("deleteGuomanByID")
+    let film_id = req.params.id;
+    //console.log("film_id", req.params);
+    let sql = 'delete from pk_guoman where guoman_id=?';
+    let sqlArr = [film_id];
 
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "删除成功"

@@ -67,7 +67,7 @@ export default {
     init() {
       let title = this.title;
       let path = this.$route.params.id;
-      // console.log("path******", path);
+      // //console.log("path******", path);
       switch (title) {
         case "years":
           this.searchType = "时间";
@@ -123,7 +123,7 @@ export default {
       }
     },
     async setCurrent(index) {
-      console.log("searchParams", this.$store.getters.searchParams);
+      //console.log("searchParams", this.$store.getters.searchParams);
       this.selected = index+1;
       let searchParams = {};
       searchParams.key = this.title;
@@ -136,7 +136,7 @@ export default {
       let res = await this.$http.post(`/${path}s/search`, this.searchParams);
 
       this.$store.commit("UpdateConmonList", res.data.list);
-      // console.log("res", res.data.list);
+      // //console.log("res", res.data.list);
     }
   },
   components: {}
@@ -183,7 +183,8 @@ export default {
     .current {
       // background: #ffb400;
       // background: #FF8EB3;
-      background: #00a1d6;
+      // background: #00a1d6;
+      background: #39C5BB;
       // color: white;
       // color: #00A1D6;
       color: white;

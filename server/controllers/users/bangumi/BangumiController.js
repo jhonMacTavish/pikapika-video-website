@@ -1,137 +1,45 @@
 let dbconfig = require('../../../util/dbconfig');
 let util = require('../../../util/util');
 
-// getByName = async (b_name) => {
-//     let sql = 'select * from pk_bangumi where b_name=?';
-//     let sqlArr = [b_name];
-
-//     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-//     return result;
-// }
-
-// let obj = {
-//     key:'b_name',
-//     value:'苍之彼方的四重奏'
-// }
-
-let getByParams = async (obj) => {
-    console.log(`getBangumiBy${obj.key}`);
-    console.log("obj.key", obj.key);
-    let sql = `select * from pk_bangumi where ${obj.key}=?`;
-    let sqlArr = [obj.value];
-
-    let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    return result;
-}
-
 let getOne = async (req, res) => {
-    console.log("getBangumiByID");
-    let v_id = req.params.id;
-    let sql = 'select * from pk_bangumi where v_id=?';
-    let sqlArr = [v_id];
-    console.log("v_id", v_id);
+    //console.log("getBangumiByID");
+    let film_id = req.params.id;
+    let sql = 'select bangumi_id as film_id,type_id,name,imgSrc,is_ended,style,initials,playtime,weekday,quarter,years,actors,summary,play_volume from pk_bangumi where bangumi_id=?';
+    let sqlArr = [film_id];
+    //console.log("film_id", film_id);
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    // console.log("res", result);
-    result[0].b_episodes = await util.countEp(1, v_id);
-    // console.log("result", result);
+    // result[0].episodes = await util.countEp(1, film_id);
+    // let token = String(req.headers.authorization || '').split(' ').pop();
+    // try {
+    //     var { user_id } = jwt.verify(token, secretkey);
+    // } catch (err) {
+    //     user_id = null
+    // }
     return res.send(result);
 }
 
-// let format = async (table, v_id, t_id) => {
-//     let rst = await getByParams({ key: 'v_id', value: v_id });
-//     console.log("formatRst", rst[0]);
-//     if (rst[0].t_id != t_id) {
-//         let sql = `delete from ${table} where v_id=?`
-//         let sqlArr = [v_id];
-//         let callback = (err, data) => {
-//             if (err) {
-//                 console.log("操作出错")
-//             } else {
-//                 console.log("删除成功");
-//             }
-//         }
-//         dbconfig.sqlConnect(sql, sqlArr, callback);
-
-//         switch (t_id) {
-//             case 1:
-//                 rst[0].t_id = 1;
-//                 console.log("create in pk_bangumi");
-
-//                 let { b_name, t_id, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary } = rst[0];
-
-//                 let b_nameRst = await getByParams({ key: 'b_name', value: b_name });
-//                 if (b_nameRst.length != 0) {
-//                     return res.send({
-//                         "status": 402,
-//                         "msg": "数据库中存在同名番剧"
-//                     });
-//                     return;
-//                 }
-
-//                 let sql =
-//                     'insert into pk_bangumi(b_name,t_id,b_imgSrc,b_episodes,b_status,b_style,b_initials,b_playtime,b_quarter,b_years,b_actors,b_summary) '
-//                     + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
-
-//                 let sqlArr = [b_name, t_id, b_imgSrc, b_status, b_style, b_initials, b_playtime, b_quarter, b_years, b_actors, b_summary];
-
-
-//                 break;
-//             case 2:
-//                 break;
-//             case 3:
-//                 break;
-//             case 4:
-//                 break;
-//             default:
-//                 break;
-//         }
-
-//         callback = (err, data) => {
-//             if (err) {
-//                 console.log("操作出错")
-//                 return res.send({
-//                     "status": 402,
-//                     'msg': "修改失败"
-//                 });
-//             } else {
-//                 console.log("操作成功");
-//                 return res.send({
-//                     "status": 200,
-//                     "msg": "修改成功"
-//                 });
-//             }
-//         }
-
-//         dbconfig.sqlConnect(sql, sqlArr, callback)
-//     }
-// }
-
-// format('pk_guoman', 4, 1);
-
 let getAll = (req, res) => {
-    console.log("getBangumiAll")
-    let sql = 'select t_id,v_id,b_name,b_imgSrc,b_status from pk_bangumi';
+    //console.log("getBangumiAll")
+    let sql = 'select type_id,bangumi_id as film_id,name,imgSrc,is_ended from pk_bangumi order by create_time desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error", err.message);
             return res.send({
-                'status': 402,
+                'is_ended': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
-            let t_id = 1;
+            //console.log("操作成功");
+            let type_id = 1;
             for (let i = 0; i < data.length; i++) {
-                let v_id = data[i].v_id;
-                data[i].b_episodes = await util.countEp(t_id, v_id);
+                let film_id = data[i].film_id;
+                data[i].episodes = await util.countEp(type_id, film_id);
             }
-            // console.log("data", data);
             return res.send({
                 "list": data,
-                "status": 200,
+                "is_ended": 200,
                 "msg": "信息获取成功"
             })
         }
@@ -141,23 +49,23 @@ let getAll = (req, res) => {
 }
 
 let getStyles = async (req, res) => {
-    let sql = 'select b_style as style from pk_bangumi';
+    let sql = 'select style as style from pk_bangumi';
     sqlArr = [];
     let rst = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    // console.log("rst", rst);
+    // //console.log("rst", rst);
     let arr = [];
-    // console.log("rst[0]", rst[0].style);
-    // console.log("rst.length", rst.length);
+    // //console.log("rst[0]", rst[0].style);
+    // //console.log("rst.length", rst.length);
 
 
     for (let i = 0; i < rst.length; i++) {
 
         temp = rst[i].style.split("、");
-        // console.log("temp", temp);
+        // //console.log("temp", temp);
         arr = arr.concat(temp);
 
     }
-    // console.log("arr", arr);
+    // //console.log("arr", arr);
     let styleArr = [];
     for (let i = 0; i < arr.length; i++) {
         if (styleArr.indexOf(arr[i]) == -1) {
@@ -165,7 +73,7 @@ let getStyles = async (req, res) => {
         }
     }
     styleArr.unshift("全部");
-    // console.log("styleArr", styleArr);
+    // //console.log("styleArr", styleArr);
     return res.send({ list: styleArr });
 }
 
@@ -187,8 +95,8 @@ let search = async (req, res) => {
         default:
             break;
     }
-    console.log("searchParams", params);
-    let sql = 'select t_id,v_id,b_name,b_imgSrc,b_status,b_style from pk_bangumi';
+    //console.log("searchParams", params);
+    let sql = 'select type_id,bangumi_id as film_id,name,imgSrc,is_ended,style from pk_bangumi';
     let sqlArr = [];
     let keyArr = [];
     for (let key in params) {
@@ -205,23 +113,23 @@ let search = async (req, res) => {
     }
     let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error", err.message);
             return res.send({
-                'status': 402,
+                'is_ended': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
-            let t_id = 1;
+            // //console.log("getAll", data);
+            //console.log("操作成功");
+            let type_id = 1;
             for (let i = 0; i < data.length; i++) {
-                let v_id = data[i].v_id;
-                data[i].b_episodes = await util.countEp(t_id, v_id);
+                let film_id = data[i].film_id;
+                data[i].episodes = await util.countEp(type_id, film_id);
             }
-            // console.log("data", data);
+            // //console.log("data", data);
             return res.send({
                 "list": data,
-                "status": 200,
+                "is_ended": 200,
                 "msg": "信息获取成功"
             })
         }
@@ -229,97 +137,97 @@ let search = async (req, res) => {
 
     let rst = await dbconfig.asyncSqlConnect(sql, sqlArr, callback);
     let list = [];
-    if(params.style){
+    if (params.style) {
         let length = rst.length;
-        for(let i=0; i<length; i++){
-            if(rst[i].b_style.indexOf(params.style)>=0)
+        for (let i = 0; i < length; i++) {
+            if (rst[i].style.indexOf(params.style) >= 0)
                 list.push(rst[i]);
         }
-    }else{
+    } else {
         list = rst;
     }
-    console.log("list", list);
-    return res.send({list});
+    //console.log("list", list);
+    return res.send({ list });
 }
 // getBangumiType();
 let bangumiQuarter = async () => {
-    let sql = 'select b_quarter as style from pk_bangumi';
+    let sql = 'select quarter as style from pk_bangumi';
     sqlArr = [];
     let rst = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    // console.log("rst", rst);
+    // //console.log("rst", rst);
     let arr = [];
-    // console.log("rst[0]", rst[0].style);
-    // console.log("rst.length", rst.length);
+    // //console.log("rst[0]", rst[0].style);
+    // //console.log("rst.length", rst.length);
 
 
     for (let i = 0; i < rst.length; i++) {
 
         temp = rst[i].style.split("、");
-        // console.log("temp", temp);
+        // //console.log("temp", temp);
         arr = arr.concat(temp);
 
     }
-    // console.log("arr", arr);
+    // //console.log("arr", arr);
     let quarterArr = [];
     for (let i = 0; i < arr.length; i++) {
         if (quarterArr.indexOf(arr[i]) == -1) {
             quarterArr.push(arr[i]);
         }
     }
-    console.log("quarterArr", quarterArr);
+    //console.log("quarterArr", quarterArr);
 }
 // bangumiQuarter();
 let bangumiYear = async () => {
-    let sql = 'select b_years as style from pk_bangumi';
+    let sql = 'select years as style from pk_bangumi';
     sqlArr = [];
     let rst = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    // console.log("rst", rst);
+    // //console.log("rst", rst);
     let arr = [];
-    // console.log("rst[0]", rst[0].style);
-    // console.log("rst.length", rst.length);
+    // //console.log("rst[0]", rst[0].style);
+    // //console.log("rst.length", rst.length);
 
 
     for (let i = 0; i < rst.length; i++) {
 
         temp = rst[i].style.split("、");
-        // console.log("temp", temp);
+        // //console.log("temp", temp);
         arr = arr.concat(temp);
 
     }
-    // console.log("arr", arr);
+    // //console.log("arr", arr);
     let YearArr = [];
     for (let i = 0; i < arr.length; i++) {
         if (YearArr.indexOf(arr[i]) == -1) {
             YearArr.push(arr[i]);
         }
     }
-    console.log("YearArr", YearArr);
+    //console.log("YearArr", YearArr);
 }
 // bangumiYear();
 
 let getRank = (req, res) => {
-    console.log("getBangumiRank")
-    let sql = 'select t_id,v_id,b_name as name,b_imgSrc as imgSrc,b_status as status from pk_bangumi order by play_volume desc';
+    //console.log("getBangumiRank")
+    let sql = 'select type_id,bangumi_id as film_id,name as name,imgSrc as imgSrc,is_ended as is_ended from pk_bangumi order by play_volume desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error", err.message);
             return res.send({
-                'status': 402,
+                'is_ended': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
-            let t_id = 1;
+            // //console.log("getAll", data);
+            //console.log("操作成功");
+            let type_id = 1;
             for (let i = 0; i < data.length; i++) {
-                let v_id = data[i].v_id;
-                data[i].episodes = await util.countEp(t_id, v_id);
+                let film_id = data[i].film_id;
+                data[i].episodes = await util.countEp(type_id, film_id);
             }
-            // console.log("data", data);
+            // //console.log("data", data);
             return res.send({
                 "list": data,
-                "status": 200,
+                "is_ended": 200,
                 "msg": "信息获取成功"
             })
         }

@@ -9,27 +9,27 @@
       @submit.native.prevent="save"
       style="margin-right: 200px"
     >
-      <el-form-item label="名称" prop="u_name">
-        <el-input v-model="model.u_name" style="width:222px" maxlength="48"></el-input>
+      <el-form-item label="名称" prop="username">
+        <el-input v-model="model.username" style="width:222px" maxlength="48"></el-input>
       </el-form-item>
 
-      <el-form-item label="邮箱" prop="u_email">
-        <el-input v-model="model.u_email" style="width:222px" maxlength="100"></el-input>
+      <el-form-item label="邮箱" prop="email">
+        <el-input v-model="model.email" style="width:222px" maxlength="100"></el-input>
       </el-form-item>
-      <el-form-item label="密码" prop="u_password">
-        <el-input type="password" v-model="model.u_password" style="width:222px" maxlength="16"></el-input>
+      <el-form-item label="密码" prop="password">
+        <el-input type="password" v-model="model.password" style="width:222px" maxlength="16"></el-input>
       </el-form-item>
-      <el-form-item label="性别" prop="u_sex">
+      <el-form-item label="性别" prop="is_man">
         <template>
-          <el-radio-group v-model="model.u_sex">
+          <el-radio-group v-model="model.is_man">
             <el-radio :label="0">男</el-radio>
             <el-radio :label="1">女</el-radio>
           </el-radio-group>
         </template>
       </el-form-item>
 
-      <el-form-item label="头像地址" prop="u_avatar">
-        <el-input v-model="model.u_avatar" maxlength="500"></el-input>
+      <el-form-item label="头像地址" prop="avatar">
+        <el-input v-model="model.avatar" maxlength="500"></el-input>
       </el-form-item>
 
       <el-form-item>
@@ -47,7 +47,7 @@ export default {
     id: {}
   },
   data() {
-    let u_name = (rule, value, callback) => {
+    let username = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入番名")); // 请输入番名
       } else {
@@ -55,7 +55,7 @@ export default {
       }
     };
 
-    let u_email = (rule, value, callback) => {
+    let email = (rule, value, callback) => {
       let reg = /^([a-zA-Z]|[0-9])(\w|\-)+@[a-zA-Z0-9]+\.([a-zA-Z]{2,4})$/;
       if (!value) {
         callback(new Error("请输入邮箱")); // 请输入请输入集数
@@ -66,7 +66,7 @@ export default {
       }
     };
 
-    let u_password = (rule, value, callback) => {
+    let password = (rule, value, callback) => {
       let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
       if (!value) {
         callback(new Error("请输入密码")); // 请输入请输入集数
@@ -77,7 +77,7 @@ export default {
       }
     };
 
-    let u_avatar = (rule, value, callback) => {
+    let avatar = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请添加图片路径")); // 请输入请输入集数
       } else {
@@ -87,17 +87,17 @@ export default {
 
     return {
       rules: {
-        u_name: [{ validator: u_name, trigger: "blur" }],
-        u_email: [{ validator: u_email, trigger: "blur" }],
-        u_password: [{ validator: u_password, trigger: "blur" }],
+        username: [{ validator: username, trigger: "blur" }],
+        email: [{ validator: email, trigger: "blur" }],
+        password: [{ validator: password, trigger: "blur" }],
       },
 
       model: {
-        u_name: "",
-        u_email: "",
-        u_password: "",
-        u_sex: 0,
-        u_avatar: ""
+        username: "",
+        email: "",
+        password: "",
+        is_man: 0,
+        avatar: ""
       },
 
       styleVisible: false,
@@ -116,7 +116,7 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          console.log("save");
+          //console.log("save");
 
           var objString = JSON.stringify(this.model);
           var params = JSON.parse(objString);
@@ -124,14 +124,14 @@ export default {
           let res;
 
           if (this.id) {
-            console.log("更新");
+            //console.log("更新");
             res = await this.$http.put(`/userinfos/${this.id}`, params);
           } else {
-            console.log("创建");
+            //console.log("创建");
             res = await this.$http.post("/userinfos", params);
           }
 
-          console.log("res***********", res);
+          //console.log("res***********", res);
 
           if (res.data.status == 200) {
             this.$message({
@@ -156,13 +156,13 @@ export default {
     },
 
     async save() {
-      console.log("save");
+      //console.log("save");
       var objString = JSON.stringify(this.model);
       var params = JSON.parse(objString);
 
-      console.log("params*************", params);
+      //console.log("params*************", params);
       const res = await this.$http.post("/userinfos", params);
-      console.log("res***********", res);
+      //console.log("res***********", res);
 
       if (res.affectedRows === 1) {
         this.$message({
@@ -179,53 +179,12 @@ export default {
     },
 
     async fetch() {
-      console.log("edit");
+      //console.log("edit");
       const res = await this.$http.post(`/userinfos/${this.id}`);
 
-      this.model = res.data[0];
-      console.log("this.model", this.model);
+      res.data[0]?this.model = res.data[0]:'';
+      //console.log("this.model", this.model);
     },
-
-    styHandleClose(tag) {
-      this.model.u_style.splice(this.model.u_style.indexOf(tag), 1);
-    },
-
-    styShowInput() {
-      this.styleVisible = true;
-      this.$nextTick(_ => {
-        this.$refs.saveStyleInput.$refs.input.focus();
-      });
-    },
-
-    styHandleInputConfirm() {
-      let styleValue = this.styleValue;
-      if (styleValue) {
-        this.model.u_style.push(styleValue);
-      }
-
-      this.styleVisible = false;
-      this.styleValue = "";
-    },
-
-    actHandleClose(tag) {
-      this.model.u_actors.splice(this.model.u_actors.indexOf(tag), 1);
-    },
-
-    actShowInput() {
-      this.actorsVisible = true;
-      this.$nextTick(_ => {
-        this.$refs.saveActorInput.$refs.input.focus();
-      });
-    },
-
-    actHandleInputConfirm() {
-      let actorsValue = this.actorsValue;
-      if (actorsValue) {
-        this.model.u_actors.push(actorsValue);
-      }
-      this.actorsVisible = false;
-      this.actorsValue = "";
-    }
   },
   components: {}
 };

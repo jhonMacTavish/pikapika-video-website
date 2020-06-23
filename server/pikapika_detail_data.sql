@@ -20,12 +20,12 @@ SET FOREIGN_KEY_CHECKS=0;
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_admin`;
 CREATE TABLE `pk_admin` (
-  `a_id` int(11) NOT NULL AUTO_INCREMENT,
-  `a_name` varchar(18) NOT NULL,
+  `admin_id` int(11) NOT NULL AUTO_INCREMENT,
+  `name` varchar(18) NOT NULL,
   `a_password` varchar(16) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`a_id`),
-  UNIQUE KEY `a_id` (`a_id`)
+  PRIMARY KEY (`admin_id`),
+  UNIQUE KEY `admin_id` (`admin_id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -37,25 +37,25 @@ CREATE TABLE `pk_admin` (
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_bangumi`;
 CREATE TABLE `pk_bangumi` (
-  `v_id` int(11) NOT NULL AUTO_INCREMENT,
-  `t_id` tinyint(1) NOT NULL,
-  `b_name` varchar(100) NOT NULL,
-  `b_imgSrc` varchar(500) NOT NULL,
-  `b_status` tinyint(1) NOT NULL,
-  `b_style` varchar(50) NOT NULL,
-  `b_initials` varchar(1) NOT NULL,
-  `b_playtime` varchar(10) NOT NULL,
-  `b_quarter` varchar(2) NOT NULL,
-  `b_years` varchar(4) NOT NULL,
-  `b_actors` varchar(255) NOT NULL,
-  `b_summary` varchar(500) NOT NULL,
+  `film_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` tinyint(1) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `imgSrc` varchar(500) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `style` varchar(50) NOT NULL,
+  `initials` varchar(1) NOT NULL,
+  `playtime` varchar(10) NOT NULL,
+  `quarter` varchar(2) NOT NULL,
+  `years` varchar(4) NOT NULL,
+  `actors` varchar(255) NOT NULL,
+  `summary` varchar(500) NOT NULL,
   `play_volume` int(11) NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`v_id`),
-  UNIQUE KEY `v_id` (`v_id`),
-  UNIQUE KEY `b_name` (`b_name`),
-  KEY `t_id` (`t_id`),
-  CONSTRAINT `pk_bangumi_ibfk_1` FOREIGN KEY (`t_id`) REFERENCES `pk_type` (`t_id`)
+  PRIMARY KEY (`film_id`),
+  UNIQUE KEY `film_id` (`film_id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `pk_bangumi_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `pk_type` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=17 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -79,80 +79,80 @@ INSERT INTO `pk_bangumi` VALUES ('15', '1', '虚构推理', 'https://img3.douban
 INSERT INTO `pk_bangumi` VALUES ('16', '1', '异世界四重奏', 'https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2550985765.webp', '1', '原创、搞笑、日常', 'Y', '2019-04-09', '04', '2019', '日野聪、原由实、福岛润、雨宫天、小林裕介、高桥李依、悠木碧、早见沙织', '某天突然出现了一个神奇的按钮。按下按钮后，就转移到了另外一个异世界！！\n从其他世界转移而来的角色们在那里大集合……！？', '0', '2020-05-06 02:22:30');
 
 -- ----------------------------
--- Table structure for pk_comments
+-- Table structure for pk_comment
 -- ----------------------------
-DROP TABLE IF EXISTS `pk_comments`;
-CREATE TABLE `pk_comments` (
-  `c_id` int(11) NOT NULL AUTO_INCREMENT,
-  `c_uid` int(11) NOT NULL,
-  `v_id` int(11) NOT NULL,
-  `t_id` tinyint(1) NOT NULL,
-  `c_content` varchar(255) NOT NULL,
+DROP TABLE IF EXISTS `pk_comment`;
+CREATE TABLE `pk_comment` (
+  `comment_id` int(11) NOT NULL AUTO_INCREMENT,
+  `user_id` int(11) NOT NULL,
+  `film_id` int(11) NOT NULL,
+  `type_id` tinyint(1) NOT NULL,
+  `content` varchar(255) NOT NULL,
   `c_uname` varchar(48) NOT NULL,
   `c_uavatar` varchar(500) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`c_id`),
-  UNIQUE KEY `c_id` (`c_id`),
-  KEY `c_uid` (`c_uid`),
-  KEY `t_id` (`t_id`),
-  CONSTRAINT `pk_comments_ibfk_1` FOREIGN KEY (`c_uid`) REFERENCES `pk_user` (`u_id`),
-  CONSTRAINT `pk_comments_ibfk_2` FOREIGN KEY (`t_id`) REFERENCES `pk_type` (`t_id`)
+  PRIMARY KEY (`comment_id`),
+  UNIQUE KEY `comment_id` (`comment_id`),
+  KEY `user_id` (`user_id`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `pk_comment_ibfk_1` FOREIGN KEY (`user_id`) REFERENCES `pk_user` (`user_id`),
+  CONSTRAINT `pk_comment_ibfk_2` FOREIGN KEY (`type_id`) REFERENCES `pk_type` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=48 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of pk_comments
+-- Records of pk_comment
 -- ----------------------------
-INSERT INTO `pk_comments` VALUES ('20', '1', '5', '3', '哈哈哈哈哈哈', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 11:04:45');
-INSERT INTO `pk_comments` VALUES ('21', '1', '5', '3', '开心', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 11:04:52');
-INSERT INTO `pk_comments` VALUES ('22', '1', '5', '3', '开森\n', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 11:04:56');
-INSERT INTO `pk_comments` VALUES ('23', '14', '3', '3', '？？？？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:48:51');
-INSERT INTO `pk_comments` VALUES ('24', '14', '3', '3', '哈哈哈', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:51:52');
-INSERT INTO `pk_comments` VALUES ('25', '14', '3', '3', '怎么肥事', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:55:07');
-INSERT INTO `pk_comments` VALUES ('26', '14', '3', '3', '别告我啊', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:56:00');
-INSERT INTO `pk_comments` VALUES ('27', '14', '3', '3', 'a', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:57:59');
-INSERT INTO `pk_comments` VALUES ('28', '14', '3', '3', 'ddd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:58:44');
-INSERT INTO `pk_comments` VALUES ('29', '14', '3', '3', '???', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:58:50');
-INSERT INTO `pk_comments` VALUES ('30', '14', '3', '3', 'aaaaaaaaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:59:21');
-INSERT INTO `pk_comments` VALUES ('31', '14', '3', '3', 'aa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:00:15');
-INSERT INTO `pk_comments` VALUES ('32', '14', '3', '3', '呵', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:02:31');
-INSERT INTO `pk_comments` VALUES ('33', '14', '3', '3', '哼哼', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:02:36');
-INSERT INTO `pk_comments` VALUES ('34', '14', '7', '3', '哈哈哈哈哈哈', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:02:46');
-INSERT INTO `pk_comments` VALUES ('35', '14', '7', '3', '？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:03:15');
-INSERT INTO `pk_comments` VALUES ('36', '14', '7', '3', '？？？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:04:03');
-INSERT INTO `pk_comments` VALUES ('37', '14', '3', '3', 'd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:04:49');
-INSERT INTO `pk_comments` VALUES ('38', '14', '3', '3', 'aaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:04:52');
-INSERT INTO `pk_comments` VALUES ('39', '14', '7', '3', 'aaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:05:03');
-INSERT INTO `pk_comments` VALUES ('40', '14', '3', '3', 'ddd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:06:00');
-INSERT INTO `pk_comments` VALUES ('41', '14', '3', '3', 'aaaaaaaaaaaaaaaaaaaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:06:03');
-INSERT INTO `pk_comments` VALUES ('42', '14', '7', '3', 'ddddd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:06:15');
-INSERT INTO `pk_comments` VALUES ('43', '14', '7', '3', '行了嘛？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:24');
-INSERT INTO `pk_comments` VALUES ('44', '14', '7', '3', '呵', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:28');
-INSERT INTO `pk_comments` VALUES ('45', '14', '1', '3', 'aaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:35');
-INSERT INTO `pk_comments` VALUES ('46', '14', '1', '3', '哈哈哈哈哈哈哈', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:43');
-INSERT INTO `pk_comments` VALUES ('47', '1', '1', '3', 'en?', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 12:10:03');
+INSERT INTO `pk_comment` VALUES ('20', '1', '5', '3', '哈哈哈哈哈哈', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 11:04:45');
+INSERT INTO `pk_comment` VALUES ('21', '1', '5', '3', '开心', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 11:04:52');
+INSERT INTO `pk_comment` VALUES ('22', '1', '5', '3', '开森\n', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 11:04:56');
+INSERT INTO `pk_comment` VALUES ('23', '14', '3', '3', '？？？？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:48:51');
+INSERT INTO `pk_comment` VALUES ('24', '14', '3', '3', '哈哈哈', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:51:52');
+INSERT INTO `pk_comment` VALUES ('25', '14', '3', '3', '怎么肥事', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:55:07');
+INSERT INTO `pk_comment` VALUES ('26', '14', '3', '3', '别告我啊', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:56:00');
+INSERT INTO `pk_comment` VALUES ('27', '14', '3', '3', 'a', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:57:59');
+INSERT INTO `pk_comment` VALUES ('28', '14', '3', '3', 'ddd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:58:44');
+INSERT INTO `pk_comment` VALUES ('29', '14', '3', '3', '???', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:58:50');
+INSERT INTO `pk_comment` VALUES ('30', '14', '3', '3', 'aaaaaaaaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 11:59:21');
+INSERT INTO `pk_comment` VALUES ('31', '14', '3', '3', 'aa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:00:15');
+INSERT INTO `pk_comment` VALUES ('32', '14', '3', '3', '呵', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:02:31');
+INSERT INTO `pk_comment` VALUES ('33', '14', '3', '3', '哼哼', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:02:36');
+INSERT INTO `pk_comment` VALUES ('34', '14', '7', '3', '哈哈哈哈哈哈', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:02:46');
+INSERT INTO `pk_comment` VALUES ('35', '14', '7', '3', '？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:03:15');
+INSERT INTO `pk_comment` VALUES ('36', '14', '7', '3', '？？？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:04:03');
+INSERT INTO `pk_comment` VALUES ('37', '14', '3', '3', 'd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:04:49');
+INSERT INTO `pk_comment` VALUES ('38', '14', '3', '3', 'aaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:04:52');
+INSERT INTO `pk_comment` VALUES ('39', '14', '7', '3', 'aaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:05:03');
+INSERT INTO `pk_comment` VALUES ('40', '14', '3', '3', 'ddd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:06:00');
+INSERT INTO `pk_comment` VALUES ('41', '14', '3', '3', 'aaaaaaaaaaaaaaaaaaaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:06:03');
+INSERT INTO `pk_comment` VALUES ('42', '14', '7', '3', 'ddddd', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:06:15');
+INSERT INTO `pk_comment` VALUES ('43', '14', '7', '3', '行了嘛？', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:24');
+INSERT INTO `pk_comment` VALUES ('44', '14', '7', '3', '呵', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:28');
+INSERT INTO `pk_comment` VALUES ('45', '14', '1', '3', 'aaa', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:35');
+INSERT INTO `pk_comment` VALUES ('46', '14', '1', '3', '哈哈哈哈哈哈哈', 'aaaa', 'https://ss0.bdstatic.com/70cFuHSh_Q1YnxGkpoWK1HF6hhy/it/u=3832099094,1425661950&fm=26&gp=0.jpg', '2020-05-08 12:08:43');
+INSERT INTO `pk_comment` VALUES ('47', '1', '1', '3', 'en?', 'Dragon_Mr', 'https://timgsa.baidu.com/timg?image&quality=80&size=b9999_10000&sec=1588879312997&di=91cc60ece4916ef83f52af3c7e664d3a&imgtype=0&src=http%3A%2F%2Fgss0.baidu.com%2F9fo3dSag_xI4khGko9WTAnF6hhy%2Fzhidao%2Fwh%253D450%252C600%2Fsign%3Dc12a6c0f4736acaf59b59ef849e9a126%2Ff603918fa0ec08fa5bf83c9155ee3d6d55fbda0f.jpg', '2020-05-08 12:10:03');
 
 -- ----------------------------
 -- Table structure for pk_filmtv
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_filmtv`;
 CREATE TABLE `pk_filmtv` (
-  `v_id` int(11) NOT NULL AUTO_INCREMENT,
-  `t_id` tinyint(1) NOT NULL,
-  `f_name` varchar(100) NOT NULL,
-  `f_imgSrc` varchar(500) NOT NULL,
-  `f_status` tinyint(1) NOT NULL,
-  `f_style` varchar(50) NOT NULL,
-  `f_initials` varchar(1) NOT NULL,
-  `f_playtime` varchar(10) NOT NULL,
-  `f_years` varchar(4) NOT NULL,
-  `f_actors` varchar(255) NOT NULL,
-  `f_summary` varchar(500) NOT NULL,
+  `film_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` tinyint(1) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `imgSrc` varchar(500) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `style` varchar(50) NOT NULL,
+  `initials` varchar(1) NOT NULL,
+  `playtime` varchar(10) NOT NULL,
+  `years` varchar(4) NOT NULL,
+  `actors` varchar(255) NOT NULL,
+  `summary` varchar(500) NOT NULL,
   `play_volume` int(11) NOT NULL DEFAULT '0',
-  PRIMARY KEY (`v_id`),
-  UNIQUE KEY `v_id` (`v_id`),
-  UNIQUE KEY `f_name` (`f_name`),
-  KEY `t_id` (`t_id`),
-  CONSTRAINT `pk_filmtv_ibfk_1` FOREIGN KEY (`t_id`) REFERENCES `pk_type` (`t_id`)
+  PRIMARY KEY (`film_id`),
+  UNIQUE KEY `film_id` (`film_id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `pk_filmtv_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `pk_type` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -171,24 +171,24 @@ INSERT INTO `pk_filmtv` VALUES ('7', '4', '爱情公寓5', 'https://img1.doubani
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_guoman`;
 CREATE TABLE `pk_guoman` (
-  `v_id` int(11) NOT NULL AUTO_INCREMENT,
-  `t_id` tinyint(1) NOT NULL,
-  `g_name` varchar(100) NOT NULL,
-  `g_imgSrc` varchar(500) NOT NULL,
-  `g_status` tinyint(1) NOT NULL,
-  `g_style` varchar(50) NOT NULL,
-  `g_initials` varchar(1) NOT NULL,
-  `g_playtime` varchar(10) NOT NULL,
-  `g_years` varchar(4) NOT NULL,
-  `g_actors` varchar(255) NOT NULL,
-  `g_summary` varchar(500) NOT NULL,
+  `film_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` tinyint(1) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `imgSrc` varchar(500) NOT NULL,
+  `status` tinyint(1) NOT NULL,
+  `style` varchar(50) NOT NULL,
+  `initials` varchar(1) NOT NULL,
+  `playtime` varchar(10) NOT NULL,
+  `years` varchar(4) NOT NULL,
+  `actors` varchar(255) NOT NULL,
+  `summary` varchar(500) NOT NULL,
   `play_volume` int(11) NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`v_id`),
-  UNIQUE KEY `v_id` (`v_id`),
-  UNIQUE KEY `g_name` (`g_name`),
-  KEY `t_id` (`t_id`),
-  CONSTRAINT `pk_guoman_ibfk_1` FOREIGN KEY (`t_id`) REFERENCES `pk_type` (`t_id`)
+  PRIMARY KEY (`film_id`),
+  UNIQUE KEY `film_id` (`film_id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `pk_guoman_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `pk_type` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=28 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -223,198 +223,198 @@ INSERT INTO `pk_guoman` VALUES ('26', '2', '镇魂街 第一季', 'https://img9.
 INSERT INTO `pk_guoman` VALUES ('27', '2', '镇魂街 第二季', 'https://img9.doubanio.com/view/photo/s_ratio_poster/public/p2574775186.webp', '1', '热血、奇幻、战斗、漫画改', 'Z', '2019-12-28', '2019', '图特哈蒙、四刀辉彰、郭盛、陈思宇、闫夜桥', '罗刹街镇魂将曹焱兵和寄灵人夏铃踏上修复灵槐之路，羽林街镇魂将南御夫却受命缉拿曹焱兵，恰有菩提街镇魂将北落师门出面平息事态。但南御夫心怀鬼胎，北落师门与女孩水儿也暗藏秘密，曹焱兵和夏铃又将如何应对。菩提树下，三方命运交结，最终会涌至何处。', '0', '2020-05-06 10:16:06');
 
 -- ----------------------------
--- Table structure for pk_resources
+-- Table structure for pk_resource
 -- ----------------------------
-DROP TABLE IF EXISTS `pk_resources`;
-CREATE TABLE `pk_resources` (
-  `r_id` int(11) NOT NULL AUTO_INCREMENT,
-  `v_id` int(11) NOT NULL,
-  `t_id` tinyint(1) NOT NULL,
-  `r_episode` int(4) NOT NULL DEFAULT '1',
-  `r_address` varchar(500) NOT NULL,
+DROP TABLE IF EXISTS `pk_resource`;
+CREATE TABLE `pk_resource` (
+  `resource_id` int(11) NOT NULL AUTO_INCREMENT,
+  `film_id` int(11) NOT NULL,
+  `type_id` tinyint(1) NOT NULL,
+  `episode` int(4) NOT NULL DEFAULT '1',
+  `src` varchar(500) NOT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`r_id`),
-  UNIQUE KEY `r_id` (`r_id`),
-  KEY `t_id` (`t_id`),
-  CONSTRAINT `pk_resources_ibfk_1` FOREIGN KEY (`t_id`) REFERENCES `pk_type` (`t_id`)
+  PRIMARY KEY (`resource_id`),
+  UNIQUE KEY `resource_id` (`resource_id`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `pk_resource_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `pk_type` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=165 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
--- Records of pk_resources
+-- Records of pk_resource
 -- ----------------------------
-INSERT INTO `pk_resources` VALUES ('1', '1', '1', '1', 'http://localhost:3000/videos/bangumi/Infinite_Dendragon/01.mp4', '2020-05-06 00:03:34');
-INSERT INTO `pk_resources` VALUES ('2', '2', '1', '1', 'http://localhost:3000/videos/bangumi/NECOPARA/01.mp4', '2020-05-06 00:13:15');
-INSERT INTO `pk_resources` VALUES ('3', '3', '1', '1', 'http://localhost:3000/videos/bangumi/NEW_GAME/01.mp4', '2020-05-06 00:17:40');
-INSERT INTO `pk_resources` VALUES ('4', '4', '1', '1', 'http://localhost:3000/videos/bangumi/Re_从零开始的异世界生活_新编集版/01.mp4', '2020-05-06 00:22:27');
-INSERT INTO `pk_resources` VALUES ('5', '5', '1', '1', 'http://localhost:3000/videos/bangumi/Re_公主连结/01.mp4', '2020-05-06 00:25:50');
-INSERT INTO `pk_resources` VALUES ('6', '5', '1', '2', 'http://localhost:3000/videos/bangumi/Re_公主连结/02.mp4', '2020-05-06 00:26:34');
-INSERT INTO `pk_resources` VALUES ('7', '5', '1', '3', 'http://localhost:3000/videos/bangumi/Re_公主连结/03.mp4', '2020-05-06 00:27:12');
-INSERT INTO `pk_resources` VALUES ('8', '5', '1', '4', 'http://localhost:3000/videos/bangumi/Re_公主连结/04.mp4', '2020-05-06 00:27:36');
-INSERT INTO `pk_resources` VALUES ('9', '6', '1', '1', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/01.mp4', '2020-05-06 00:32:36');
-INSERT INTO `pk_resources` VALUES ('10', '6', '1', '2', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/02.mp4', '2020-05-06 00:32:46');
-INSERT INTO `pk_resources` VALUES ('11', '6', '1', '3', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/03.mp4', '2020-05-06 00:32:54');
-INSERT INTO `pk_resources` VALUES ('12', '6', '1', '4', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/04.mp4', '2020-05-06 00:33:09');
-INSERT INTO `pk_resources` VALUES ('13', '6', '1', '5', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/05.mp4', '2020-05-06 00:33:16');
-INSERT INTO `pk_resources` VALUES ('14', '6', '1', '6', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/06.mp4', '2020-05-06 00:33:24');
-INSERT INTO `pk_resources` VALUES ('15', '6', '1', '7', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/07.mp4', '2020-05-06 00:33:34');
-INSERT INTO `pk_resources` VALUES ('16', '6', '1', '8', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/08.mp4', '2020-05-06 00:33:41');
-INSERT INTO `pk_resources` VALUES ('17', '6', '1', '9', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/09.mp4', '2020-05-06 00:33:50');
-INSERT INTO `pk_resources` VALUES ('18', '6', '1', '10', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/10.mp4', '2020-05-06 00:34:05');
-INSERT INTO `pk_resources` VALUES ('19', '6', '1', '11', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/11.mp4', '2020-05-06 00:34:17');
-INSERT INTO `pk_resources` VALUES ('20', '6', '1', '12', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/12.mp4', '2020-05-06 00:34:26');
-INSERT INTO `pk_resources` VALUES ('21', '7', '1', '1', 'http://localhost:3000/videos/bangumi/钢琴之森/01.mp4', '2020-05-06 00:37:34');
-INSERT INTO `pk_resources` VALUES ('22', '8', '1', '1', 'http://localhost:3000/videos/bangumi/家有圆圆_我家的圆圆你知道吗/01.mp4', '2020-05-06 00:45:13');
-INSERT INTO `pk_resources` VALUES ('28', '9', '1', '1', 'http://localhost:3000/videos/bangumi/恋爱小行星/01.mp4', '2020-05-06 01:07:33');
-INSERT INTO `pk_resources` VALUES ('29', '9', '1', '2', 'http://localhost:3000/videos/bangumi/恋爱小行星/02.mp4', '2020-05-06 01:23:43');
-INSERT INTO `pk_resources` VALUES ('40', '9', '1', '3', 'http://localhost:3000/videos/bangumi/恋爱小行星/03.mp4', '2020-05-06 01:51:55');
-INSERT INTO `pk_resources` VALUES ('41', '9', '1', '4', 'http://localhost:3000/videos/bangumi/恋爱小行星/04.mp4', '2020-05-06 01:51:57');
-INSERT INTO `pk_resources` VALUES ('42', '9', '1', '5', 'http://localhost:3000/videos/bangumi/恋爱小行星/05.mp4', '2020-05-06 01:51:58');
-INSERT INTO `pk_resources` VALUES ('43', '9', '1', '6', 'http://localhost:3000/videos/bangumi/恋爱小行星/06.mp4', '2020-05-06 01:52:04');
-INSERT INTO `pk_resources` VALUES ('44', '9', '1', '7', 'http://localhost:3000/videos/bangumi/恋爱小行星/07.mp4', '2020-05-06 01:52:07');
-INSERT INTO `pk_resources` VALUES ('45', '9', '1', '8', 'http://localhost:3000/videos/bangumi/恋爱小行星/08.mp4', '2020-05-06 01:52:09');
-INSERT INTO `pk_resources` VALUES ('46', '9', '1', '9', 'http://localhost:3000/videos/bangumi/恋爱小行星/09.mp4', '2020-05-06 01:52:11');
-INSERT INTO `pk_resources` VALUES ('47', '9', '1', '10', 'http://localhost:3000/videos/bangumi/恋爱小行星/10.mp4', '2020-05-06 01:53:19');
-INSERT INTO `pk_resources` VALUES ('48', '9', '1', '11', 'http://localhost:3000/videos/bangumi/恋爱小行星/11.mp4', '2020-05-06 01:53:22');
-INSERT INTO `pk_resources` VALUES ('49', '9', '1', '12', 'http://localhost:3000/videos/bangumi/恋爱小行星/12.mp4', '2020-05-06 01:53:25');
-INSERT INTO `pk_resources` VALUES ('50', '10', '1', '1', 'http://localhost:3000/videos/bangumi/路人女主的养成方法/00.mp4', '2020-05-06 02:02:29');
-INSERT INTO `pk_resources` VALUES ('51', '10', '1', '2', 'http://localhost:3000/videos/bangumi/路人女主的养成方法/01.mp4', '2020-05-06 02:02:41');
-INSERT INTO `pk_resources` VALUES ('52', '11', '1', '1', 'http://localhost:3000/videos/bangumi/请在伸展台上微笑/01.mp4', '2020-05-06 02:06:16');
-INSERT INTO `pk_resources` VALUES ('53', '12', '1', '1', 'http://localhost:3000/videos/bangumi/世界第一初恋 _第一季/01.mp4', '2020-05-06 02:11:30');
-INSERT INTO `pk_resources` VALUES ('54', '13', '1', '1', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/01.mp4', '2020-05-06 02:14:04');
-INSERT INTO `pk_resources` VALUES ('55', '13', '1', '2', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/02.mp4', '2020-05-06 02:14:13');
-INSERT INTO `pk_resources` VALUES ('56', '13', '1', '3', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/03.mp4', '2020-05-06 02:14:16');
-INSERT INTO `pk_resources` VALUES ('57', '13', '1', '4', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/04.mp4', '2020-05-06 02:14:18');
-INSERT INTO `pk_resources` VALUES ('58', '13', '1', '5', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/05.mp4', '2020-05-06 02:14:21');
-INSERT INTO `pk_resources` VALUES ('59', '13', '1', '6', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/06.mp4', '2020-05-06 02:14:23');
-INSERT INTO `pk_resources` VALUES ('60', '14', '1', '1', 'http://localhost:3000/videos/bangumi/我们无法一起学习_第二季/01.mp4', '2020-05-06 02:16:54');
-INSERT INTO `pk_resources` VALUES ('61', '15', '1', '1', 'http://localhost:3000/videos/bangumi/虚构推理/01.mp4', '2020-05-06 02:19:11');
-INSERT INTO `pk_resources` VALUES ('62', '16', '1', '1', 'http://localhost:3000/videos/bangumi/异世界四重奏/01.mp4', '2020-05-06 02:22:50');
-INSERT INTO `pk_resources` VALUES ('63', '1', '4', '1', 'http://localhost:3000/videos/filmtv/大力女子都奉顺/01.mp4', '2020-05-06 02:26:14');
-INSERT INTO `pk_resources` VALUES ('64', '2', '4', '1', 'http://localhost:3000/videos/filmtv/龙岭迷窟/01.mp4', '2020-05-06 02:29:46');
-INSERT INTO `pk_resources` VALUES ('65', '3', '4', '1', 'http://localhost:3000/videos/filmtv/清平乐/01.mp4', '2020-05-06 02:32:18');
-INSERT INTO `pk_resources` VALUES ('66', '4', '4', '1', 'http://localhost:3000/videos/filmtv/庆余年/01.mp4', '2020-05-06 08:29:08');
-INSERT INTO `pk_resources` VALUES ('67', '4', '4', '2', 'http://localhost:3000/videos/filmtv/庆余年/02.mp4', '2020-05-06 08:29:09');
-INSERT INTO `pk_resources` VALUES ('68', '4', '4', '3', 'http://localhost:3000/videos/filmtv/庆余年/03.mp4', '2020-05-06 08:29:13');
-INSERT INTO `pk_resources` VALUES ('69', '4', '4', '4', 'http://localhost:3000/videos/filmtv/庆余年/04.mp4', '2020-05-06 08:29:15');
-INSERT INTO `pk_resources` VALUES ('70', '4', '4', '5', 'http://localhost:3000/videos/filmtv/庆余年/05.mp4', '2020-05-06 08:29:17');
-INSERT INTO `pk_resources` VALUES ('71', '4', '4', '6', 'http://localhost:3000/videos/filmtv/庆余年/06.mp4', '2020-05-06 08:29:20');
-INSERT INTO `pk_resources` VALUES ('72', '5', '4', '1', 'http://localhost:3000/videos/filmtv/三生三世枕上书/01.mp4', '2020-05-06 08:31:40');
-INSERT INTO `pk_resources` VALUES ('73', '6', '4', '1', 'http://localhost:3000/videos/filmtv/我是大哥大/01.mp4', '2020-05-06 08:34:27');
-INSERT INTO `pk_resources` VALUES ('74', '1', '2', '1', 'http://localhost:3000/videos/guoman/爱神巧克力/01.mp4', '2020-05-06 08:38:22');
-INSERT INTO `pk_resources` VALUES ('75', '2', '2', '1', 'http://localhost:3000/videos/guoman/爱神巧克力_第二季/01.mp4', '2020-05-06 08:44:21');
-INSERT INTO `pk_resources` VALUES ('76', '3', '2', '1', 'http://localhost:3000/videos/guoman/百妖谱/01.mp4', '2020-05-06 08:47:09');
-INSERT INTO `pk_resources` VALUES ('77', '3', '2', '2', 'http://localhost:3000/videos/guoman/百妖谱/02.mp4', '2020-05-06 08:47:17');
-INSERT INTO `pk_resources` VALUES ('78', '3', '2', '3', 'http://localhost:3000/videos/guoman/百妖谱/03.mp4', '2020-05-06 08:47:19');
-INSERT INTO `pk_resources` VALUES ('79', '4', '2', '1', 'http://localhost:3000/videos/guoman/崩坏星河/01.mp4', '2020-05-06 08:49:27');
-INSERT INTO `pk_resources` VALUES ('80', '5', '2', '1', 'http://localhost:3000/videos/guoman/刺客伍六七/01.mp4', '2020-05-06 08:53:22');
-INSERT INTO `pk_resources` VALUES ('81', '6', '2', '1', 'http://localhost:3000/videos/guoman/大王不高兴/01.mp4', '2020-05-06 09:04:27');
-INSERT INTO `pk_resources` VALUES ('82', '7', '2', '1', 'http://localhost:3000/videos/guoman/帝王攻略/帝王攻略01.MP4', '2020-05-06 09:06:25');
-INSERT INTO `pk_resources` VALUES ('83', '8', '2', '1', 'http://localhost:3000/videos/guoman/斗罗大陆/01.mp4', '2020-05-06 09:09:40');
-INSERT INTO `pk_resources` VALUES ('84', '8', '2', '2', 'http://localhost:3000/videos/guoman/斗罗大陆/02.mp4', '2020-05-06 09:09:55');
-INSERT INTO `pk_resources` VALUES ('85', '8', '2', '3', 'http://localhost:3000/videos/guoman/斗罗大陆/03.mp4', '2020-05-06 09:09:57');
-INSERT INTO `pk_resources` VALUES ('86', '8', '2', '4', 'http://localhost:3000/videos/guoman/斗罗大陆/04.mp4', '2020-05-06 09:09:59');
-INSERT INTO `pk_resources` VALUES ('87', '8', '2', '5', 'http://localhost:3000/videos/guoman/斗罗大陆/05.mp4', '2020-05-06 09:10:01');
-INSERT INTO `pk_resources` VALUES ('88', '8', '2', '6', 'http://localhost:3000/videos/guoman/斗罗大陆/06.mp4', '2020-05-06 09:10:03');
-INSERT INTO `pk_resources` VALUES ('89', '8', '2', '7', 'http://localhost:3000/videos/guoman/斗罗大陆/07.mp4', '2020-05-06 09:10:06');
-INSERT INTO `pk_resources` VALUES ('90', '8', '2', '8', 'http://localhost:3000/videos/guoman/斗罗大陆/08.mp4', '2020-05-06 09:10:20');
-INSERT INTO `pk_resources` VALUES ('91', '8', '2', '9', 'http://localhost:3000/videos/guoman/斗罗大陆/09.mp4', '2020-05-06 09:10:23');
-INSERT INTO `pk_resources` VALUES ('92', '8', '2', '10', 'http://localhost:3000/videos/guoman/斗罗大陆/10.mp4', '2020-05-06 09:10:26');
-INSERT INTO `pk_resources` VALUES ('93', '8', '2', '11', 'http://localhost:3000/videos/guoman/斗罗大陆/11.mp4', '2020-05-06 09:10:55');
-INSERT INTO `pk_resources` VALUES ('94', '8', '2', '12', 'http://localhost:3000/videos/guoman/斗罗大陆/12.mp4', '2020-05-06 09:10:58');
-INSERT INTO `pk_resources` VALUES ('95', '9', '2', '1', 'http://localhost:3000/videos/guoman/斗破苍穹_第三季/01.mp4', '2020-05-06 09:14:34');
-INSERT INTO `pk_resources` VALUES ('97', '10', '2', '1', 'http://localhost:3000/videos/guoman/斗破苍穹特别篇/01.mp4', '2020-05-06 09:23:32');
-INSERT INTO `pk_resources` VALUES ('98', '11', '2', '1', 'http://localhost:3000/videos/guoman/国民老公带回家/01.mp4', '2020-05-06 09:29:05');
-INSERT INTO `pk_resources` VALUES ('99', '12', '2', '1', 'http://localhost:3000/videos/guoman/狐妖小红娘/01.mp4', '2020-05-06 09:34:49');
-INSERT INTO `pk_resources` VALUES ('100', '13', '2', '1', 'http://localhost:3000/videos/guoman/剑网3·侠肝义胆沈剑心/01.mp4', '2020-05-06 09:38:58');
-INSERT INTO `pk_resources` VALUES ('101', '14', '2', '1', 'http://localhost:3000/videos/guoman/剑网3·侠肝义胆沈剑心_第二季/01.mp4', '2020-05-06 09:40:35');
-INSERT INTO `pk_resources` VALUES ('102', '15', '2', '1', 'http://localhost:3000/videos/guoman/快把我哥带走_第二季/01.mp4', '2020-05-06 09:42:44');
-INSERT INTO `pk_resources` VALUES ('103', '16', '2', '1', 'http://localhost:3000/videos/guoman/魔道祖师/01.MP4', '2020-05-06 09:47:39');
-INSERT INTO `pk_resources` VALUES ('104', '17', '2', '1', 'http://localhost:3000/videos/guoman/魔道祖师_第二季/01.MP4', '2020-05-06 09:52:57');
-INSERT INTO `pk_resources` VALUES ('105', '18', '2', '1', 'http://localhost:3000/videos/guoman/全职高手_第一季/01.MP4', '2020-05-06 09:54:51');
-INSERT INTO `pk_resources` VALUES ('106', '19', '2', '1', 'http://localhost:3000/videos/guoman/试验品家庭/01.MP4', '2020-05-06 09:57:30');
-INSERT INTO `pk_resources` VALUES ('107', '20', '2', '1', 'http://localhost:3000/videos/guoman/王古神话之天选者/01.MP4', '2020-05-06 10:01:06');
-INSERT INTO `pk_resources` VALUES ('108', '21', '2', '1', 'http://localhost:3000/videos/guoman/我开动物园的那些年/01.MP4', '2020-05-06 10:02:59');
-INSERT INTO `pk_resources` VALUES ('109', '21', '2', '2', 'http://localhost:3000/videos/guoman/我开动物园的那些年/02.MP4', '2020-05-06 10:03:06');
-INSERT INTO `pk_resources` VALUES ('110', '21', '2', '3', 'http://localhost:3000/videos/guoman/我开动物园的那些年/03.MP4', '2020-05-06 10:03:09');
-INSERT INTO `pk_resources` VALUES ('111', '21', '2', '4', 'http://localhost:3000/videos/guoman/我开动物园的那些年/04.MP4', '2020-05-06 10:03:10');
-INSERT INTO `pk_resources` VALUES ('112', '21', '2', '5', 'http://localhost:3000/videos/guoman/我开动物园的那些年/05.MP4', '2020-05-06 10:03:13');
-INSERT INTO `pk_resources` VALUES ('113', '21', '2', '6', 'http://localhost:3000/videos/guoman/我开动物园的那些年/06.MP4', '2020-05-06 10:03:15');
-INSERT INTO `pk_resources` VALUES ('114', '22', '2', '1', 'http://localhost:3000/videos/guoman/雪鹰领主/01.MP4', '2020-05-06 10:05:57');
-INSERT INTO `pk_resources` VALUES ('115', '23', '2', '1', 'http://localhost:3000/videos/guoman/妖精种植手册/01.MP4', '2020-05-06 10:08:28');
-INSERT INTO `pk_resources` VALUES ('116', '24', '2', '1', 'http://localhost:3000/videos/guoman/妖神记之黑狱篇/01.MP4', '2020-05-06 10:10:05');
-INSERT INTO `pk_resources` VALUES ('117', '25', '2', '1', 'http://localhost:3000/videos/guoman/一人之下_第三季/01.MP4', '2020-05-06 10:12:23');
-INSERT INTO `pk_resources` VALUES ('118', '25', '2', '2', 'http://localhost:3000/videos/guoman/一人之下_第三季/02.MP4', '2020-05-06 10:12:41');
-INSERT INTO `pk_resources` VALUES ('119', '25', '2', '3', 'http://localhost:3000/videos/guoman/一人之下_第三季/03.MP4', '2020-05-06 10:12:43');
-INSERT INTO `pk_resources` VALUES ('120', '26', '2', '1', 'http://localhost:3000/videos/guoman/镇魂街_第二季/01.MP4', '2020-05-06 10:14:38');
-INSERT INTO `pk_resources` VALUES ('121', '27', '2', '1', 'http://localhost:3000/videos/guoman/镇魂街_第一季/01.MP4', '2020-05-06 10:16:24');
-INSERT INTO `pk_resources` VALUES ('122', '1', '3', '1', 'http://localhost:3000/videos/theater/ANOTHER_WORLD.mp4', '2020-05-06 10:26:16');
-INSERT INTO `pk_resources` VALUES ('123', '2', '3', '1', 'http://localhost:3000/videos/theater/BanG_Dream!梦想协奏曲.mp4', '2020-05-06 10:29:46');
-INSERT INTO `pk_resources` VALUES ('124', '3', '3', '1', 'http://localhost:3000/videos/theater/BLACKFOX.mp4', '2020-05-06 10:32:10');
-INSERT INTO `pk_resources` VALUES ('125', '4', '3', '1', 'http://localhost:3000/videos/theater/CENCOROLL_CONNECT.mp4', '2020-05-06 10:48:04');
-INSERT INTO `pk_resources` VALUES ('126', '5', '3', '1', 'http://localhost:3000/videos/theater/Fate_Kaleid liner_魔法少女☆伊莉雅_Prisma☆Phantasm.mp4', '2020-05-06 10:50:31');
-INSERT INTO `pk_resources` VALUES ('127', '6', '3', '1', 'http://localhost:3000/videos/theater/Fate_Stay_night_Heaven\'s Feel II.lost butterifly.mp4', '2020-05-06 10:53:01');
-INSERT INTO `pk_resources` VALUES ('128', '7', '3', '1', 'http://localhost:3000/videos/theater/Re 从零开始的异世界生活 雪之回忆.mp4', '2020-05-06 10:56:42');
-INSERT INTO `pk_resources` VALUES ('129', '8', '3', '1', 'http://localhost:3000/videos/theater/Re_ 从零开始的异世界生活 冰结之绊.mp4', '2020-05-06 11:01:51');
-INSERT INTO `pk_resources` VALUES ('130', '9', '3', '1', 'http://localhost:3000/videos/theater/薄暮.mp4', '2020-05-06 11:04:22');
-INSERT INTO `pk_resources` VALUES ('131', '10', '3', '1', 'http://localhost:3000/videos/theater/朝花夕誓 于离别之朝束起希望之花.mp4', '2020-05-06 11:06:23');
-INSERT INTO `pk_resources` VALUES ('132', '11', '3', '1', 'http://localhost:3000/videos/theater/吹响！上低音号~誓言的终章.mp4', '2020-05-06 11:09:08');
-INSERT INTO `pk_resources` VALUES ('133', '12', '3', '1', 'http://localhost:3000/videos/theater/吹响吧！上低音号2 ~想要传达的旋律~.mp4', '2020-05-06 11:11:22');
-INSERT INTO `pk_resources` VALUES ('134', '13', '3', '1', 'http://localhost:3000/videos/theater/刺猬索尼克.mp4', '2020-05-06 11:15:23');
-INSERT INTO `pk_resources` VALUES ('135', '14', '3', '1', 'http://localhost:3000/videos/theater/哆啦A梦 大雄的南极大冒险.mp4', '2020-05-06 11:18:38');
-INSERT INTO `pk_resources` VALUES ('136', '15', '3', '1', 'http://localhost:3000/videos/theater/花开伊吕波 甜蜜的家.mp4', '2020-05-06 11:22:01');
-INSERT INTO `pk_resources` VALUES ('137', '16', '3', '1', 'http://localhost:3000/videos/theater/火影忍者剧场版 博人传.mp4', '2020-05-06 11:25:10');
-INSERT INTO `pk_resources` VALUES ('138', '17', '3', '1', 'http://localhost:3000/videos/theater/机甲少女 FRAME ARMS GIRL～高高兴兴的幻境～.mp4', '2020-05-06 11:28:43');
-INSERT INTO `pk_resources` VALUES ('139', '18', '3', '1', 'http://localhost:3000/videos/theater/境界的彼方 I\'LL BE HERE 未来篇.mp4', '2020-05-06 11:31:03');
-INSERT INTO `pk_resources` VALUES ('140', '19', '3', '1', 'http://localhost:3000/videos/theater/境界的彼方 I\'LL BE HERE过去篇.mp4', '2020-05-06 11:32:54');
-INSERT INTO `pk_resources` VALUES ('141', '20', '3', '1', 'http://localhost:3000/videos/theater/囧妈.mp4', '2020-05-06 11:35:00');
-INSERT INTO `pk_resources` VALUES ('142', '21', '3', '1', 'http://localhost:3000/videos/theater/壳中少女 燃烧.mp4', '2020-05-06 11:37:19');
-INSERT INTO `pk_resources` VALUES ('143', '22', '3', '1', 'http://localhost:3000/videos/theater/利兹与青鸟.mp4', '2020-05-06 11:39:36');
-INSERT INTO `pk_resources` VALUES ('144', '23', '3', '1', 'http://localhost:3000/videos/theater/凉宫春日的消失.mp4', '2020-05-06 11:43:16');
-INSERT INTO `pk_resources` VALUES ('145', '24', '3', '1', 'http://localhost:3000/videos/theater/名侦探柯南 绀青之拳.mp4', '2020-05-06 11:49:41');
-INSERT INTO `pk_resources` VALUES ('146', '25', '3', '1', 'http://localhost:3000/videos/theater/名侦探柯南：唐红的恋歌.mp4', '2020-05-06 11:53:23');
-INSERT INTO `pk_resources` VALUES ('147', '26', '3', '1', 'http://localhost:3000/videos/theater/哪吒之魔童降世.mp4', '2020-05-06 11:55:50');
-INSERT INTO `pk_resources` VALUES ('148', '27', '3', '1', 'http://localhost:3000/videos/theater/你的名字.mp4', '2020-05-06 11:57:32');
-INSERT INTO `pk_resources` VALUES ('149', '28', '3', '1', 'http://localhost:3000/videos/theater/你好世界.mp4', '2020-05-06 12:00:14');
-INSERT INTO `pk_resources` VALUES ('150', '29', '3', '1', 'http://localhost:3000/videos/theater/牵牛花与加濑同学.mp4', '2020-05-06 12:01:57');
-INSERT INTO `pk_resources` VALUES ('151', '30', '3', '1', 'http://localhost:3000/videos/theater/请问今天要来点兔子吗.mp4', '2020-05-06 12:04:45');
-INSERT INTO `pk_resources` VALUES ('152', '31', '3', '1', 'http://localhost:3000/videos/theater/声之形.mp4', '2020-05-06 12:07:13');
-INSERT INTO `pk_resources` VALUES ('153', '32', '3', '1', 'http://localhost:3000/videos/theater/泰坦尼克号.mp4', '2020-05-06 12:09:36');
-INSERT INTO `pk_resources` VALUES ('154', '33', '3', '1', 'http://localhost:3000/videos/theater/天降之物剧场版：永远的我的鸟笼.mp4', '2020-05-06 12:26:26');
-INSERT INTO `pk_resources` VALUES ('155', '34', '3', '1', 'http://localhost:3000/videos/theater/天气之子.mp4', '2020-05-06 12:28:22');
-INSERT INTO `pk_resources` VALUES ('156', '35', '3', '1', 'http://localhost:3000/videos/theater/为美好的世界献上祝福! 紅傳説.mp4', '2020-05-06 12:30:25');
-INSERT INTO `pk_resources` VALUES ('157', '36', '3', '1', 'http://localhost:3000/videos/theater/我们的七日战争.mp4', '2020-05-06 12:32:16');
-INSERT INTO `pk_resources` VALUES ('158', '37', '3', '1', 'http://localhost:3000/videos/theater/我想吃掉你的胰脏.mp4', '2020-05-06 12:34:08');
-INSERT INTO `pk_resources` VALUES ('159', '38', '3', '1', 'http://localhost:3000/videos/theater/夏目友人帐 缘结空蝉.mp4', '2020-05-06 12:36:32');
-INSERT INTO `pk_resources` VALUES ('160', '40', '3', '1', 'http://localhost:3000/videos/theater/言叶之庭.mp4', '2020-05-06 12:40:49');
-INSERT INTO `pk_resources` VALUES ('161', '41', '3', '1', 'http://localhost:3000/videos/theater/萤火之森.mp4', '2020-05-06 12:43:07');
-INSERT INTO `pk_resources` VALUES ('162', '42', '3', '1', 'http://localhost:3000/videos/theater/游戏人生ZERO.mp4', '2020-05-06 12:45:41');
-INSERT INTO `pk_resources` VALUES ('163', '43', '3', '1', 'http://localhost:3000/videos/theater/追逐繁星的孩子.mp4', '2020-05-06 12:48:36');
-INSERT INTO `pk_resources` VALUES ('164', '44', '3', '1', 'http://localhost:3000/videos/theater/紫罗兰永恒花园外传：永远与自动手记人偶.mp4', '2020-05-06 12:51:29');
+INSERT INTO `pk_resource` VALUES ('1', '1', '1', '1', 'http://localhost:3000/videos/bangumi/Infinite_Dendragon/01.mp4', '2020-05-06 00:03:34');
+INSERT INTO `pk_resource` VALUES ('2', '2', '1', '1', 'http://localhost:3000/videos/bangumi/NECOPARA/01.mp4', '2020-05-06 00:13:15');
+INSERT INTO `pk_resource` VALUES ('3', '3', '1', '1', 'http://localhost:3000/videos/bangumi/NEW_GAME/01.mp4', '2020-05-06 00:17:40');
+INSERT INTO `pk_resource` VALUES ('4', '4', '1', '1', 'http://localhost:3000/videos/bangumi/Re_从零开始的异世界生活_新编集版/01.mp4', '2020-05-06 00:22:27');
+INSERT INTO `pk_resource` VALUES ('5', '5', '1', '1', 'http://localhost:3000/videos/bangumi/Re_公主连结/01.mp4', '2020-05-06 00:25:50');
+INSERT INTO `pk_resource` VALUES ('6', '5', '1', '2', 'http://localhost:3000/videos/bangumi/Re_公主连结/02.mp4', '2020-05-06 00:26:34');
+INSERT INTO `pk_resource` VALUES ('7', '5', '1', '3', 'http://localhost:3000/videos/bangumi/Re_公主连结/03.mp4', '2020-05-06 00:27:12');
+INSERT INTO `pk_resource` VALUES ('8', '5', '1', '4', 'http://localhost:3000/videos/bangumi/Re_公主连结/04.mp4', '2020-05-06 00:27:36');
+INSERT INTO `pk_resource` VALUES ('9', '6', '1', '1', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/01.mp4', '2020-05-06 00:32:36');
+INSERT INTO `pk_resource` VALUES ('10', '6', '1', '2', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/02.mp4', '2020-05-06 00:32:46');
+INSERT INTO `pk_resource` VALUES ('11', '6', '1', '3', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/03.mp4', '2020-05-06 00:32:54');
+INSERT INTO `pk_resource` VALUES ('12', '6', '1', '4', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/04.mp4', '2020-05-06 00:33:09');
+INSERT INTO `pk_resource` VALUES ('13', '6', '1', '5', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/05.mp4', '2020-05-06 00:33:16');
+INSERT INTO `pk_resource` VALUES ('14', '6', '1', '6', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/06.mp4', '2020-05-06 00:33:24');
+INSERT INTO `pk_resource` VALUES ('15', '6', '1', '7', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/07.mp4', '2020-05-06 00:33:34');
+INSERT INTO `pk_resource` VALUES ('16', '6', '1', '8', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/08.mp4', '2020-05-06 00:33:41');
+INSERT INTO `pk_resource` VALUES ('17', '6', '1', '9', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/09.mp4', '2020-05-06 00:33:50');
+INSERT INTO `pk_resource` VALUES ('18', '6', '1', '10', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/10.mp4', '2020-05-06 00:34:05');
+INSERT INTO `pk_resource` VALUES ('19', '6', '1', '11', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/11.mp4', '2020-05-06 00:34:17');
+INSERT INTO `pk_resource` VALUES ('20', '6', '1', '12', 'http://localhost:3000/videos/bangumi/苍之彼方的四重奏/12.mp4', '2020-05-06 00:34:26');
+INSERT INTO `pk_resource` VALUES ('21', '7', '1', '1', 'http://localhost:3000/videos/bangumi/钢琴之森/01.mp4', '2020-05-06 00:37:34');
+INSERT INTO `pk_resource` VALUES ('22', '8', '1', '1', 'http://localhost:3000/videos/bangumi/家有圆圆_我家的圆圆你知道吗/01.mp4', '2020-05-06 00:45:13');
+INSERT INTO `pk_resource` VALUES ('28', '9', '1', '1', 'http://localhost:3000/videos/bangumi/恋爱小行星/01.mp4', '2020-05-06 01:07:33');
+INSERT INTO `pk_resource` VALUES ('29', '9', '1', '2', 'http://localhost:3000/videos/bangumi/恋爱小行星/02.mp4', '2020-05-06 01:23:43');
+INSERT INTO `pk_resource` VALUES ('40', '9', '1', '3', 'http://localhost:3000/videos/bangumi/恋爱小行星/03.mp4', '2020-05-06 01:51:55');
+INSERT INTO `pk_resource` VALUES ('41', '9', '1', '4', 'http://localhost:3000/videos/bangumi/恋爱小行星/04.mp4', '2020-05-06 01:51:57');
+INSERT INTO `pk_resource` VALUES ('42', '9', '1', '5', 'http://localhost:3000/videos/bangumi/恋爱小行星/05.mp4', '2020-05-06 01:51:58');
+INSERT INTO `pk_resource` VALUES ('43', '9', '1', '6', 'http://localhost:3000/videos/bangumi/恋爱小行星/06.mp4', '2020-05-06 01:52:04');
+INSERT INTO `pk_resource` VALUES ('44', '9', '1', '7', 'http://localhost:3000/videos/bangumi/恋爱小行星/07.mp4', '2020-05-06 01:52:07');
+INSERT INTO `pk_resource` VALUES ('45', '9', '1', '8', 'http://localhost:3000/videos/bangumi/恋爱小行星/08.mp4', '2020-05-06 01:52:09');
+INSERT INTO `pk_resource` VALUES ('46', '9', '1', '9', 'http://localhost:3000/videos/bangumi/恋爱小行星/09.mp4', '2020-05-06 01:52:11');
+INSERT INTO `pk_resource` VALUES ('47', '9', '1', '10', 'http://localhost:3000/videos/bangumi/恋爱小行星/10.mp4', '2020-05-06 01:53:19');
+INSERT INTO `pk_resource` VALUES ('48', '9', '1', '11', 'http://localhost:3000/videos/bangumi/恋爱小行星/11.mp4', '2020-05-06 01:53:22');
+INSERT INTO `pk_resource` VALUES ('49', '9', '1', '12', 'http://localhost:3000/videos/bangumi/恋爱小行星/12.mp4', '2020-05-06 01:53:25');
+INSERT INTO `pk_resource` VALUES ('50', '10', '1', '1', 'http://localhost:3000/videos/bangumi/路人女主的养成方法/00.mp4', '2020-05-06 02:02:29');
+INSERT INTO `pk_resource` VALUES ('51', '10', '1', '2', 'http://localhost:3000/videos/bangumi/路人女主的养成方法/01.mp4', '2020-05-06 02:02:41');
+INSERT INTO `pk_resource` VALUES ('52', '11', '1', '1', 'http://localhost:3000/videos/bangumi/请在伸展台上微笑/01.mp4', '2020-05-06 02:06:16');
+INSERT INTO `pk_resource` VALUES ('53', '12', '1', '1', 'http://localhost:3000/videos/bangumi/世界第一初恋 _第一季/01.mp4', '2020-05-06 02:11:30');
+INSERT INTO `pk_resource` VALUES ('54', '13', '1', '1', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/01.mp4', '2020-05-06 02:14:04');
+INSERT INTO `pk_resource` VALUES ('55', '13', '1', '2', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/02.mp4', '2020-05-06 02:14:13');
+INSERT INTO `pk_resource` VALUES ('56', '13', '1', '3', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/03.mp4', '2020-05-06 02:14:16');
+INSERT INTO `pk_resource` VALUES ('57', '13', '1', '4', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/04.mp4', '2020-05-06 02:14:18');
+INSERT INTO `pk_resource` VALUES ('58', '13', '1', '5', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/05.mp4', '2020-05-06 02:14:21');
+INSERT INTO `pk_resource` VALUES ('59', '13', '1', '6', 'http://localhost:3000/videos/bangumi/我们的爱总是只有10厘米/06.mp4', '2020-05-06 02:14:23');
+INSERT INTO `pk_resource` VALUES ('60', '14', '1', '1', 'http://localhost:3000/videos/bangumi/我们无法一起学习_第二季/01.mp4', '2020-05-06 02:16:54');
+INSERT INTO `pk_resource` VALUES ('61', '15', '1', '1', 'http://localhost:3000/videos/bangumi/虚构推理/01.mp4', '2020-05-06 02:19:11');
+INSERT INTO `pk_resource` VALUES ('62', '16', '1', '1', 'http://localhost:3000/videos/bangumi/异世界四重奏/01.mp4', '2020-05-06 02:22:50');
+INSERT INTO `pk_resource` VALUES ('63', '1', '4', '1', 'http://localhost:3000/videos/filmtv/大力女子都奉顺/01.mp4', '2020-05-06 02:26:14');
+INSERT INTO `pk_resource` VALUES ('64', '2', '4', '1', 'http://localhost:3000/videos/filmtv/龙岭迷窟/01.mp4', '2020-05-06 02:29:46');
+INSERT INTO `pk_resource` VALUES ('65', '3', '4', '1', 'http://localhost:3000/videos/filmtv/清平乐/01.mp4', '2020-05-06 02:32:18');
+INSERT INTO `pk_resource` VALUES ('66', '4', '4', '1', 'http://localhost:3000/videos/filmtv/庆余年/01.mp4', '2020-05-06 08:29:08');
+INSERT INTO `pk_resource` VALUES ('67', '4', '4', '2', 'http://localhost:3000/videos/filmtv/庆余年/02.mp4', '2020-05-06 08:29:09');
+INSERT INTO `pk_resource` VALUES ('68', '4', '4', '3', 'http://localhost:3000/videos/filmtv/庆余年/03.mp4', '2020-05-06 08:29:13');
+INSERT INTO `pk_resource` VALUES ('69', '4', '4', '4', 'http://localhost:3000/videos/filmtv/庆余年/04.mp4', '2020-05-06 08:29:15');
+INSERT INTO `pk_resource` VALUES ('70', '4', '4', '5', 'http://localhost:3000/videos/filmtv/庆余年/05.mp4', '2020-05-06 08:29:17');
+INSERT INTO `pk_resource` VALUES ('71', '4', '4', '6', 'http://localhost:3000/videos/filmtv/庆余年/06.mp4', '2020-05-06 08:29:20');
+INSERT INTO `pk_resource` VALUES ('72', '5', '4', '1', 'http://localhost:3000/videos/filmtv/三生三世枕上书/01.mp4', '2020-05-06 08:31:40');
+INSERT INTO `pk_resource` VALUES ('73', '6', '4', '1', 'http://localhost:3000/videos/filmtv/我是大哥大/01.mp4', '2020-05-06 08:34:27');
+INSERT INTO `pk_resource` VALUES ('74', '1', '2', '1', 'http://localhost:3000/videos/guoman/爱神巧克力/01.mp4', '2020-05-06 08:38:22');
+INSERT INTO `pk_resource` VALUES ('75', '2', '2', '1', 'http://localhost:3000/videos/guoman/爱神巧克力_第二季/01.mp4', '2020-05-06 08:44:21');
+INSERT INTO `pk_resource` VALUES ('76', '3', '2', '1', 'http://localhost:3000/videos/guoman/百妖谱/01.mp4', '2020-05-06 08:47:09');
+INSERT INTO `pk_resource` VALUES ('77', '3', '2', '2', 'http://localhost:3000/videos/guoman/百妖谱/02.mp4', '2020-05-06 08:47:17');
+INSERT INTO `pk_resource` VALUES ('78', '3', '2', '3', 'http://localhost:3000/videos/guoman/百妖谱/03.mp4', '2020-05-06 08:47:19');
+INSERT INTO `pk_resource` VALUES ('79', '4', '2', '1', 'http://localhost:3000/videos/guoman/崩坏星河/01.mp4', '2020-05-06 08:49:27');
+INSERT INTO `pk_resource` VALUES ('80', '5', '2', '1', 'http://localhost:3000/videos/guoman/刺客伍六七/01.mp4', '2020-05-06 08:53:22');
+INSERT INTO `pk_resource` VALUES ('81', '6', '2', '1', 'http://localhost:3000/videos/guoman/大王不高兴/01.mp4', '2020-05-06 09:04:27');
+INSERT INTO `pk_resource` VALUES ('82', '7', '2', '1', 'http://localhost:3000/videos/guoman/帝王攻略/帝王攻略01.MP4', '2020-05-06 09:06:25');
+INSERT INTO `pk_resource` VALUES ('83', '8', '2', '1', 'http://localhost:3000/videos/guoman/斗罗大陆/01.mp4', '2020-05-06 09:09:40');
+INSERT INTO `pk_resource` VALUES ('84', '8', '2', '2', 'http://localhost:3000/videos/guoman/斗罗大陆/02.mp4', '2020-05-06 09:09:55');
+INSERT INTO `pk_resource` VALUES ('85', '8', '2', '3', 'http://localhost:3000/videos/guoman/斗罗大陆/03.mp4', '2020-05-06 09:09:57');
+INSERT INTO `pk_resource` VALUES ('86', '8', '2', '4', 'http://localhost:3000/videos/guoman/斗罗大陆/04.mp4', '2020-05-06 09:09:59');
+INSERT INTO `pk_resource` VALUES ('87', '8', '2', '5', 'http://localhost:3000/videos/guoman/斗罗大陆/05.mp4', '2020-05-06 09:10:01');
+INSERT INTO `pk_resource` VALUES ('88', '8', '2', '6', 'http://localhost:3000/videos/guoman/斗罗大陆/06.mp4', '2020-05-06 09:10:03');
+INSERT INTO `pk_resource` VALUES ('89', '8', '2', '7', 'http://localhost:3000/videos/guoman/斗罗大陆/07.mp4', '2020-05-06 09:10:06');
+INSERT INTO `pk_resource` VALUES ('90', '8', '2', '8', 'http://localhost:3000/videos/guoman/斗罗大陆/08.mp4', '2020-05-06 09:10:20');
+INSERT INTO `pk_resource` VALUES ('91', '8', '2', '9', 'http://localhost:3000/videos/guoman/斗罗大陆/09.mp4', '2020-05-06 09:10:23');
+INSERT INTO `pk_resource` VALUES ('92', '8', '2', '10', 'http://localhost:3000/videos/guoman/斗罗大陆/10.mp4', '2020-05-06 09:10:26');
+INSERT INTO `pk_resource` VALUES ('93', '8', '2', '11', 'http://localhost:3000/videos/guoman/斗罗大陆/11.mp4', '2020-05-06 09:10:55');
+INSERT INTO `pk_resource` VALUES ('94', '8', '2', '12', 'http://localhost:3000/videos/guoman/斗罗大陆/12.mp4', '2020-05-06 09:10:58');
+INSERT INTO `pk_resource` VALUES ('95', '9', '2', '1', 'http://localhost:3000/videos/guoman/斗破苍穹_第三季/01.mp4', '2020-05-06 09:14:34');
+INSERT INTO `pk_resource` VALUES ('97', '10', '2', '1', 'http://localhost:3000/videos/guoman/斗破苍穹特别篇/01.mp4', '2020-05-06 09:23:32');
+INSERT INTO `pk_resource` VALUES ('98', '11', '2', '1', 'http://localhost:3000/videos/guoman/国民老公带回家/01.mp4', '2020-05-06 09:29:05');
+INSERT INTO `pk_resource` VALUES ('99', '12', '2', '1', 'http://localhost:3000/videos/guoman/狐妖小红娘/01.mp4', '2020-05-06 09:34:49');
+INSERT INTO `pk_resource` VALUES ('100', '13', '2', '1', 'http://localhost:3000/videos/guoman/剑网3·侠肝义胆沈剑心/01.mp4', '2020-05-06 09:38:58');
+INSERT INTO `pk_resource` VALUES ('101', '14', '2', '1', 'http://localhost:3000/videos/guoman/剑网3·侠肝义胆沈剑心_第二季/01.mp4', '2020-05-06 09:40:35');
+INSERT INTO `pk_resource` VALUES ('102', '15', '2', '1', 'http://localhost:3000/videos/guoman/快把我哥带走_第二季/01.mp4', '2020-05-06 09:42:44');
+INSERT INTO `pk_resource` VALUES ('103', '16', '2', '1', 'http://localhost:3000/videos/guoman/魔道祖师/01.MP4', '2020-05-06 09:47:39');
+INSERT INTO `pk_resource` VALUES ('104', '17', '2', '1', 'http://localhost:3000/videos/guoman/魔道祖师_第二季/01.MP4', '2020-05-06 09:52:57');
+INSERT INTO `pk_resource` VALUES ('105', '18', '2', '1', 'http://localhost:3000/videos/guoman/全职高手_第一季/01.MP4', '2020-05-06 09:54:51');
+INSERT INTO `pk_resource` VALUES ('106', '19', '2', '1', 'http://localhost:3000/videos/guoman/试验品家庭/01.MP4', '2020-05-06 09:57:30');
+INSERT INTO `pk_resource` VALUES ('107', '20', '2', '1', 'http://localhost:3000/videos/guoman/王古神话之天选者/01.MP4', '2020-05-06 10:01:06');
+INSERT INTO `pk_resource` VALUES ('108', '21', '2', '1', 'http://localhost:3000/videos/guoman/我开动物园的那些年/01.MP4', '2020-05-06 10:02:59');
+INSERT INTO `pk_resource` VALUES ('109', '21', '2', '2', 'http://localhost:3000/videos/guoman/我开动物园的那些年/02.MP4', '2020-05-06 10:03:06');
+INSERT INTO `pk_resource` VALUES ('110', '21', '2', '3', 'http://localhost:3000/videos/guoman/我开动物园的那些年/03.MP4', '2020-05-06 10:03:09');
+INSERT INTO `pk_resource` VALUES ('111', '21', '2', '4', 'http://localhost:3000/videos/guoman/我开动物园的那些年/04.MP4', '2020-05-06 10:03:10');
+INSERT INTO `pk_resource` VALUES ('112', '21', '2', '5', 'http://localhost:3000/videos/guoman/我开动物园的那些年/05.MP4', '2020-05-06 10:03:13');
+INSERT INTO `pk_resource` VALUES ('113', '21', '2', '6', 'http://localhost:3000/videos/guoman/我开动物园的那些年/06.MP4', '2020-05-06 10:03:15');
+INSERT INTO `pk_resource` VALUES ('114', '22', '2', '1', 'http://localhost:3000/videos/guoman/雪鹰领主/01.MP4', '2020-05-06 10:05:57');
+INSERT INTO `pk_resource` VALUES ('115', '23', '2', '1', 'http://localhost:3000/videos/guoman/妖精种植手册/01.MP4', '2020-05-06 10:08:28');
+INSERT INTO `pk_resource` VALUES ('116', '24', '2', '1', 'http://localhost:3000/videos/guoman/妖神记之黑狱篇/01.MP4', '2020-05-06 10:10:05');
+INSERT INTO `pk_resource` VALUES ('117', '25', '2', '1', 'http://localhost:3000/videos/guoman/一人之下_第三季/01.MP4', '2020-05-06 10:12:23');
+INSERT INTO `pk_resource` VALUES ('118', '25', '2', '2', 'http://localhost:3000/videos/guoman/一人之下_第三季/02.MP4', '2020-05-06 10:12:41');
+INSERT INTO `pk_resource` VALUES ('119', '25', '2', '3', 'http://localhost:3000/videos/guoman/一人之下_第三季/03.MP4', '2020-05-06 10:12:43');
+INSERT INTO `pk_resource` VALUES ('120', '26', '2', '1', 'http://localhost:3000/videos/guoman/镇魂街_第二季/01.MP4', '2020-05-06 10:14:38');
+INSERT INTO `pk_resource` VALUES ('121', '27', '2', '1', 'http://localhost:3000/videos/guoman/镇魂街_第一季/01.MP4', '2020-05-06 10:16:24');
+INSERT INTO `pk_resource` VALUES ('122', '1', '3', '1', 'http://localhost:3000/videos/theater/ANOTHER_WORLD.mp4', '2020-05-06 10:26:16');
+INSERT INTO `pk_resource` VALUES ('123', '2', '3', '1', 'http://localhost:3000/videos/theater/BanG_Dream!梦想协奏曲.mp4', '2020-05-06 10:29:46');
+INSERT INTO `pk_resource` VALUES ('124', '3', '3', '1', 'http://localhost:3000/videos/theater/BLACKFOX.mp4', '2020-05-06 10:32:10');
+INSERT INTO `pk_resource` VALUES ('125', '4', '3', '1', 'http://localhost:3000/videos/theater/CENCOROLL_CONNECT.mp4', '2020-05-06 10:48:04');
+INSERT INTO `pk_resource` VALUES ('126', '5', '3', '1', 'http://localhost:3000/videos/theater/Fate_Kaleid liner_魔法少女☆伊莉雅_Prisma☆Phantasm.mp4', '2020-05-06 10:50:31');
+INSERT INTO `pk_resource` VALUES ('127', '6', '3', '1', 'http://localhost:3000/videos/theater/Fate_Stay_night_Heaven\'s Feel II.lost butterifly.mp4', '2020-05-06 10:53:01');
+INSERT INTO `pk_resource` VALUES ('128', '7', '3', '1', 'http://localhost:3000/videos/theater/Re 从零开始的异世界生活 雪之回忆.mp4', '2020-05-06 10:56:42');
+INSERT INTO `pk_resource` VALUES ('129', '8', '3', '1', 'http://localhost:3000/videos/theater/Re_ 从零开始的异世界生活 冰结之绊.mp4', '2020-05-06 11:01:51');
+INSERT INTO `pk_resource` VALUES ('130', '9', '3', '1', 'http://localhost:3000/videos/theater/薄暮.mp4', '2020-05-06 11:04:22');
+INSERT INTO `pk_resource` VALUES ('131', '10', '3', '1', 'http://localhost:3000/videos/theater/朝花夕誓 于离别之朝束起希望之花.mp4', '2020-05-06 11:06:23');
+INSERT INTO `pk_resource` VALUES ('132', '11', '3', '1', 'http://localhost:3000/videos/theater/吹响！上低音号~誓言的终章.mp4', '2020-05-06 11:09:08');
+INSERT INTO `pk_resource` VALUES ('133', '12', '3', '1', 'http://localhost:3000/videos/theater/吹响吧！上低音号2 ~想要传达的旋律~.mp4', '2020-05-06 11:11:22');
+INSERT INTO `pk_resource` VALUES ('134', '13', '3', '1', 'http://localhost:3000/videos/theater/刺猬索尼克.mp4', '2020-05-06 11:15:23');
+INSERT INTO `pk_resource` VALUES ('135', '14', '3', '1', 'http://localhost:3000/videos/theater/哆啦A梦 大雄的南极大冒险.mp4', '2020-05-06 11:18:38');
+INSERT INTO `pk_resource` VALUES ('136', '15', '3', '1', 'http://localhost:3000/videos/theater/花开伊吕波 甜蜜的家.mp4', '2020-05-06 11:22:01');
+INSERT INTO `pk_resource` VALUES ('137', '16', '3', '1', 'http://localhost:3000/videos/theater/火影忍者剧场版 博人传.mp4', '2020-05-06 11:25:10');
+INSERT INTO `pk_resource` VALUES ('138', '17', '3', '1', 'http://localhost:3000/videos/theater/机甲少女 FRAME ARMS GIRL～高高兴兴的幻境～.mp4', '2020-05-06 11:28:43');
+INSERT INTO `pk_resource` VALUES ('139', '18', '3', '1', 'http://localhost:3000/videos/theater/境界的彼方 I\'LL BE HERE 未来篇.mp4', '2020-05-06 11:31:03');
+INSERT INTO `pk_resource` VALUES ('140', '19', '3', '1', 'http://localhost:3000/videos/theater/境界的彼方 I\'LL BE HERE过去篇.mp4', '2020-05-06 11:32:54');
+INSERT INTO `pk_resource` VALUES ('141', '20', '3', '1', 'http://localhost:3000/videos/theater/囧妈.mp4', '2020-05-06 11:35:00');
+INSERT INTO `pk_resource` VALUES ('142', '21', '3', '1', 'http://localhost:3000/videos/theater/壳中少女 燃烧.mp4', '2020-05-06 11:37:19');
+INSERT INTO `pk_resource` VALUES ('143', '22', '3', '1', 'http://localhost:3000/videos/theater/利兹与青鸟.mp4', '2020-05-06 11:39:36');
+INSERT INTO `pk_resource` VALUES ('144', '23', '3', '1', 'http://localhost:3000/videos/theater/凉宫春日的消失.mp4', '2020-05-06 11:43:16');
+INSERT INTO `pk_resource` VALUES ('145', '24', '3', '1', 'http://localhost:3000/videos/theater/名侦探柯南 绀青之拳.mp4', '2020-05-06 11:49:41');
+INSERT INTO `pk_resource` VALUES ('146', '25', '3', '1', 'http://localhost:3000/videos/theater/名侦探柯南：唐红的恋歌.mp4', '2020-05-06 11:53:23');
+INSERT INTO `pk_resource` VALUES ('147', '26', '3', '1', 'http://localhost:3000/videos/theater/哪吒之魔童降世.mp4', '2020-05-06 11:55:50');
+INSERT INTO `pk_resource` VALUES ('148', '27', '3', '1', 'http://localhost:3000/videos/theater/你的名字.mp4', '2020-05-06 11:57:32');
+INSERT INTO `pk_resource` VALUES ('149', '28', '3', '1', 'http://localhost:3000/videos/theater/你好世界.mp4', '2020-05-06 12:00:14');
+INSERT INTO `pk_resource` VALUES ('150', '29', '3', '1', 'http://localhost:3000/videos/theater/牵牛花与加濑同学.mp4', '2020-05-06 12:01:57');
+INSERT INTO `pk_resource` VALUES ('151', '30', '3', '1', 'http://localhost:3000/videos/theater/请问今天要来点兔子吗.mp4', '2020-05-06 12:04:45');
+INSERT INTO `pk_resource` VALUES ('152', '31', '3', '1', 'http://localhost:3000/videos/theater/声之形.mp4', '2020-05-06 12:07:13');
+INSERT INTO `pk_resource` VALUES ('153', '32', '3', '1', 'http://localhost:3000/videos/theater/泰坦尼克号.mp4', '2020-05-06 12:09:36');
+INSERT INTO `pk_resource` VALUES ('154', '33', '3', '1', 'http://localhost:3000/videos/theater/天降之物剧场版：永远的我的鸟笼.mp4', '2020-05-06 12:26:26');
+INSERT INTO `pk_resource` VALUES ('155', '34', '3', '1', 'http://localhost:3000/videos/theater/天气之子.mp4', '2020-05-06 12:28:22');
+INSERT INTO `pk_resource` VALUES ('156', '35', '3', '1', 'http://localhost:3000/videos/theater/为美好的世界献上祝福! 紅傳説.mp4', '2020-05-06 12:30:25');
+INSERT INTO `pk_resource` VALUES ('157', '36', '3', '1', 'http://localhost:3000/videos/theater/我们的七日战争.mp4', '2020-05-06 12:32:16');
+INSERT INTO `pk_resource` VALUES ('158', '37', '3', '1', 'http://localhost:3000/videos/theater/我想吃掉你的胰脏.mp4', '2020-05-06 12:34:08');
+INSERT INTO `pk_resource` VALUES ('159', '38', '3', '1', 'http://localhost:3000/videos/theater/夏目友人帐 缘结空蝉.mp4', '2020-05-06 12:36:32');
+INSERT INTO `pk_resource` VALUES ('160', '40', '3', '1', 'http://localhost:3000/videos/theater/言叶之庭.mp4', '2020-05-06 12:40:49');
+INSERT INTO `pk_resource` VALUES ('161', '41', '3', '1', 'http://localhost:3000/videos/theater/萤火之森.mp4', '2020-05-06 12:43:07');
+INSERT INTO `pk_resource` VALUES ('162', '42', '3', '1', 'http://localhost:3000/videos/theater/游戏人生ZERO.mp4', '2020-05-06 12:45:41');
+INSERT INTO `pk_resource` VALUES ('163', '43', '3', '1', 'http://localhost:3000/videos/theater/追逐繁星的孩子.mp4', '2020-05-06 12:48:36');
+INSERT INTO `pk_resource` VALUES ('164', '44', '3', '1', 'http://localhost:3000/videos/theater/紫罗兰永恒花园外传：永远与自动手记人偶.mp4', '2020-05-06 12:51:29');
 
 -- ----------------------------
 -- Table structure for pk_theater
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_theater`;
 CREATE TABLE `pk_theater` (
-  `v_id` int(11) NOT NULL AUTO_INCREMENT,
-  `t_id` tinyint(1) NOT NULL,
-  `th_tag` tinyint(1) NOT NULL,
-  `th_name` varchar(100) NOT NULL,
-  `th_imgSrc` varchar(500) NOT NULL,
-  `th_VGA` tinyint(1) NOT NULL,
-  `th_style` varchar(50) NOT NULL,
-  `th_initials` varchar(1) NOT NULL,
-  `th_playtime` varchar(10) NOT NULL,
-  `th_years` varchar(4) NOT NULL,
-  `th_actors` varchar(255) NOT NULL,
-  `th_summary` varchar(500) NOT NULL,
+  `film_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_id` tinyint(1) NOT NULL,
+  `tag` tinyint(1) NOT NULL,
+  `name` varchar(100) NOT NULL,
+  `imgSrc` varchar(500) NOT NULL,
+  `VGA` tinyint(1) NOT NULL,
+  `style` varchar(50) NOT NULL,
+  `initials` varchar(1) NOT NULL,
+  `playtime` varchar(10) NOT NULL,
+  `years` varchar(4) NOT NULL,
+  `actors` varchar(255) NOT NULL,
+  `summary` varchar(500) NOT NULL,
   `play_volume` int(11) NOT NULL DEFAULT '0',
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`v_id`),
-  UNIQUE KEY `v_id` (`v_id`),
-  UNIQUE KEY `th_name` (`th_name`),
-  KEY `t_id` (`t_id`),
-  CONSTRAINT `pk_theater_ibfk_1` FOREIGN KEY (`t_id`) REFERENCES `pk_type` (`t_id`)
+  PRIMARY KEY (`film_id`),
+  UNIQUE KEY `film_id` (`film_id`),
+  UNIQUE KEY `name` (`name`),
+  KEY `type_id` (`type_id`),
+  CONSTRAINT `pk_theater_ibfk_1` FOREIGN KEY (`type_id`) REFERENCES `pk_type` (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=45 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -470,9 +470,9 @@ INSERT INTO `pk_theater` VALUES ('44', '3', '1', '紫罗兰永恒花园外传：
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_type`;
 CREATE TABLE `pk_type` (
-  `t_id` tinyint(1) NOT NULL AUTO_INCREMENT,
+  `type_id` tinyint(1) NOT NULL AUTO_INCREMENT,
   `t_text` varchar(8) NOT NULL,
-  PRIMARY KEY (`t_id`)
+  PRIMARY KEY (`type_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=5 DEFAULT CHARSET=utf8;
 
 -- ----------------------------
@@ -488,14 +488,14 @@ INSERT INTO `pk_type` VALUES ('4', '影视');
 -- ----------------------------
 DROP TABLE IF EXISTS `pk_user`;
 CREATE TABLE `pk_user` (
-  `u_id` int(11) NOT NULL AUTO_INCREMENT,
-  `u_name` varchar(48) NOT NULL,
-  `u_email` varchar(100) NOT NULL,
-  `u_password` varchar(16) NOT NULL,
-  `u_sex` tinyint(1) NOT NULL DEFAULT '0',
-  `u_avatar` varchar(500) DEFAULT NULL,
+  `user_id` int(11) NOT NULL AUTO_INCREMENT,
+  `username` varchar(48) NOT NULL,
+  `email` varchar(100) NOT NULL,
+  `password` varchar(16) NOT NULL,
+  `is_man` tinyint(1) NOT NULL DEFAULT '0',
+  `avatar` varchar(500) DEFAULT NULL,
   `create_time` timestamp NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`u_id`)
+  PRIMARY KEY (`user_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=16 DEFAULT CHARSET=utf8;
 
 -- ----------------------------

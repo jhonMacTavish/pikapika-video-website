@@ -21,11 +21,11 @@ export default {
   data() {
     return {
       // params:{}
-      objectInfo: {}
+      // objectInfo: {}
     };
   },
   created() {
-    console.log("fetch");
+    // //console.log("fetch");
     this.fetch();
   },
   computed: {
@@ -34,34 +34,38 @@ export default {
     }
   },
   watch: {},
-  beforeDestroy() {
-    console.log("beforeDestroy");
-    sessionStorage.removeItem("videoParams");
-  },
+  // beforeDestroy() {
+  //   //console.log("beforeDestroy");
+  //   sessionStorage.removeItem("videoParams");
+  // },
   methods: {
     async getVideos(path, params) {
-      let res = await this.$http.get(`${path}/${params.v_id}`);
-      // console.log("objinfo", res.data[0]);
+      let res = await this.$http.get(`${path}/${params.film_id}`);
+      // //console.log("objinfo", res.data[0]);
+      console.log("res", res);
       this.objectInfo = res.data[0];
       this.$store.commit("UpdateObjectInfo", this.objectInfo);
 
       res = await this.$http.get("/videos", { params });
-      // console.log("res", res.data.list);
+      // //console.log("res", res.data.list);
       this.$store.commit("UpdateEpisodeList", res.data.list);
     },
 
     async fetch() {
       let params = this.$route.query;
-      if (params.t_id) {
+      if(!params){
+        let params = this.$route.params;
+      }
+      if (params.type_id) {
         this.$store.commit("UpdateVideoParams", params);
       }
-
+      
       params = JSON.stringify(params) == "{}" ? this.getParams : params;
-      // console.log("params", params);
-      switch (params.t_id) {
+      //console.log("params", params);
+      switch (params.type_id) {
         case "1":
           this.getVideos("/bangumis",params);
-          // let res = await this.$http.get(`/bangumis/${params.v_id}`);
+          // let res = await this.$http.get(`/bangumis/${params.film_id}`);
           // this.objectInfo = res.data[0];
           // this.$store.commit("UpdateObjectInfo", this.objectInfo);
 
@@ -70,7 +74,6 @@ export default {
           break;
         case "2":
           this.getVideos("/guomans",params);
-
           break;
         case "3":
           this.getVideos("/theaters",params);
@@ -82,7 +85,7 @@ export default {
           break;
       }
       // let res = await this.$http.get("/videos", { params });
-      // console.log("res", res.data.list);
+      // //console.log("res", res.data.list);
       // this.$store.commit("UpdateEpisodeList", res.data.list);
     }
   },

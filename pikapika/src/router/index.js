@@ -24,6 +24,7 @@ import ErrorPage from '@/components/common/errorPage/ErrorPage'
 Vue.use(Router)
 
 export default new Router({
+  mode:'history',
   routes: [
     {
       path: '',
@@ -88,7 +89,7 @@ export default new Router({
         },
         {
           path: '/playinfo',
-          name: 'playinfo',
+          // name: 'playinfo',
           component: PlayInfo,
           children: [
             {
@@ -97,7 +98,7 @@ export default new Router({
               component: FanInfo,
             },
             {
-              path: 'play/:id',
+              path: 'play/:type_id/:film_id/:epIndex/:episode',
               name: 'play',
               component: Player,
               props:true

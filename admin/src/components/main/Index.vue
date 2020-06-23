@@ -1,7 +1,7 @@
 <template>
   <div class="container">
     <div class="index" @click="fetch" :style="`background: url(${imgurl})`">
-      <div class="title">
+      <div class="title" @click.stop="">
         <span class="first">Pi</span>
         <span class="second">ka</span>
         <span class="first">Pi</span>
@@ -9,7 +9,7 @@
         <span>后台管理系统</span>
         <div class="hitokoto">
           <p>{{this.hitokoto.hitokoto}}</p>
-          <p>——{{this.hitokoto.from}}</p>
+          <p>{{`——${this.hitokoto.from}`}}</p>
         </div>
       </div>
     </div>
@@ -83,9 +83,8 @@ export default {
       let resI = await this.$http.get("/image");
       this.imgurl = resI.data.imgurl;
       
-      let resW = await this.$http.get("/hitokoto");
-      this.hitokoto = resW.data.hitokoto;
-      this.$store.commit('UpdateSuperAdmin',resW.data.super_admin);
+      let resh = await this.$http.get("/hitokoto");
+      this.hitokoto = resh.data.hitokoto;
     }
   },
   components: {}

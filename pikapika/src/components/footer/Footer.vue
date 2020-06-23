@@ -49,7 +49,8 @@ export default {
   // bottom: 0;
   margin-top: 80px;
   height: 186px;
-  width: 100%;
+  min-width: 1160px;
+
   // background: url(../../../static/imgs/footer/footer.jpg);
   background: linear-gradient(105deg, #0ecad4, #0ecad4, #50e3c2);
   overflow: hidden;
@@ -84,7 +85,7 @@ export default {
         margin: 10px auto;
         text-align: center;
         color: white;
-        span{
+        span {
           color: black;
         }
       }

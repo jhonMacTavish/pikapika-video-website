@@ -18,11 +18,11 @@ export default {
   computed: {},
   watch: {
     // async '$route'(to,from){
-    //   console.log("searchTo", to);
+    //   //console.log("searchTo", to);
     // }
   },
   created(){
-    console.log("routeSearch", this.$route);
+    //console.log("routeSearch", this.$route);
   },
   methods: {},
   components: { FilterBlock }

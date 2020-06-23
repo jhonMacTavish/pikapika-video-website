@@ -6,7 +6,7 @@
         <li v-for="(item,index) in leaderData" :key="index">
           <i class="rank-item">{{index+1}}</i>
           <router-link
-            :to="{path:'/playinfo',query:{t_id:item.t_id,v_id:item.v_id}}"
+            :to="{path:'/playinfo',query:{type_id:item.type_id,film_id:item.film_id}}"
             target="_blank"
             tag="a"
             class="card-content"

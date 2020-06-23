@@ -3,14 +3,14 @@
     <div class="tip">选集</div>
     <div class="wrap">
       <ul>
-        <li v-for="(item,index) in episodeList" :key="item.r_id">
+        <li v-for="(item,index) in episodeList" :key="item.resource_id">
           <el-button
             class="button-style"
             type="primary"
             size="small"
             @click="handleClick(index)"
             plain
-          >第{{item.r_episode}}话</el-button>
+          >第{{item.episode}}话</el-button>
         </li>
       </ul>
     </div>
@@ -41,14 +41,15 @@ export default {
       if(this.$route.path.split('/').pop()-1 == index){
         return
       }
-      console.log("play", index+1);
-      this.$router.push(`/playinfo/play/${index+1}`);
-      let params={};
-      params.t_id = this.objectInfo.t_id;
-      params.v_id = this.objectInfo.v_id;
-      console.log("params", params);
-      
+      //console.log("play", index+1);
+      // this.$router.push(`/playinfo/play/${index+1}`);
+      let {type_id,film_id} = this.objectInfo;
+      let params = {type_id,film_id};
       let res = await this.$http.put("volumes",{params});
+      // params.type_id = this.objectInfo.type_id;
+      // params.film_id = this.objectInfo.film_id;
+      this.$router.push(`/playinfo/play/${type_id}/${film_id}/${index+1}/${this.episodeList[index].episode}`);
+      this.$router.go(0);
     }
   },
   components: {}

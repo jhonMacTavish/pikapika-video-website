@@ -58,11 +58,11 @@ export default {
     };
   },
   async created() {
-    // console.log("route", this.$route);
+    // //console.log("route", this.$route);
     await this.fetch();
   },
   mounted() {
-    // console.log(this);
+    // //console.log(this);
   },
   computed: {
     serhResultList() {
@@ -79,10 +79,10 @@ export default {
   },
   watch: {
     async $route(to, from) {
-      // console.log("to.params.id", to.params.id);
-      // console.log("this.pathArr.indexOf(to.params.id)", this.pathArr.indexOf(to.params.id));
+      // //console.log("to.params.id", to.params.id);
+      // //console.log("this.pathArr.indexOf(to.params.id)", this.pathArr.indexOf(to.params.id));
       if (this.pathArr.indexOf(to.params.id)!=-1) {
-        console.log("run");
+        //console.log("run");
         this.currentPage = 1;
         await this.fetch();
       }
@@ -101,8 +101,8 @@ export default {
       let res = await this.$http.get(`/${path}s`);
       this.$store.commit("UpdateConmonList", res.data.list);
       this.handleCurrentChange(this.currentPage);
-      // console.log("conmonList", this.conmonList);
-      // console.log("res", res.data.list);
+      // //console.log("conmonList", this.conmonList);
+      // //console.log("res", res.data.list);
     },
 
     setCurrent(index) {

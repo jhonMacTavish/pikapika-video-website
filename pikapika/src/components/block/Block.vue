@@ -2,7 +2,7 @@
   <div class="block-box">
     <BlockHeader :title="title" />
     <div class="block-body">
-      <Card v-for="(item) in videoList" :key="item.v_id" :listItem="item"></Card>
+      <Card v-for="(item) in videoList" :key="item.film_id" :listItem="item"></Card>
     </div>
   </div>
 </template>
@@ -28,36 +28,36 @@ export default {
   },
   created() {
     this.fetch();
-    // console.log("route", this.getParams);
+    // //console.log("route", this.getParams);
   },
   methods: {
     async getBangumis(path) {
       let res = await this.$http.get(path);
-      // console.log("res", res.data.list);
+      // //console.log("res", res.data.list);
       this.videoList = res.data.list;
 
       let length = this.videoList.length;
       length = length > 12 ? 12 : length < 6 ? length : 6;
       this.videoList.length = length;
 
-      // console.log(path, this.videoList);
+      // //console.log(path, this.videoList);
     },
 
     async recommendList() {
       let params = this.getParams;
       let path =
-        params.t_id == 1
+        params.type_id == 1
           ? "/bangumis"
-          : params.t_id == 2
+          : params.type_id == 2
           ? "/guomans"
-          : params.t_id == 3
+          : params.type_id == 3
           ? "/theaters"
           : "/filmtvs";
       await this.getBangumis(path, 7);
       let list = this.videoList;
       let arr = [];
       for (let i = 0; i < list.length; i++) {
-        if (list[i].t_id == params.t_id && list[i].v_id == params.v_id) {
+        if (list[i].type_id == params.type_id && list[i].film_id == params.film_id) {
           continue;
         }
         arr.push(list[i]);
@@ -67,7 +67,7 @@ export default {
         arr.length = 6;
       }
       this.videoList = arr;
-      console.log("videoList", this.videoList);
+      //console.log("videoList", this.videoList);
     },
 
     async fetch() {
@@ -86,7 +86,7 @@ export default {
           this.getBangumis("/bangumis");
           // return this.$store.getters.bangumiList;
           // let resB = await this.$http.get("/bangumis");
-          // console.log("resB", resB.data.list);
+          // //console.log("resB", resB.data.list);
           // this.videoList = resB.data.list;
           // if (this.videoList.length > 12) {
           //   this.videoList.length = 12;
@@ -108,7 +108,7 @@ export default {
           // let params = this.getParams;
           // let arr = [];
           // for (let i = 0; i < list.length; i++) {
-          //   if (list[i].t_id == params.t_id && list[i].v_id == params.v_id) {
+          //   if (list[i].type_id == params.type_id && list[i].film_id == params.film_id) {
           //     continue;
           //   }
           //   arr.push(list[i]);
@@ -118,7 +118,7 @@ export default {
           //   arr.length = 6;
           // }
           // this.videoList = arr;
-          // console.log("videoList", this.videoList);
+          // //console.log("videoList", this.videoList);
           break;
         default:
           break;

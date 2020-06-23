@@ -68,10 +68,13 @@ export default {
   name: "Register",
   data() {
     let validateUsername = (rule, value, callback) => {
+      let reg = /^[A-Za-z0-9_]{6,16}$/;
       if (!value) {
         callback(new Error("用户名")); // 请输入用户名
-      } else {
+      } else if (reg.test(value)) {
         callback();
+      } else {
+        callback(new Error("用户名由6-16位字母、数字、下划线组成"));
       }
     };
 
@@ -111,7 +114,7 @@ export default {
     };
 
     let captcha = (rule, value, callback) => {
-      // console.log(Number(value));
+      // //console.log(Number(value));
       if (value === "") {
         callback(new Error("请输入验证码"));
       } else if (isNaN(Number(value)) || value.length < 4) {
@@ -144,9 +147,7 @@ export default {
       }
     };
   },
-  mounted() {
-    console.log(this.$route);
-  },
+  mounted() {},
   computed: {},
   watch: {},
   beforeDestroy() {
@@ -173,14 +174,14 @@ export default {
             captcha
           });
           if (res.data.status == 200) {
-            console.log("res", res);
+            //console.log("res", res);
             this.$message({
               type: "success",
               message: res.data.msg
             });
             let IntervalID = setInterval(() => {
               this.second--;
-              console.log(this.second, );
+              //console.log(this.second);
               if (this.second <= 0) {
                 this.second = 3;
                 this.$router.push("/login");
@@ -214,15 +215,15 @@ export default {
         return;
       } else {
         let res = await this.$http.post("/getCaptcha", { email });
-        console.log("res", res);
+        //console.log("res", res);
         if (res.data.status == 200) {
           this.sendedCaptcha = true;
           sessionStorage.setItem("sendedCaptcha", this.sendedCaptcha);
           this.IntervalID = setInterval(() => {
             this.intervals--;
-            console.log(this.intervals);
+            //console.log(this.intervals);
             // sessionStorage.setItem("intervals", this.intervals);
-            // console.log("this.intervals", this.intervals);
+            // //console.log("this.intervals", this.intervals);
             if (this.intervals <= 0) {
               this.intervals = 60;
               this.sendedCaptcha = false;
@@ -230,7 +231,7 @@ export default {
               clearInterval(this.IntervalID);
             }
           }, 1000);
-          // console.log(, )
+          // //console.log(, )
         } else {
           this.$message.error(res.data.msg);
         }

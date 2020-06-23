@@ -10,12 +10,12 @@ module.exports = {
     },
 
     sqlConnect(sql,sqlArr,callback){
-        console.log("sqlConnect");
+        //console.log("sqlConnect");
         let pool = mysql.createPool(this.config);
         pool.getConnection((err,conn)=>{
-            console.log("正在连接");
+            //console.log("正在连接");
             if(err){
-                console.log("连接失败");
+                //console.log("连接失败");
                 return;
             }
             conn.query(sql,sqlArr,callback);
@@ -42,7 +42,7 @@ module.exports = {
                 }
             })
         }).catch((err)=>{
-            console.log(err);
+            //console.log(err);
         });
     }
 }

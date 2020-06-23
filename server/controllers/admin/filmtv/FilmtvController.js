@@ -2,8 +2,8 @@ let dbconfig = require('../../../util/dbconfig');
 let util = require('../../../util/util');
 
 let getByParams = async (obj) => {
-    console.log(`getBy${obj.key}`);
-    let sql = `select * from pk_filmTV where ${obj.key}=?`;
+    //console.log(`getBy${obj.key}`);
+    let sql = `select * from pk_filmtv where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
@@ -11,35 +11,35 @@ let getByParams = async (obj) => {
 }
 
 getOne = async (req, res) => {
-    console.log("getFilmTVByID")
-    let v_id = req.params.id
-    let sql = 'select * from pk_filmTV where v_id=?';
-    let sqlArr = [v_id];
+    //console.log("getFilmTVByID")
+    let film_id = req.params.id
+    let sql = 'select filmtv_id as film_id,name,searchUrl,type_id,imgSrc,is_ended,style,initials,playtime,years,actors,summary from pk_filmtv where filmtv_id=?';
+    let sqlArr = [film_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    result[0].f_episodes = await util.countEp(4,v_id);
+    result[0].episodes = await util.countEp(4, film_id);
 
     return res.send(result);
 }
 
 getAll = (req, res) => {
-    console.log("getFilmTVAll")
-    let sql = 'select v_id,f_name,f_style,f_playtime from pk_filmTV order by f_name asc';
+    //console.log("getFilmTVAll")
+    let sql = 'select filmtv_id as film_id,name,style,playtime from pk_filmtv order by create_time desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error",err.message);
             return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
-            let t_id = 4;
-            for(let i=0; i<data.length; i++){
-                let v_id = data[i].v_id;
-                data[i].f_episodes = await util.countEp(t_id,v_id);
+            // //console.log("getAll", data);
+            //console.log("操作成功");
+            let type_id = 4;
+            for (let i = 0; i < data.length; i++) {
+                let film_id = data[i].film_id;
+                data[i].episodes = await util.countEp(type_id, film_id);
             }
 
             return res.send({
@@ -54,11 +54,11 @@ getAll = (req, res) => {
 }
 
 createOne = async (req, res) => {
-    console.log("createFilmTV");
+    //console.log("createFilmTV");
 
-    let { f_name, t_id, f_imgSrc, f_status, f_style, f_initials, f_playtime, /*f_quarter,*/ f_years, f_actors, f_summary } = req.body;
-    let f_nameRst = await getByParams({ key: 'f_name', value: f_name });
-    if (f_nameRst.length != 0) {
+    let { searchUrl,name, type_id, imgSrc, is_ended, style, initials, playtime,   years, actors, summary } = req.body;
+    let nameRst = await getByParams({ key: 'name', value: name });
+    if (nameRst.length != 0) {
         return res.send({
             "status": 402,
             "msg": "数据库中存在同名国漫"
@@ -67,24 +67,24 @@ createOne = async (req, res) => {
     }
 
     let sql =
-        'insert into pk_filmTV(f_name,t_id,f_imgSrc,f_status,f_style,f_initials,f_playtime,f_years,f_actors,f_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?)';
+        'insert into pk_filmtv(searchUrl,name,type_id,imgSrc,is_ended,style,initials,playtime,years,actors,summary,admin_id) '
+        + 'values(?,?,?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [f_name, t_id, f_imgSrc, f_status, f_style, f_initials, f_playtime, /*f_quarter,*/ f_years, f_actors, f_summary];
+    let sqlArr = [searchUrl,name, type_id, imgSrc, is_ended, style, initials, playtime,   years, actors, summary, req.admin_id];
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
-            console.log("操作成功");
-            console.log("data", data.insertId);
+            //console.log("操作成功");
+            //console.log("data", data.insertId);
             return res.send({
                 "status": 200,
                 "msg": "添加成功",
-                "v_id": data.insertId
+                "film_id": data.insertId
             });
         }
     }
@@ -94,21 +94,21 @@ createOne = async (req, res) => {
 }
 
 updateOne = (req, res) => {
-    console.log("updateFilmTV");
-    let { t_id, f_name, f_imgSrc, f_status, f_style, f_initials, f_playtime,/*f_quarter,*/f_years, f_actors, f_summary, v_id } = req.body;
+    //console.log("updateFilmTV");
+    let { searchUrl,type_id, name, imgSrc, is_ended, style, initials, playtime, years, actors, summary, film_id } = req.body;
 
-    sql = 'update pk_filmTV set t_id=?,f_name=?,f_imgSrc=?,f_status=?,f_style=?,f_initials=?,f_playtime=?,f_years=?,f_actors=?,f_summary=? where v_id=?';
-    sqlArr = [t_id, f_name, f_imgSrc, f_status, f_style, f_initials, f_playtime,/*f_quarter,*/f_years, f_actors, f_summary, v_id];
+    let sql = 'update pk_filmtv set searchUrl=?,type_id=?,name=?,imgSrc=?,is_ended=?,style=?,initials=?,playtime=?,years=?,actors=?,summary=?,admin_id=? where filmtv_id=?';
+    let sqlArr = [searchUrl,type_id, name, imgSrc, is_ended, style, initials, playtime, years, actors, summary, req.admin_id, film_id];
 
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log(err);
             return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "更新成功"
@@ -120,20 +120,20 @@ updateOne = (req, res) => {
 }
 
 deleteOne = (req, res) => {
-    console.log("deleteFilmTV")
-    let v_id = req.params.id;
-    let sql = 'delete from pk_filmTV where v_id=?';
-    let sqlArr = [v_id];
+    //console.log("deleteFilmTV")
+    let film_id = req.params.id;
+    let sql = 'delete from pk_filmtv where filmtv_id=?';
+    let sqlArr = [film_id];
 
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "删除成功"

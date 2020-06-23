@@ -2,41 +2,31 @@
   <div class="card-box">
     <!-- <div class="card-content"> -->
     <router-link
-      :to="{path:'/playinfo',query:{t_id:listItem.t_id,v_id:listItem.v_id}}"
+      :to="{path:'/playinfo',query:{type_id:listItem.type_id,film_id:listItem.film_id}}"
       target="_blank"
       tag="a"
       class="card-content"
     >
-      <!-- <img :src="listItem.b_imgSrc" :title="listItem.b_name" /> -->
+      <!-- <img :src="listItem.imgSrc" :title="listItem.name" /> -->
       <img
-        :src="listItem.t_id==1?
-          listItem.b_imgSrc:listItem.t_id==2?
-          listItem.g_imgSrc:listItem.t_id==3?
-          listItem.th_imgSrc:listItem.f_imgSrc"
-        :title="listItem.b_name"
+        :src="listItem.imgSrc"
+        :title="listItem.name"
       />
 
-      <!-- <p class="name">{{listItem.b_name}}</p> -->
+      <!-- <p class="name">{{listItem.name}}</p> -->
       <p class="name">
-        {{listItem.t_id==1?
-        listItem.b_name:listItem.t_id==2?
-        listItem.g_name:listItem.t_id==3?
-        listItem.th_name:listItem.f_name}}
+        {{listItem.name}}
       </p>
 
-      <p v-if="listItem.t_id!=3" class="chapter">
+      <p v-if="listItem.type_id!=3" class="chapter">
         <span>
-          {{(listItem.t_id==1?
-          listItem.b_status:listItem.t_id==2?
-          listItem.g_status:listItem.f_status)==2?"全":"更新至"}}
+          {{listItem.is_ended==1?"全":"更新至"}}
         </span>
-        {{listItem.t_id==1?
-        listItem.b_episodes:listItem.t_id==2?
-        listItem.g_episodes:listItem.f_episodes}}话
+        <span :style="listItem.is_ended!=1?'color: #ff8eb3;':''">{{listItem.episodes}}话</span>
       </p>
 
-      <p v-else class="chapter">{{listItem.th_VGA==1?"BD720P":"BD1080P"}}</p>
-      <!-- <p class="chapter">{{listItem.b_status==2?"全":"更新至"}}{{listItem.b_episodes}}话</p> -->
+      <p v-else class="chapter">{{listItem.VGA==1?"BD720P":"BD1080P"}}</p>
+      <!-- <p class="chapter">{{listItem.status==2?"全":"更新至"}}{{listItem.episodes}}话</p> -->
     </router-link>
     <!-- </div> -->
   </div>

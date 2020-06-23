@@ -1,21 +1,21 @@
 <template>
   <div id="banner" class="banner-box">
-    <div class="user-wrap">
-      <span @click="$router.push('/userinfo')">
-        <router-link :to="{path:'/userinfo'}" target="_blank" tag="a" class="avatar">
-          <img :src="avtar" alt @click="handleClick" />
-        </router-link>
-      </span>
+    <div class="user-wrap" @mouseleave="leave(user.username)">
+      <router-link :to="{path:'/userinfo'}" target="_blank" tag="a" class="avatar">
+        <img :src="user.avatar" alt @click="handleClick" />
+      </router-link>
       <div class="button-wrap">
         <el-button v-if="!logged" class="button" type="text" @click="handleClick">登录</el-button>
-        <router-link
-          v-else
-          :to="{path:'/userinfo'}"
-          target="_blank"
-          tag="a"
-          class="usermame"
-        >{{user.u_name}}</router-link>
-        <!-- <el-button v-else class="button" type="text" @click="$router.push('/userinfo')">{{user.u_name}}</el-button> -->
+        <router-link v-else :to="{path:'/userinfo'}" target="_blank" tag="a">
+          <el-button type="text">
+            <span
+              ref="username"
+              class="username"
+              @mouseenter="enter(user.username)"
+            >{{user.username}}</span>
+          </el-button>
+        </router-link>
+        <!-- <el-button v-else class="button" type="text" @click="$router.push('/userinfo')">{{user.username}}</el-button> -->
         <el-button v-if="!logged" class="button" type="text" @click="register">注册</el-button>
         <el-button v-else class="button" type="text" @click="logout">注销</el-button>
       </div>
@@ -28,28 +28,36 @@ export default {
   name: "Banner",
   data() {
     return {
-      avtar: "",
-      user: {}
+      user: {
+        username: "",
+        avatar: "../../../static/imgs/user/userAvatar.jpg"
+      }
     };
   },
   computed: {
     logged() {
-      return JSON.parse(localStorage.getItem("pk_user_logged"));
+      return localStorage.token;
     }
   },
   created() {
-    // console.log("user", this.user);
-    this.user = this.logged
-      ? JSON.parse(localStorage.getItem("logged_user"))
-      : {
-          u_avatar: "../../../static/imgs/user/userAvatar.jpg"
-        };
-    this.avtar = this.user.u_avatar?this.user.u_avatar:"../../../static/imgs/user/userAvatar.jpg";
+    this.fetch();
+    // : "../../../static/imgs/user/userAvatar.jpg";
+  },
+  mounted() {
+    this.setNameWidth(true);
   },
   methods: {
+    async fetch() {
+      if (localStorage.token) {
+        let res = await this.$http.get("/getUserinfo");
+        this.user = res.data.user;
+        this.user.avatar = this.user.avatar
+          ? this.user.avatar
+          : "../../../static/imgs/user/userAvatar.jpg";
+        this.$store.commit('UpdateUser',this.user);
+      }
+    },
     handleClick() {
-      console.log("click");
-      console.log("this.logged", this.logged);
       if (!this.logged) {
         this.$router.push("/login");
       }
@@ -60,10 +68,39 @@ export default {
     },
 
     logout() {
-      // localStorage.removeItem("logged_user");
-      // localStorage.removeItem("pk_user_logged");
-      localStorage.clear();
+      delete localStorage.token;
       location.reload(true);
+    },
+
+    enter(name) {
+      this.setNameWidth(false);
+    },
+
+    leave(name) {
+      // if (name.length <= 10) {
+      this.setNameWidth(true);
+      // }else{
+
+      // }
+      // this.$refs.username.style.width = "100px";
+    },
+
+    setNameWidth(init) {
+      if (!this.user.username) return;
+      let name = this.user.username;
+      let length = init ? (name.length <= 10 ? name.length : 10) : name.length;
+      let countW = 0;
+      let countN = 0;
+      for (let i = 0; i < length; i++) {
+        if (name[i] === "W" || name[i] === "M") {
+          countW++;
+        } else if (name[i] === "i" || name[i] === "I") {
+          countN++;
+        }
+      }
+      this.$refs.username.style.width = `${(length - countW - countN) * 10 +
+        countN * 4.5 +
+        countW * 19}px`;
     }
   }
 };
@@ -76,7 +113,7 @@ export default {
   z-index: 0;
   min-height: 155px;
   // min-height: 180px;
-  min-width: 999px;
+  min-width: 1160px;
   background-color: #f9f9f9;
   display: -ms-flexbox;
   display: flex;
@@ -113,14 +150,29 @@ export default {
       margin-left: 10px;
       top: -13px;
       display: inline-block;
-      .usermame {
+
+      .username {
+        position: relative;
+        top: 5px;
+        display: inline-block;
+        // width: 100px;
+        height: 20px;
+        text-align: center;
+        text-overflow: ellipsis;
+        white-space: nowrap;
+        overflow: hidden;
         color: white !important;
         font-size: 18px;
         text-shadow: 0 1px 1px rgba(0, 0, 0, 1);
+        transition: width 0.5s;
+        border-radius: 2px;
+        padding: 0 2px;
       }
 
-      .usermame:hover {
-        color: #f25d8e !important;
+      .username:hover {
+        color: #39c5bb !important;
+        background: rgba(255, 255, 255, 0.8);
+        padding: 0 2px;
       }
 
       .button {
@@ -130,7 +182,7 @@ export default {
       }
 
       .button:hover {
-        color: #f25d8e;
+        color: #39c5bb;
       }
     }
   }

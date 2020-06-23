@@ -1,6 +1,6 @@
 <template>
   <div class="register-page">
-    <div class="banner"></div>
+    <div  id="register" class="banner"></div>
     <router-view></router-view>
     <Footer />
   </div>
@@ -14,6 +14,12 @@ export default {
   },
   computed: {},
   watch: {},
+  mounted(){
+    const returnEle = document.querySelector("#register"); //window是将要跳转区域的id
+    if (!!returnEle) {
+      returnEle.scrollIntoView(true); // true 是默认的
+    }
+  },
   methods: {},
   components: {}
 };

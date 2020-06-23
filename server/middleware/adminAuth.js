@@ -8,16 +8,18 @@ module.exports = options => {
         let token = String(req.headers.authorization || '').split(' ').pop();
         assert(token, 401, "请先登录");
         try{
-            var { a_id } = jwt.verify(token, secretkey);
+            var { admin_id } = jwt.verify(token, secretkey);
         }catch(err){
             if(err.message == "jwt malformed")
-            a_id = null;
-            assert(a_id, 422, "请先登录");
+            admin_id = null;
+            assert(admin_id, 422, "请先登录");
         }
-        assert(a_id, 401, "请先登录");
-        req.user = await AdminUser.getByID(a_id);
+        assert(admin_id, 401, "请先登录");
+        req.admin_id = admin_id;
+        req.user = await AdminUser.getByID(admin_id);
+        //console.log("req.user", req.user);
         assert(req.user, 401, "请先登录");
-        // console.log("req.user", req.user);
+        // //console.log("req.user", req.user);
         await next();
     }
 }

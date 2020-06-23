@@ -43,13 +43,22 @@ export default {
     }
   },
   methods: {
-    fetch() {
+    async fetch() {
+      let res;
+      if (this.$route.path.indexOf("news") != -1) {
+        res = await this.$http.get("/news");
+        this.$store.commit('UpdateNewsList',res.data.list);
+      } else if (this.$route.path.indexOf("announce") != -1) {
+        res = await this.$http.get("/announces");
+        this.$store.commit('UpdateAnnounceList',res.data.list);
+      }
+      //console.log("res", res);
       this.handleCurrentChange(this.currentPage);
     },
 
     handleCurrentChange(val) {
       let pageList = [];
-      console.log("this.newsList", this.newsList);
+      //console.log("this.newsList", this.newsList);
       for (
         let i = 5 * (val - 1);
         i < (5 * val < this.newsList.length ? 5 * val : this.newsList.length);
@@ -58,7 +67,7 @@ export default {
         pageList.push(this.newsList[i]);
       }
       this.pageList = pageList;
-      console.log(pageList);
+      //console.log(pageList);
 
       const returnEle = document.querySelector("#banner"); //window是将要跳转区域的id
       if (!!returnEle) {

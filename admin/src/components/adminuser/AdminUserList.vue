@@ -8,21 +8,21 @@
     </div>
     <el-table :data="pageList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="a_name" label="姓名" width="200"></el-table-column>
-      <el-table-column prop="a_email" label="邮箱"></el-table-column>
+      <el-table-column prop="name" label="姓名" width="200"></el-table-column>
+      <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="create_time" label="创建时间"></el-table-column>
       <el-table-column fixed="right" label="操作" width="180">
         <template slot-scope="scope">
           <el-button
             type="text"
             size="small"
-            @click="$router.push(`/adminuser/eidt/${scope.row.a_id}`)"
+            @click="$router.push(`/adminuser/eidt/${scope.row.admin_id}`)"
             class="edit"
           >编辑</el-button>
           <!-- <el-button
             type="text"
             size="small"
-            @click="$router.push(`/adminuser/eidt/${scope.row.a_id}`)"
+            @click="$router.push(`/adminuser/eidt/${scope.row.admin_id}`)"
             class="deit"
           >编辑</el-button>-->
           <el-button type="text" size="small" @click="remove(scope.row)" class="delete">删除</el-button>
@@ -43,11 +43,11 @@
     <el-dialog title="管理员信息" :visible.sync="dialogFormVisible">
       <el-form :model="model" label-width="100px" style="margin-right: 0;">
         <el-form-item label="姓名" class="form-item">
-          <p>{{model.a_name}}</p>
+          <p>{{model.name}}</p>
         </el-form-item>
 
         <el-form-item label="邮箱" class="form-item">
-          <p>{{model.a_email}}</p>
+          <p>{{model.email}}</p>
         </el-form-item>
       </el-form>
       <!-- <div slot="footer" class="dialog-footer">
@@ -88,15 +88,15 @@ export default {
     },
 
     async remove(row) {
-      this.$confirm(`是否确定要删除管理员 "${row.a_name}"`, "提示", {
+      this.$confirm(`是否确定要删除管理员 "${row.name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-          console.log("row.a_id", row.a_id);
-          const res = await this.$http.delete(`/adminusers/${row.a_id}`);
-          console.log("delete", res);
+          //console.log("row.admin_id", row.admin_id);
+          const res = await this.$http.delete(`/adminusers/${row.admin_id}`);
+          //console.log("delete", res);
           if (res.data.status == 200) {
             this.$message({
               type: "success",
@@ -134,6 +134,9 @@ export default {
   components: {},
   beforeRouteEnter(to, from, next) {
     next(async vm => {
+      if(to.path.indexOf("adminuser")>=0 && !vm.$store.getters.adminUser.superAdmin){
+        vm.$router.push('/');
+      }
       await vm.fetch();
     });
   }

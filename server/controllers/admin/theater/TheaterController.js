@@ -1,7 +1,7 @@
 let dbconfig = require('../../../util/dbconfig');
 
 let getByParams = async (obj) => {
-    console.log(`getBy${obj.key}`);
+    //console.log(`getBy${obj.key}`);
     let sql = `select * from pk_theater where ${obj.key}=?`;
     let sqlArr = [obj.value];
 
@@ -10,29 +10,29 @@ let getByParams = async (obj) => {
 }
 
 getOne = async (req, res) => {
-    console.log("getTheaterByID")
-    let v_id = req.params.id
-    let sql = 'select * from pk_theater where v_id=?';
-    let sqlArr = [v_id];
+    //console.log("getTheaterByID")
+    let film_id = req.params.id
+    let sql = 'select theater_id as film_id,name,searchUrl,type_id,tag,imgSrc,VGA,style,initials,playtime,years,actors,summary from pk_theater where theater_id=?';
+    let sqlArr = [film_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
     return res.send(result);
 }
 
 getAll = (req, res) => {
-    console.log("getTheaterAll")
-    let sql = 'select v_id,th_name,th_tag,th_style,th_playtime from pk_theater order by th_name asc';
+    //console.log("getTheaterAll")
+    let sql = 'select theater_id as film_id,name,tag,style,playtime from pk_theater order by create_time desc';
     let sqlArr = [];
     let callback = (err, data) => {
         if (err) {
-            console.log("操作出错");
+            console.error("error",err.message);
             return res.send({
                 'status': 402,
                 'msg': "信息获取失败"
             })
         } else {
-            // console.log("getAll", data);
-            console.log("操作成功");
+            // //console.log("getAll", data);
+            //console.log("操作成功");
             return res.send({
                 "list": data,
                 "status": 200,
@@ -45,11 +45,11 @@ getAll = (req, res) => {
 }
 
 createOne = async (req, res) => {
-    console.log("createTheater");
+    //console.log("createTheater");
 
-    let { th_name, t_id, th_tag, th_imgSrc, th_VGA, th_style, th_initials, th_playtime, /*th_quarter,*/ th_years, th_actors, th_summary } = req.body;
-    let th_nameRst = await getByParams({ key: 'th_name', value: th_name });
-    if (th_nameRst.length != 0) {
+    let { searchUrl,name, type_id, tag, imgSrc, VGA, style, initials, playtime,   years, actors, summary } = req.body;
+    let nameRst = await getByParams({ key: 'name', value: name });
+    if (nameRst.length != 0) {
         return res.send({
             "status": 402,
             "msg": "数据库中存在同名国漫"
@@ -58,24 +58,24 @@ createOne = async (req, res) => {
     }
 
     let sql =
-        'insert into pk_theater(th_name,t_id,th_tag,th_imgSrc,th_VGA,th_style,th_initials,th_playtime,th_years,th_actors,th_summary) '
-        + 'values(?,?,?,?,?,?,?,?,?,?,?)';
+        'insert into pk_theater(searchUrl,name,type_id,tag,imgSrc,VGA,style,initials,playtime,years,actors,summary,admin_id) '
+        + 'values(?,?,?,?,?,?,?,?,?,?,?,?,?)';
 
-    let sqlArr = [th_name, t_id, th_tag, th_imgSrc, th_VGA, th_style, th_initials, th_playtime, /*th_quarter,*/ th_years, th_actors, th_summary];
+    let sqlArr = [searchUrl,name, type_id, tag, imgSrc, VGA, style, initials, playtime,   years, actors, summary, req.admin_id];
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "添加失败"
             });
         } else {
-            console.log("操作成功");
-            console.log("data", data.insertId);
+            //console.log("操作成功");
+            //console.log("data", data.insertId);
             return res.send({
                 "status": 200,
                 "msg": "添加成功",
-                "v_id": data.insertId
+                "film_id": data.insertId
             });
         }
     }
@@ -85,21 +85,21 @@ createOne = async (req, res) => {
 }
 
 updateOne = (req, res) => {
-    console.log("updateTheaterByID");
-    let { th_name, t_id, th_tag, th_imgSrc, th_VGA, th_style, th_initials, th_playtime, /*th_quarter,*/ th_years, th_actors, th_summary, v_id } = req.body;
+    //console.log("updateTheaterByID");
+    let { searchUrl,name, type_id, tag, imgSrc, VGA, style, initials, playtime,   years, actors, summary, film_id } = req.body;
 
-    sql = 'update pk_theater set th_name=?,t_id=?,th_tag=?,th_imgSrc=?,th_VGA=?,th_style=?,th_initials=?,th_playtime=?,th_years=?,th_actors=?,th_summary=? where v_id=?';
-    sqlArr = [th_name, t_id, th_tag, th_imgSrc, th_VGA, th_style, th_initials, th_playtime, /*th_quarter,*/ th_years, th_actors, th_summary, v_id];
+    let sql = 'update pk_theater set searchUrl=?,name=?,type_id=?,tag=?,imgSrc=?,VGA=?,style=?,initials=?,playtime=?,years=?,actors=?,summary=?,admin_id=? where theater_id=?';
+    let sqlArr = [searchUrl,name, type_id, tag, imgSrc, VGA, style, initials, playtime,   years, actors, summary, req.admin_id, film_id];
 
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "更新失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "更新成功"
@@ -111,21 +111,20 @@ updateOne = (req, res) => {
 }
 
 deleteOne = (req, res) => {
-    console.log("deleteTheaterByID")
-    let v_id = req.params.id;
-    console.log("v_id", req.params);
-    let sql = 'delete from pk_theater where v_id=?';
-    let sqlArr = [v_id];
-
+    //console.log("deleteTheaterByID")
+    let film_id = req.params.id;
+    //console.log("film_id", req.params);
+    let sql = 'delete from pk_theater where theater_id=?';
+    let sqlArr = [film_id];
     callback = (err, data) => {
         if (err) {
-            console.log("操作出错")
+            //console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "删除失败"
             });
         } else {
-            console.log("操作成功");
+            //console.log("操作成功");
             return res.send({
                 "status": 200,
                 "msg": "删除成功"

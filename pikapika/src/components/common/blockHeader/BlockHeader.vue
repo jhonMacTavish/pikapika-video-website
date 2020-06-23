@@ -1,52 +1,27 @@
 <template>
   <div class="blockHeader-box">
     <div class="title">
-      <svg
-        t="1587718509099"
-        class="icon"
-        viewBox="0 0 1024 1024"
-        version="1.1"
-        xmlns="http://www.w3.org/2000/svg"
-        p-id="2038"
-        width="40"
-        height="30"
-      >
-        <path
-          d="M0 194.56m81.92 0l860.16 0q81.92 0 81.92 81.92l0 573.44q0 81.92-81.92 81.92l-860.16 0q-81.92 0-81.92-81.92l0-573.44q0-81.92 81.92-81.92Z"
-          fill="#69C0FF"
-          p-id="2039"
-        />
-        <path
-          d="M143.36 921.6h122.88v30.72a40.96 40.96 0 0 1-40.96 40.96h-40.96a40.96 40.96 0 0 1-40.96-40.96v-30.72zM757.76 921.6h122.88v30.72a40.96 40.96 0 0 1-40.96 40.96h-40.96a40.96 40.96 0 0 1-40.96-40.96v-30.72z"
-          fill="#40A9FF"
-          p-id="2040"
-        />
-        <path
-          d="M92.16 307.2m81.92 0l450.56 0q81.92 0 81.92 81.92l0 348.16q0 81.92-81.92 81.92l-450.56 0q-81.92 0-81.92-81.92l0-348.16q0-81.92 81.92-81.92Z"
-          fill="#91D5FF"
-          p-id="2041"
-        />
-        <path
-          d="M865.28 363.52m-46.08 0a46.08 46.08 0 1 0 92.16 0 46.08 46.08 0 1 0-92.16 0Z"
-          fill="#40A9FF"
-          p-id="2042"
-        />
-        <path
-          d="M865.28 517.12m-46.08 0a46.08 46.08 0 1 0 92.16 0 46.08 46.08 0 1 0-92.16 0Z"
-          fill="#40A9FF"
-          p-id="2043"
-        />
-      </svg>
+      <img :src="imgSrc" alt class="icon" />
       <span>{{title}}</span>
     </div>
-     <router-link v-if="title!='今日热播'&&title!='新番时间表'&&title!='推荐'"
+    <router-link
+      v-if="title!='今日热播'&&title!='新番时间表'&&title!='推荐'"
       :to="title=='排行榜'?{path:'/rankpage'}:{name:'general',params:{id:type}}"
       target="_blank"
       tag="a"
       class="card-content"
     >
-      <el-button  class="more" size="mini">更多</el-button>
+      <el-button class="more" size="mini">更多</el-button>
     </router-link>
+    <el-switch
+      class="more"
+      v-else-if="title=='新番时间表'"
+      v-model="BGswitch"
+      active-color="#FF8EB3"
+      inactive-color="#39c5bb"
+      active-text="国漫"
+      inactive-text="番剧"
+    ></el-switch>
 
     <!-- <el-button v-if="title!='今日热播'&&title!='新番时间表'&&title!='推荐'" @click="$router.push({name:'general',params:{id:type}})" class="more" size="mini">更多</el-button> -->
   </div>
@@ -59,7 +34,9 @@ export default {
     title: ""
   },
   data() {
-    return {};
+    return {
+      BGswitch: false
+    };
   },
   computed: {
     type() {
@@ -75,6 +52,35 @@ export default {
           break;
         case "剧集":
           return "movie";
+          break;
+        default:
+          break;
+      }
+    },
+
+    imgSrc() {
+      switch (this.title) {
+        case "新番时间表":
+          return "../../../../static/imgs/navbar/timetable.png";
+          break;
+        case "排行榜":
+          return "../../../../static/imgs/navbar/leaderboard.png";
+          break;
+        case "番剧":
+          return "../../../../static/imgs/navbar/bangumi2.png";
+          break;
+        case "国漫":
+          return "../../../../static/imgs/navbar/guoman.png";
+
+          break;
+        case "电影":
+          return "../../../../static/imgs/navbar/theater2.png";
+          break;
+        case "剧集":
+          return "../../../../static/imgs/navbar/filmtv.png";
+          break;
+        case "推荐":
+          return "../../../../static/imgs/navbar/recommend.png";
           break;
         default:
           break;
@@ -95,6 +101,15 @@ export default {
   .title {
     height: 30px;
     line-height: 30px;
+
+    img.icon {
+      display: inline-block;
+      // background: brown;
+      margin-right: 8px;
+      width: 30px;
+      height: 30px;
+    }
+
     span {
       position: relative;
       top: -6px;

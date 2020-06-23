@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{id?'编辑影视 ♥ '+this.modelF.f_name:'添加影视'}}</h1>
+    <h1>{{id?'编辑影视 ♥ '+this.modelF.name:'添加影视'}}</h1>
 
     <el-tabs v-model="activeName" @tab-click="handleClick">
       <el-tab-pane label="基本信息" name="first" class="panel">
@@ -9,28 +9,52 @@
           :rules="rules"
           ref="filmtv"
           label-width="200px"
-          @submit.native.prevent="save"
           style="margin-right: 200px"
         >
-          <el-form-item label="名称" prop="f_name">
-            <el-input v-model="modelF.f_name" style="width:222px" maxlength="100"></el-input>
+          <el-form-item label="搜索片源" v-if="!id">
+            <el-select
+              v-model="searchUrl"
+              :filterable="id?false:true"
+              :placeholder="id?modelF.name:'请输入要查询的影视名称'"
+              remote
+              reserve-keyword
+              :remote-method="serchFilm"
+              :default-first-option="true"
+              :loading="loading"
+              no-data-text="未获取到相关数据"
+            >
+              <el-option
+                v-for="(item,index) in options"
+                :key="index"
+                :label="item.name"
+                :value="item.url"
+              >
+                <span style="float:left">{{item.name}}</span>
+                <span style="float:right">{{item.genre}}</span>
+                <span style="float:right">{{item.time}}</span>
+              </el-option>
+            </el-select>
+            <!-- <el-input v-model="modelF.name" style="width:222px" maxlength="100"></el-input> -->
           </el-form-item>
-          <el-form-item label="类型" prop="t_id">
-            <el-select v-model="modelF.t_id" placeholder="请选择" disabled>
+          <el-form-item label="名称" prop="name">
+            <el-input v-model="modelF.name" style="width:222px" maxlength="100"></el-input>
+          </el-form-item>
+          <el-form-item label="类型" prop="type_id">
+            <el-select v-model="modelF.type_id" placeholder="请选择" disabled>
               <el-option
                 v-for="item in types"
-                :key="item.t_id"
+                :key="item.type_id"
                 :label="item.text"
-                :value="item.t_id"
+                :value="item.type_id"
               ></el-option>
             </el-select>
           </el-form-item>
 
-          <!-- <el-form-item label="总集数" prop="f_episodes">
-            <el-input v-model="modelF.f_episodes" style="width:222px" maxlength="4"></el-input>
+          <!-- <el-form-item label="总集数" prop="episode">
+            <el-input v-model="modelF.episode" style="width:222px" maxlength="4"></el-input>
           </el-form-item>-->
-          <el-form-item label="状态" prop="f_status">
-            <el-select v-model="modelF.f_status" placeholder="请选择">
+          <el-form-item label="状态" prop="is_ended">
+            <el-select v-model="modelF.is_ended" placeholder="请选择">
               <el-option
                 v-for="(item) in status"
                 :key="item.id"
@@ -39,9 +63,9 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="风格" prop="f_style">
+          <el-form-item label="风格" prop="style">
             <!-- <el-select
-          v-model="modelF.f_style"
+          v-model="modelF.style"
           multiple
           filterable
           allow-create
@@ -53,7 +77,7 @@
             </el-select>-->
             <el-tag
               :key="tag"
-              v-for="tag in modelF.f_style"
+              v-for="tag in modelF.style"
               closable
               :disable-transitions="false"
               @close="styHandleClose(tag)"
@@ -71,8 +95,13 @@
               <i class="el-icon-plus"></i> 风格
             </el-button>
           </el-form-item>
-          <el-form-item label="首字母" prop="f_initials">
-            <el-select v-model="modelF.f_initials" placeholder="请选择">
+          <el-form-item label="首字母" prop="initials">
+            <el-select
+              v-model="modelF.initials"
+              placeholder="请选择"
+              filterable
+              :default-first-option="true"
+            >
               <el-option
                 v-for="item in initials"
                 :key="item.id"
@@ -81,17 +110,17 @@
               ></el-option>
             </el-select>
           </el-form-item>
-          <el-form-item label="开播时间" prop="f_playtime">
+          <el-form-item label="开播时间" prop="playtime">
             <el-date-picker
-              v-model="modelF.f_playtime"
+              v-model="modelF.playtime"
               type="date"
               placeholder="选择日期"
               value-format="yyyy-MM-dd"
             ></el-date-picker>
           </el-form-item>
-          <el-form-item label="主演" prop="f_actors">
+          <el-form-item label="主演" prop="actors">
             <!-- <el-select
-          v-model="modelF.f_actors"
+          v-model="modelF.actors"
           multiple
           filterable
           allow-create
@@ -103,7 +132,7 @@
             </el-select>-->
             <el-tag
               :key="tag"
-              v-for="tag in modelF.f_actors"
+              v-for="tag in modelF.actors"
               closable
               :disable-transitions="false"
               @close="actHandleClose(tag)"
@@ -121,11 +150,11 @@
               <i class="el-icon-plus"></i> 主演
             </el-button>
           </el-form-item>
-          <el-form-item label="图片地址" prop="f_imgSrc">
-            <el-input v-model="modelF.f_imgSrc" maxlength="500"></el-input>
+          <el-form-item label="图片地址" prop="imgSrc">
+            <el-input v-model="modelF.imgSrc" maxlength="500"></el-input>
           </el-form-item>
-          <el-form-item label="简介" prop="f_summary">
-            <el-input type="textarea" rows="3" v-model="modelF.f_summary" clearable maxlength="500"></el-input>
+          <el-form-item label="简介" prop="summary">
+            <el-input type="textarea" rows="3" v-model="modelF.summary" clearable maxlength="500"></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click.native="submitForm('filmtv')">保 存</el-button>
@@ -141,33 +170,46 @@
           <!-- <el-table-column type="index" width="50"></el-table-column> -->
           <!-- <el-row type="flex" style="justify-content: space-between;"> -->
           <el-table-column type="index" width="50"></el-table-column>
-          <el-table-column prop="r_episode" label="话数" width="130">
+          <el-table-column prop="episode" label="话数" width="130">
             <template slot-scope="scope">
               <div class="video-item">
                 <span>第</span>
                 <el-input
+                  @keyup.enter.native="!isAdding?update(scope.row):confirmAdd(scope)"
                   class="episode"
-                  v-model="scope.row.r_episode"
+                  v-model="scope.row.episode"
                   maxlength="4"
-                  onkeyup="value=value.replace(/[^\d\.]/g,'')"
                 ></el-input>
                 <span>话</span>
               </div>
             </template>
           </el-table-column>
-          <el-table-column prop="r_address" label="视频地址">
+          <el-table-column prop="video_name" label="标题" width="250">
             <template slot-scope="scope">
-              <el-input v-model="scope.row.r_address"></el-input>
+              <el-input
+                @keyup.enter.native="!isAdding?update(scope.row):confirmAdd(scope)"
+                v-model="scope.row.video_name"
+                @keyup.up.native="arrowUp($event)"
+                @keyup.down.native="arrowDown($event)"
+              ></el-input>
+            </template>
+          </el-table-column>
+          <el-table-column prop="src" label="视频地址">
+            <template slot-scope="scope">
+              <el-input
+                @keyup.enter.native="!isAdding?update(scope.row):confirmAdd(scope)"
+                v-model="scope.row.src"
+              ></el-input>
             </template>
           </el-table-column>
           <el-table-column label="操作" width="200">
             <template slot-scope="scope">
-              <div v-if="isAdding&&!scope.row.r_id">
+              <div v-if="isAdding&&!scope.row.resource_id">
                 <el-button
                   type="text"
                   class="confirm-button"
                   icon="el-icon-check"
-                  @click="confirmAdd(scope.row)"
+                  @click="confirmAdd(scope)"
                 >确认</el-button>
                 <el-button
                   type="text"
@@ -178,7 +220,7 @@
               </div>
               <div v-else>
                 <el-button
-                  v-if="scope.row.r_id"
+                  v-if="scope.row.resource_id"
                   type="text"
                   class="confirm-button"
                   icon="el-icon-edit-outline"
@@ -186,7 +228,7 @@
                   :disabled="isAdding"
                 >修改</el-button>
                 <el-button
-                  v-if="scope.row.r_id"
+                  v-if="scope.row.resource_id"
                   type="text"
                   class="delete-button"
                   icon="el-icon-delete"
@@ -227,7 +269,7 @@
               <img :src="scope.row.c_uavatar?scope.row.c_uavatar:userAvatar" alt />
             </template>
           </el-table-column>
-          <el-table-column prop="c_content" label="评论内容" width="500"></el-table-column>
+          <el-table-column prop="content" label="评论内容" width="500"></el-table-column>
           <el-table-column prop="create_time" label="评论时间" width="230" fixed="right"></el-table-column>
           <el-table-column label="操作" width="200" fixed="right">
             <template slot-scope="scope">
@@ -270,7 +312,7 @@
           </p>
         </el-form-item>
         <el-form-item label="评论内容" class="form-item">
-          <p>{{modelC.c_content}}</p>
+          <p>{{modelC.content}}</p>
         </el-form-item>
         <el-form-item label="评论时间" class="form-item">
           <p>{{modelC.create_time}}</p>
@@ -283,19 +325,19 @@
     <el-dialog title="用户信息" :visible.sync="dialogFormVisibleU">
       <el-form :model="modelU" label-width="100px">
         <el-form-item label="用户名" class="form-item">
-          <p>{{modelU.u_name}}</p>
+          <p>{{modelU.username}}</p>
         </el-form-item>
         <el-form-item label="用户头像" class="form-item">
-          <!-- <p>{{modelU.u_avatar}}</p> -->
+          <!-- <p>{{modelU.avatar}}</p> -->
           <p>
-            <img :src="modelU.u_avatar?modelU.u_avatar:userAvatar" alt />
+            <img :src="modelU.avatar?modelU.avatar:userAvatar" alt />
           </p>
         </el-form-item>
         <el-form-item label="性别" class="form-item">
-          <p>{{modelU.u_sex==1?"女":"男"}}</p>
+          <p>{{modelU.is_man==1?"女":"男"}}</p>
         </el-form-item>
         <el-form-item label="邮箱" class="form-item">
-          <p>{{modelU.u_email}}</p>
+          <p>{{modelU.email}}</p>
         </el-form-item>
       </el-form>
       <div slot="footer" class="dialog-footer">
@@ -309,10 +351,10 @@
 export default {
   name: "BangumiEdit",
   props: {
-    id: {}
+    film_id: null
   },
   data() {
-    let f_name = (rule, value, callback) => {
+    let name = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入番名")); // 请输入番名
       } else {
@@ -320,7 +362,7 @@ export default {
       }
     };
 
-    let t_id = (rule, value, callback) => {
+    let type_id = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请选择类型")); // 请输入番名
       } else {
@@ -331,7 +373,7 @@ export default {
       }
     };
 
-    let f_episodes = (rule, value, callback) => {
+    let episode = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请输入集数")); // 请输入请输入集数
       } else {
@@ -342,18 +384,7 @@ export default {
       }
     };
 
-    let f_status = (rule, value, callback) => {
-      if (!value) {
-        callback(new Error("请输入集数")); // 请输入请输入集数
-      } else {
-        if (isNaN(Number(value))) {
-          callback(new Error("请输入数字"));
-        }
-        callback();
-      }
-    };
-
-    let f_style = (rule, value, callback) => {
+    let style = (rule, value, callback) => {
       if (value.length == 0) {
         callback(new Error("请编辑番剧风格")); // 请输入请输入集数
       } else {
@@ -361,7 +392,7 @@ export default {
       }
     };
 
-    let f_initials = (rule, value, callback) => {
+    let initials = (rule, value, callback) => {
       if (value.length == 0) {
         callback(new Error("请选择首字母")); // 请输入请输入集数
       } else {
@@ -369,7 +400,7 @@ export default {
       }
     };
 
-    let f_playtime = (rule, value, callback) => {
+    let playtime = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请选择开播时间")); // 请输入请输入集数
       } else {
@@ -377,7 +408,7 @@ export default {
       }
     };
 
-    let f_actors = (rule, value, callback) => {
+    let actors = (rule, value, callback) => {
       if (value.length == 0) {
         callback(new Error("请编辑番剧主演")); // 请输入请输入集数
       } else {
@@ -385,7 +416,7 @@ export default {
       }
     };
 
-    let f_imgSrc = (rule, value, callback) => {
+    let imgSrc = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请添加图片路径")); // 请输入请输入集数
       } else {
@@ -393,7 +424,7 @@ export default {
       }
     };
 
-    let f_summary = (rule, value, callback) => {
+    let summary = (rule, value, callback) => {
       if (!value) {
         callback(new Error("请填写番剧简介")); // 请输入请输入集数
       } else {
@@ -402,33 +433,39 @@ export default {
     };
 
     return {
+      id: null,
       userAvatar: "../../../static/userAvatar.jpg",
       rules: {
-        f_name: [{ validator: f_name, trigger: "blur" }],
-        t_id: [{ validator: t_id, trigger: "change" }],
-        f_episodes: [{ validator: f_episodes, trigger: "blur" }],
-        f_status: [{ validator: f_status, trigger: "change" }],
-        f_style: [{ validator: f_style, trigger: "change" }],
-        f_initials: [{ validator: f_initials, trigger: "change" }],
-        f_playtime: [{ validator: f_playtime, trigger: "blur" }],
-        f_actors: [{ validator: f_actors, trigger: "change" }],
-        f_imgSrc: [{ validator: f_imgSrc, trigger: "blur" }],
-        f_summary: [{ validator: f_summary, trigger: "blur" }]
+        name: [{ validator: name, trigger: "blur" }],
+        type_id: [{ validator: type_id, trigger: "change" }],
+        episode: [{ validator: episode, trigger: "blur" }],
+        style: [{ validator: style, trigger: "blur" }],
+        initials: [{ validator: initials, trigger: "change" }],
+        playtime: [{ validator: playtime, trigger: "blur" }],
+        actors: [{ validator: actors, trigger: "blur" }],
+        imgSrc: [{ validator: imgSrc, trigger: "blur" }],
+        summary: [{ validator: summary, trigger: "blur" }]
       },
 
+      loading: false,
+      searchID: null,
+      queryCode: null,
+      searchUrl: "",
+      options: [],
       modelF: {
-        f_name: "",
-        t_id: 4,
-        f_imgSrc: "",
-        f_episodes: "",
-        f_status: 1,
-        f_style: [],
-        f_initials: "",
-        f_playtime: "",
-        // f_quarter: "",
-        f_years: "",
-        f_actors: [],
-        f_summary: ""
+        searchUrl: "",
+        name: "",
+        type_id: 4,
+        imgSrc: "",
+        episode: "",
+        is_ended: 0,
+        style: [],
+        initials: "",
+        playtime: "",
+        // quarter: "",
+        years: "",
+        actors: [],
+        summary: ""
       },
 
       styleVisible: false,
@@ -442,8 +479,9 @@ export default {
 
       activeName: "first",
       newVideo: {
-        r_episode: 0,
-        r_address: "http://localhost:3000/videos/filmTV/"
+        episode: 0,
+        video_name: "",
+        src: ""
       },
 
       isAdding: false,
@@ -470,7 +508,7 @@ export default {
     initials() {
       return this.$store.getters.initials;
     },
-    
+
     videoList() {
       return this.$store.getters.videoList;
     },
@@ -487,20 +525,109 @@ export default {
       return this.$store.getters.commentList.length;
     }
   },
-  watch: {},
+  watch: {
+    searchUrl(newV, oldV) {
+      if (newV != oldV) {
+        this.modelF.searchUrl = newV;
+        this.getEpisodes(newV);
+      }
+    }
+  },
   created() {
+    this.id = this.film_id;
     this.id && this.fetch();
   },
   methods: {
+    arrowUp(e) {
+      let currentNode = e.target.parentNode.parentNode.parentNode.parentNode;
+      let currentNextBro = currentNode.previousElementSibling;
+      if (!currentNextBro) {
+        let length = currentNode.parentNode.childNodes.length - 1;
+        currentNextBro = currentNode.parentNode.childNodes[length - 1];
+      }
+      let target =
+        currentNextBro.childNodes[2].childNodes[0].childNodes[0].childNodes[1];
+      target.focus();
+    },
+    arrowDown(e) {
+      let currentNode = e.target.parentNode.parentNode.parentNode.parentNode;
+      let currentNextBro = currentNode.nextElementSibling;
+      if (!currentNextBro) {
+        currentNextBro = currentNode.parentNode.childNodes[0];
+      }
+      let target =
+        currentNextBro.childNodes[2].childNodes[0].childNodes[0].childNodes[1];
+      target.focus();
+    },
+    serchFilm(query) {
+      this.modelF.name = query;
+      if (query !== "") {
+        this.loading = true;
+        clearTimeout(this.searchID);
+        this.searchID = setTimeout(async () => {
+          let queryCode = Math.floor(Math.random() * 9000) + 1000;
+          this.queryCode = queryCode;
+          if (query.indexOf("/" >= 0)) {
+            query = query.replace("/","%2F")
+          }
+          const nameRst = await this.$http.get(`/getResources/${query}`, {
+            params: { queryCode }
+          });
+          if (
+            nameRst.data.status == 200 &&
+            this.queryCode == nameRst.data.queryCode
+          ) {
+            this.options = nameRst.data.list;
+          }
+          this.loading = false;
+        }, 500);
+      }
+    },
+
+    async getEpisodes(url) {
+      let queryCode = Math.floor(Math.random() * 9000) + 1000;
+      this.queryCode = queryCode;
+          if (query.indexOf("/" >= 0)) {
+            query = query.replace("/","%2F")
+          }
+      const episodeRst = await this.$http.get(`/getEpisodes/${url}`, {
+        params: { queryCode }
+      });
+      let list = episodeRst.data.list;
+      let arr = [];
+      for (let i = 0; i < list.length; i++) {
+        arr.push(list[i].onlineurl);
+      }
+      // //console.log(arr);
+      // if (
+      //   nameRst.data.status == 200 &&
+      //   this.queryCode == nameRst.data.queryCode
+      // ) {
+      //   this.options = nameRst.data.list;
+      // }
+    },
+
+    validate(row) {
+      if (!Number(row.episode)) {
+        return false;
+      }
+      if (!row.video_name) {
+        return false;
+      }
+      if (!row.src) {
+        return false;
+      }
+      return true;
+    },
     async userDetail(row) {
-      const res = await this.$http.post(`/userinfos/${row.c_uid}`);
+      const res = await this.$http.post(`/userinfos/${row.user_id}`);
       this.modelU = res.data[0];
       this.dialogFormVisibleU = true;
-      console.log("this.modelFU", this.modelU);
+      //console.log("this.modelFU", this.modelU);
     },
 
     async commentRemove(row) {
-      let res = await this.$http.delete(`/comments/${row.c_id}`);
+      let res = await this.$http.delete(`/comments/${row.comment_id}`);
 
       if (res.data.status == 200) {
         this.$message({
@@ -520,19 +647,34 @@ export default {
 
     commentDetail(row) {
       this.modelC = row;
-      console.log("modelC", this.modelC);
+      //console.log("modelC", this.modelC);
       this.dialogFormVisibleC = true;
     },
 
     async update(row) {
-      console.log("row", row);
+      if (this.isAdding) {
+        this.$message({
+          type: "error",
+          message: "请先完成或取消添加视频"
+        });
+        return;
+      }
+      
+      if (!this.validate(row)) {
+        this.$message({
+          type: "error",
+          message: "请按正确格式将视频信息填写完整"
+        });
+        return;
+      }
       let params = {
-        r_id: row.r_id,
-        r_episode: row.r_episode,
-        r_address: row.r_address
+        resource_id: row.resource_id,
+        episode: row.episode,
+        video_name: row.video_name,
+        src: row.src
       };
       let res = await this.$http.put(`/videos/${this.id}`, params);
-      console.log("delete", res);
+      //console.log("delete", res);
       if (res.data.status == 200) {
         this.$message({
           type: "success",
@@ -548,15 +690,15 @@ export default {
     },
 
     async remove(row) {
-      this.$confirm(`是否确定要删除番剧 "${row.b_name}"`, "提示", {
+      this.$confirm(`是否确定要删除番剧 "${row.name}"`, "提示", {
         confirmButtonText: "确定",
         cancelButtonText: "取消",
         type: "warning"
       })
         .then(async () => {
-          console.log("delete", `/videos/${row.r_id}`);
-          const res = await this.$http.delete(`/videos/${row.r_id}`);
-          console.log("delete", res);
+          //console.log("delete", `/videos/${row.resource_id}`);
+          const res = await this.$http.delete(`/videos/${row.resource_id}`);
+          //console.log("delete", res);
           if (res.data.status == 200) {
             this.$message({
               type: "success",
@@ -577,11 +719,20 @@ export default {
     },
 
     addVideo() {
-      console.log("addVideo");
       this.isAdding = true;
-      let r_episode = this.videoTotal + 1;
-      this.newVideo.r_episode = r_episode;
-
+      let index = this.videoTotal;
+      if (index != 0 && index == this.resources.length) {
+        this.$message({
+          type: "success",
+          message: "已添加该剧的所有视频"
+        });
+        this.isAdding = false;
+        return;
+      }
+      let resources = this.resources;
+      if (resources.length) {
+        this.newVideo = resources[index];
+      }
       this.$store.commit("AddVideo", this.newVideo);
       this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
       this.videoCurrentChange(this.videoCurrentPage);
@@ -595,18 +746,29 @@ export default {
       this.videoCurrentChange(this.videoCurrentPage);
     },
 
-    async confirmAdd(row) {
-      if (!this.isAdding) return;
-      console.log("confirmAdd", row);
+    async confirmAdd(scope) {
+      let row = scope.row;
+      if (!this.isAdding || scope.$index + 1 != this.pageListV.length) {
+        this.update(row);
+        return;
+      }
+      if (!this.validate(row)) {
+        this.$message({
+          type: "error",
+          message: "请按正确格式将视频信息填写完整"
+        });
+        return;
+      }
+      //console.log("confirmAdd", row);
       this.$store.commit("DeleteVideo");
       let params = this.newVideo;
-      console.log("params", params);
-      params.r_episode = Number(params.r_episode);
-      params.v_id = this.modelF.v_id;
-      params.t_id = this.modelF.t_id;
+      //console.log("params", params);
+      params.episode = Number(params.episode);
+      params.film_id = this.modelF.film_id;
+      params.type_id = this.modelF.type_id;
 
       let res = await this.$http.post("/videos", params);
-      console.log("rst", res);
+      //console.log("rst", res);
 
       if (res.data.status == 200) {
         this.$message({
@@ -616,19 +778,19 @@ export default {
         await this.fetchVideo();
         this.isAdding = false;
         this.videoCurrentChange(this.videoCurrentPage);
-        let arr = row.r_address.split(".");
+        let arr = row.src.split(".");
         let length = 1;
-        if (row.r_episode >= 9) {
+        if (row.episode >= 9) {
           length = 2;
         }
-        let r_address = `${arr[0].slice(0, -length)}${row.r_episode + 1}.${
-          arr[1]
-        }`;
+        let src = `${arr[0].slice(0, -length)}${row.episode + 1}.${arr[1]}`;
 
         this.newVideo = {
-          r_episode: 0,
-          r_address: r_address
+          episode: 0,
+          video_name: "",
+          src: ""
         };
+        this.addVideo();
       } else {
         this.$message({
           type: "error",
@@ -640,29 +802,29 @@ export default {
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
-          console.log("save");
+          //console.log("save");
 
           var objString = JSON.stringify(this.modelF);
           var params = JSON.parse(objString);
-          let timeSlice = params.f_playtime.split("-");
-          params.f_years = timeSlice[0];
-          // params.f_quarter = timeSlice[1];
+          let timeSlice = params.playtime.split("-");
+          params.years = timeSlice[0];
+          // params.quarter = timeSlice[1];
 
-          params.f_style = params.f_style.join("、");
-          params.f_actors = params.f_actors.join("、");
-          console.log("params*************", params);
+          params.style = params.style.join("、");
+          params.actors = params.actors.join("、");
+          //console.log("params*************", params);
 
           let res;
 
           if (this.id) {
-            console.log("更新");
+            //console.log("更新");
             res = await this.$http.put(`/filmtvs/${this.id}`, params);
           } else {
-            console.log("创建");
+            //console.log("创建");
             res = await this.$http.post("/filmtvs", params);
           }
 
-          console.log("res***********", res);
+          //console.log("res***********", res);
 
           if (res.data.status == 200) {
             // this.$message({
@@ -673,7 +835,7 @@ export default {
 
             if (!this.id) {
               this.$confirm(
-                `${res.data.msg},是否添加"${params.f_name}"的视频资源?`,
+                `${res.data.msg},是否添加"${params.name}"的视频资源?`,
                 "提示",
                 {
                   confirmButtonText: "确定",
@@ -682,7 +844,7 @@ export default {
                 }
               )
                 .then(async () => {
-                  this.id = res.data.v_id;
+                  this.id = res.data.film_id;
                   await this.fetch();
                   await this.fetchVideo();
                   await this.fetchComment();
@@ -715,18 +877,18 @@ export default {
     },
 
     async save() {
-      console.log("save");
+      //console.log("save");
       var objString = JSON.stringify(this.modelF);
       var params = JSON.parse(objString);
-      let timeSlice = params.f_playtime.split("-");
-      params.f_years = timeSlice[0];
-      // params.f_quarter = timeSlice[1];
+      let timeSlice = params.playtime.split("-");
+      params.years = timeSlice[0];
+      // params.quarter = timeSlice[1];
 
-      params.f_style = params.f_style.join("、");
-      params.f_actors = params.f_actors.join("、");
-      console.log("params*************", params);
+      params.style = params.style.join("、");
+      params.actors = params.actors.join("、");
+      //console.log("params*************", params);
       const res = await this.$http.post("/filmtvs", params);
-      console.log("res***********", res);
+      //console.log("res***********", res);
 
       if (res.affectedRows === 1) {
         this.$message({
@@ -743,71 +905,103 @@ export default {
     },
 
     async fetch() {
-      // console.log("edit");
+      // //console.log("edit");
       const resF = await this.$http.get(`/filmtvs/${this.id}`);
-      // console.log("resF", resF.data[0].f_style.split("、"));
+      // //console.log("resF", resF.data[0].style.split("、"));
 
-      resF.data[0].f_style = resF.data[0].f_style.split("、");
-      resF.data[0].f_actors = resF.data[0].f_actors.split("、");
+      resF.data[0].style = resF.data[0].style.split("、");
+      resF.data[0].actors = resF.data[0].actors.split("、");
 
       this.modelF = resF.data[0];
-      // console.log("this.modelF", this.modelF);
+      // //console.log("this.modelF", this.modelF);
       // let resV = await this.$http.get(`/videos/`, {
-      //   params: { v_id: this.modelF.v_id, t_id: this.modelF.t_id }
+      //   params: { film_id: this.modelF.film_id, type_id: this.modelF.type_id }
       // });
       // // this.$store.dispatch("updateVideoList", resV.data.list);
       // this.$store.commit("UpdateVideoList", resV.data.list);
 
       // this.videoCurrentChange(this.videoCurrentPage);
-      // console.log("this.videoList", this.videoList);
+      // //console.log("this.videoList", this.videoList);
 
       // let resC = await this.$http.get(`/comments/`, {
-      //   params: { v_id: this.modelF.v_id, t_id: this.modelF.t_id }
+      //   params: { film_id: this.modelF.film_id, type_id: this.modelF.type_id }
       // });
 
-      // console.log("resC", resC.data.list);
+      // //console.log("resC", resC.data.list);
       // this.$store.commit("UpdateCommentList", resC.data.list);
       // this.commentCurrentChange(this.commentCurrentPage);
     },
-
     async fetchVideo() {
       let resV = await this.$http.get(`/videos/`, {
-        params: { v_id: this.modelF.v_id, t_id: this.modelF.t_id }
+        params: { film_id: this.modelF.film_id, type_id: this.modelF.type_id }
       });
-      console.log("resV.data.list", resV.data.list);
-      // this.$store.dispatch("updateVideoList", resV.data.list);
-      this.$store.commit("UpdateVideoList", resV.data.list);
-
+      let list = resV.data.list;
+      this.$store.commit("UpdateVideoList", list);
       this.videoCurrentChange(this.videoCurrentPage);
-      if (this.activeName == "second" && this.videoTotal > 0) {
-        let lastVideo = this.videoList[this.videoTotal - 1];
-        let arr = lastVideo.r_address.split(".");
-        let length = 1;
-        if (lastVideo.r_episode >= 9) {
-          length = 2;
-        }
-        let r_address = `${arr[0].slice(0, -length)}${lastVideo.r_episode +
-          1}.${arr[1]}`;
-
-        this.newVideo = {
-          r_episode: 0,
-          r_address: r_address
-        };
+      // if (!list.length) {
+      resV = await this.$http.get(`/getEpisodes/${this.modelF.searchUrl}`);
+      //console.log("resV", resV);
+      if (resV.data.status != 200) {
+        this.$message({
+          type: "error",
+          message: "暂无该影视资源"
+        });
+        return;
       }
+      let resources = resV.data.list;
+      let arr = [];
+      for (let i = 0; i < resources.length; i++) {
+        let episode = resources[i].num;
+        episode = Number(
+          episode.indexOf(".") == -1 ? episode.slice(1, 3) : episode.slice(1, 4)
+        );
+        let video_name = "";
+        let src = resources[i].onlineurl;
+        arr[i] = { episode, video_name, src };
+      }
+      this.resources = arr;
     },
+
+    // async fetchVideo() {
+    //   let resV = await this.$http.get(`/videos/`, {
+    //     params: { film_id: this.modelF.film_id, type_id: this.modelF.type_id }
+    //   });
+    //   //console.log("resV.data.list", resV.data.list);
+    //   // this.$store.dispatch("updateVideoList", resV.data.list);
+    //   this.$store.commit("UpdateVideoList", resV.data.list);
+
+    //   this.videoCurrentChange(this.videoCurrentPage);
+    //   if (this.activeName == "second" && this.videoTotal > 0) {
+    //     let lastVideo = this.videoList[this.videoTotal - 1];
+    //     let arr = lastVideo.src.split(".");
+    //     let length = 1;
+    //     if (lastVideo.episode >= 9) {
+    //       length = 2;
+    //     }
+    //     let src = `${arr[0].slice(0, -length)}${lastVideo.episode + 1}.${
+    //       arr[1]
+    //     }`;
+
+    //     this.newVideo = {
+    //       episode: 0,
+    //       video_name: "",
+    //       src: ""
+    //     };
+    //   }
+    // },
 
     async fetchComment() {
       let resC = await this.$http.get(`/comments/`, {
-        params: { v_id: this.modelF.v_id, t_id: this.modelF.t_id }
+        params: { film_id: this.modelF.film_id, type_id: this.modelF.type_id }
       });
 
-      console.log("resC", resC.data.list);
+      //console.log("resC", resC.data.list);
       this.$store.commit("UpdateCommentList", resC.data.list);
       this.commentCurrentChange(this.commentCurrentPage);
     },
 
     styHandleClose(tag) {
-      this.modelF.f_style.splice(this.modelF.f_style.indexOf(tag), 1);
+      this.modelF.style.splice(this.modelF.style.indexOf(tag), 1);
     },
 
     styShowInput() {
@@ -820,15 +1014,15 @@ export default {
     styHandleInputConfirm() {
       let styleValue = this.styleValue;
       if (styleValue) {
-        this.modelF.f_style.push(styleValue);
+        this.modelF.style.push(styleValue);
+      } else {
+        this.styleVisible = false;
       }
-
-      this.styleVisible = false;
       this.styleValue = "";
     },
 
     actHandleClose(tag) {
-      this.modelF.f_actors.splice(this.modelF.f_actors.indexOf(tag), 1);
+      this.modelF.actors.splice(this.modelF.actors.indexOf(tag), 1);
     },
 
     actShowInput() {
@@ -841,9 +1035,10 @@ export default {
     actHandleInputConfirm() {
       let actorsValue = this.actorsValue;
       if (actorsValue) {
-        this.modelF.f_actors.push(actorsValue);
+        this.modelF.actors.push(actorsValue);
+      } else {
+        this.actorsVisible = false;
       }
-      this.actorsVisible = false;
       this.actorsValue = "";
     },
 
@@ -867,7 +1062,7 @@ export default {
     },
 
     commentCurrentChange(val) {
-      console.log("this.commentTotal", this.commentTotal);
+      //console.log("this.commentTotal", this.commentTotal);
       if (Math.ceil(this.videoTotal / 10) < this.commentCurrentPage) {
         --this.commentCurrentPage;
       }
@@ -875,19 +1070,19 @@ export default {
       if (val < 1) {
         val = 1;
       }
-      console.log("this.commentCurrentPage", this.commentCurrentPage);
+      //console.log("this.commentCurrentPage", this.commentCurrentPage);
       let pageList = [];
       for (
         let i = 10 * (val - 1);
         i < (10 * val < this.commentTotal ? 10 * val : this.commentTotal);
         i++
       ) {
-        console.log("i", i);
+        //console.log("i", i);
         pageList.push(this.commentList[i]);
       }
-      console.log("this.commentList", pageList);
+      //console.log("this.commentList", pageList);
       this.pageListC = pageList;
-      console.log("this.pageListC", this.pageListC);
+      //console.log("this.pageListC", this.pageListC);
     },
 
     handleClick() {
@@ -895,12 +1090,12 @@ export default {
       this.isAdding = false;
 
       if (this.activeName == "second") {
-        console.log("second");
+        //console.log("second");
         this.fetchVideo();
       }
 
       if (this.activeName == "third") {
-        console.log("third");
+        //console.log("third");
         this.fetchComment();
       }
     }
@@ -1010,5 +1205,10 @@ img {
   width: 40px;
   border-radius: 50%;
   border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.el-select-dropdown__item span {
+  min-width: 100px;
+  text-align: center;
 }
 </style>

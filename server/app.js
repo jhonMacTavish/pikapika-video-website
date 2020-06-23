@@ -41,7 +41,7 @@ app.use(function (err, req, res, next) {
 
   // render the error page
   // res.status(err.status || 500);
-  console.log("err",err.message);
+  //console.log("err",err.message);
   return res.status(err.status).send({
     message: err.message
   });

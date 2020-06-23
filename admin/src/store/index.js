@@ -5,32 +5,31 @@ Vue.use(Vuex);
 
 export default new Vuex.Store({
     state: {
-        superAdmin: 0,
         types: [
             {
-                t_id: 1,
+                type_id: 1,
                 text: "番剧"
             },
             {
-                t_id: 2,
+                type_id: 2,
                 text: "国漫"
             },
             {
-                t_id: 3,
+                type_id: 3,
                 text: "电影"
             },
             {
-                t_id: 4,
+                type_id: 4,
                 text: "影视"
             }
         ],
         status: [
             {
-                id: 1,
+                id: 0,
                 text: "更新中"
             },
             {
-                id: 2,
+                id: 1,
                 text: "已完结"
             }
         ],
@@ -160,19 +159,30 @@ export default new Vuex.Store({
                 text: 'BD1080P'
             }
         ],
+        weekdays: [
+            "星期天",
+            "星期一",
+            "星期二",
+            "星期三",
+            "星期四",
+            "星期五",
+            "星期六"
+        ],
 
         bangumiList: [],
         guomanList: [],
         theaterList: [],
-        filmtvList:[],
-        userinfoList:[],
-        videoList:[],   
-        commentList:[]
+        filmtvList: [],
+        userinfoList: [],
+        videoList: [],
+        commentList: [],
+        adminUser:{}
     },
     getters: {
-        superAdmin: state => state.superAdmin,
+        adminUser: state => state.adminUser,
+        weekdays: state => state.weekdays,
         tags: state => state.tags,
-        VGAs:state => state.VGAs,
+        VGAs: state => state.VGAs,
         types: state => state.types,
         status: state => state.status,
         initials: state => state.initials,
@@ -186,8 +196,8 @@ export default new Vuex.Store({
         commentList: state => state.commentList,
     },
     mutations: {
-        UpdateSuperAdmin(state, superAdmin) {
-            state.superAdmin = superAdmin;
+        UpdateAdminUser(state, adminUser) {
+            state.adminUser = adminUser;
         },
         UpdateBangumiList(state, bangumiList) {
             state.bangumiList = bangumiList;
@@ -198,22 +208,22 @@ export default new Vuex.Store({
         UpdateTheaterList(state, theaterList) {
             state.theaterList = theaterList;
         },
-        UpdateFilmtvList(state,filmtvList){
+        UpdateFilmtvList(state, filmtvList) {
             state.filmtvList = filmtvList;
         },
-        UpdateUserinfoList(state,userinfoList){
+        UpdateUserinfoList(state, userinfoList) {
             state.userinfoList = userinfoList;
         },
-        UpdateVideoList(state,videoList){
+        UpdateVideoList(state, videoList) {
             state.videoList = videoList;
         },
-        UpdateCommentList(state,commentList){
+        UpdateCommentList(state, commentList) {
             state.commentList = commentList;
         },
-        AddVideo(state,video){
+        AddVideo(state, video) {
             state.videoList.push(video);
         },
-        DeleteVideo(state){
+        DeleteVideo(state) {
             return state.videoList.pop();
         },
     },
@@ -227,14 +237,14 @@ export default new Vuex.Store({
         updateTheaterList({ commit }, theaterList) {
             commit('UpdateTheaterList', theaterList);
         },
-        updateFilmtvList({commit},filmtvList){
-            commit('UpdateFilmtvList',filmtvList);
+        updateFilmtvList({ commit }, filmtvList) {
+            commit('UpdateFilmtvList', filmtvList);
         },
-        updateUserinfoList({commit},userinfoList){
-            commit('UpdateUserinfoList',userinfoList);
+        updateUserinfoList({ commit }, userinfoList) {
+            commit('UpdateUserinfoList', userinfoList);
         },
-        updateVideoList({commit},videoList){
-            commit('UpdateVideoList',videoList);
+        updateVideoList({ commit }, videoList) {
+            commit('UpdateVideoList', videoList);
         }
     }
 })

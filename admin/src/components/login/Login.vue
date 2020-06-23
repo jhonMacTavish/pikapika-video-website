@@ -1,6 +1,6 @@
 <template>
   <div class="login-box" :style="`background: url(${imgurl})`">
-    <div class="click-bgm"  @click="fetch"></div>
+    <div class="click-bgm" @click="fetch"></div>
     <el-card class="box-card">
       <div slot="header" class="header">
         <span>登录</span>
@@ -14,13 +14,28 @@
         class="form"
       >
         <el-form-item label="邮箱" prop="email">
-          <el-input type="text" placeholder="邮箱" v-model="loginForm.email"></el-input>
+          <el-input
+            @keyup.enter.native="login('loginForm')"
+            type="text"
+            placeholder="邮箱"
+            v-model="loginForm.email"
+          ></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input type="password" placeholder="密码" v-model="loginForm.password"></el-input>
+          <el-input
+            @keyup.enter.native="login('loginForm')"
+            type="password"
+            placeholder="密码"
+            v-model="loginForm.password"
+          ></el-input>
         </el-form-item>
         <div class="button-wrap">
-          <el-button type="primary" class="login-button" @click.native="login('loginForm')">登录</el-button>
+          <el-button
+            @keyup.enter.native="login('loginForm')"
+            type="primary"
+            class="login-button"
+            @click.native="login('loginForm')"
+          >登录</el-button>
         </div>
       </el-form>
     </el-card>
@@ -65,10 +80,10 @@ export default {
   watch: {},
   async created() {
     await this.fetch();
-    let res = await this.$http.get('/verifytoken');
-    if(res && res.data.status==200){
+    let res = await this.$http.get("/verifytoken");
+    if (res && res.data.status == 200) {
       this.$router.push("/");
-      return
+      return;
     }
   },
   methods: {
@@ -77,27 +92,30 @@ export default {
       this.imgurl = resI.data.imgurl;
     },
 
-    async login() {
-      let params = {};
-      params.a_email = this.loginForm.email;
-      params.a_password = this.loginForm.password;
-      let res = await this.$http.post("login", { params });
-      if (res.data.status == 200) {
-        this.$message({
-          type: "success",
-          message: res.data.msg
-        });
-        sessionStorage.setItem("adminUser",JSON.stringify(res.data.user));
-        localStorage.token = res.data.user.token;
-        localStorage.super_admin = res.data.user.super_admin;
-        this.$router.push("/");
-        return;
-      } else {
-        this.$message({
-          type: "error",
-          message: res.data.msg
-        });
-      }
+    async login(formName) {
+      this.$refs[formName].validate(async valid => {
+        if (valid) {
+          let params = {};
+          params.email = this.loginForm.email;
+          params.password = this.loginForm.password;
+          let res = await this.$http.post("login", { params });
+          if (res.data.status == 200) {
+            this.$message({
+              type: "success",
+              message: res.data.msg
+            });
+            localStorage.token = res.data.token;
+
+            this.$router.push("/");
+            return;
+          } else {
+            this.$message({
+              type: "error",
+              message: res.data.msg
+            });
+          }
+        }
+      });
     }
   },
   components: {}
@@ -112,7 +130,7 @@ export default {
   background-size: cover !important;
   background-position: center !important;
   background-repeat: no-repeat !important;
-  .click-bgm{
+  .click-bgm {
     position: absolute;
     width: 100%;
     height: 100%;

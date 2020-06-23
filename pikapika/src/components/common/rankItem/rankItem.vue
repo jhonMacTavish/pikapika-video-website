@@ -3,9 +3,9 @@
     <el-tab-pane label="番剧榜" name="first">
       <div class="rankItem-box">
         <ul class="rank-list">
-          <li class="rank-item" v-for="(item,index) in rankList" :key="item.v_id">
+          <li class="rank-item" v-for="(item,index) in rankList" :key="item.film_id">
             <router-link
-              :to="{path:'/playinfo',query:{t_id:item.t_id,v_id:item.v_id}}"
+              :to="{path:'/playinfo',query:{type_id:item.type_id,film_id:item.film_id}}"
               target="_blank"
               tag="a"
               class="card-content"
@@ -26,9 +26,9 @@
     <el-tab-pane label="国漫榜" name="second">
       <div class="rankItem-box">
         <ul class="rank-list">
-          <li class="rank-item" v-for="(item,index) in rankList" :key="item.v_id">
+          <li class="rank-item" v-for="(item,index) in rankList" :key="item.film_id">
             <router-link
-              :to="{path:'/playinfo',query:{t_id:item.t_id,v_id:item.v_id}}"
+              :to="{path:'/playinfo',query:{type_id:item.type_id,film_id:item.film_id}}"
               target="_blank"
               tag="a"
               class="card-content"
@@ -49,9 +49,9 @@
     <el-tab-pane label="电影榜" name="third">
       <div class="rankItem-box">
         <ul class="rank-list">
-          <li class="rank-item" v-for="(item,index) in rankList" :key="item.v_id">
+          <li class="rank-item" v-for="(item,index) in rankList" :key="item.film_id">
             <router-link
-              :to="{path:'/playinfo',query:{t_id:item.t_id,v_id:item.v_id}}"
+              :to="{path:'/playinfo',query:{type_id:item.type_id,film_id:item.film_id}}"
               target="_blank"
               tag="a"
               class="card-content"
@@ -72,9 +72,9 @@
     <el-tab-pane label="影视榜" name="fourth">
       <div class="rankItem-box">
         <ul class="rank-list">
-          <li class="rank-item" v-for="(item,index) in rankList" :key="item.v_id">
+          <li class="rank-item" v-for="(item,index) in rankList" :key="item.film_id">
             <router-link
-              :to="{path:'/playinfo',query:{t_id:item.t_id,v_id:item.v_id}}"
+              :to="{path:'/playinfo',query:{type_id:item.type_id,film_id:item.film_id}}"
               target="_blank"
               tag="a"
               class="card-content"
@@ -132,7 +132,7 @@ export default {
     },
 
     async handleClick() {
-      console.log("this.activeName", this.activeName);
+      //console.log("this.activeName", this.activeName);
       switch (this.activeName) {
         case "first":
           await this.fetch("/getBrank");
