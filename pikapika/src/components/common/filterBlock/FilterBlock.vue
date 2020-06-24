@@ -34,7 +34,7 @@ export default {
     }
   },
   watch: {
-    async $route() {
+    async '$route'() {
       this.selected=1;
       await this.fetch();
     }
@@ -123,7 +123,6 @@ export default {
       }
     },
     async setCurrent(index) {
-      //console.log("searchParams", this.$store.getters.searchParams);
       this.selected = index+1;
       let searchParams = {};
       searchParams.key = this.title;
@@ -134,7 +133,7 @@ export default {
 
       let path = this.$route.params.id;
       let res = await this.$http.post(`/${path}s/search`, this.searchParams);
-
+      console.log("res", res);
       this.$store.commit("UpdateConmonList", res.data.list);
       // //console.log("res", res.data.list);
     }

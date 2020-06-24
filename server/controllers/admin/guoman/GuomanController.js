@@ -24,7 +24,7 @@ getOne = async (req, res) => {
 
 getAll = (req, res) => {
     //console.log("getGuomanAll")
-    let sql = 'select guoman_id as film_id,name,style,playtime from pk_guoman order by create_time desc';
+    let sql = 'select guoman_id as film_id,name,is_ended,style,playtime from pk_guoman order by create_time desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {

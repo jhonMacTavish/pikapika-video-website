@@ -3,8 +3,8 @@
     <div id="player" class="player-wrap">
       <div class="title">
         <span>{{objectInfo.name}}</span>
-        <span>第 {{episode}} 话</span>
-        <span>{{item.video_name}}</span>
+        <span v-if="objectInfo.type_id!=3">第 {{episode}} 话</span>
+        <span v-if="objectInfo.type_id!=3">{{item.video_name}}</span>
       </div>
       <div class="video-wrap">
         <video

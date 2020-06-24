@@ -11,7 +11,7 @@
       <el-table-column prop="name" label="姓名" width="200"></el-table-column>
       <el-table-column prop="email" label="邮箱"></el-table-column>
       <el-table-column prop="create_time" label="创建时间"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button
             type="text"

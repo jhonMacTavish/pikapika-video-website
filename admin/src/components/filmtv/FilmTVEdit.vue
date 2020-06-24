@@ -154,7 +154,7 @@
             <el-input v-model="modelF.imgSrc" maxlength="500"></el-input>
           </el-form-item>
           <el-form-item label="简介" prop="summary">
-            <el-input type="textarea" rows="3" v-model="modelF.summary" clearable maxlength="500"></el-input>
+            <el-input type="textarea" rows="3" v-model="modelF.summary" clearable maxlength="500" show-word-limit></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click.native="submitForm('filmtv')">保 存</el-button>
@@ -270,8 +270,8 @@
             </template>
           </el-table-column>
           <el-table-column prop="content" label="评论内容" width="500"></el-table-column>
-          <el-table-column prop="create_time" label="评论时间" width="230" fixed="right"></el-table-column>
-          <el-table-column label="操作" width="200" fixed="right">
+          <el-table-column prop="create_time" label="评论时间" width="230"></el-table-column>
+          <el-table-column label="操作" width="200">
             <template slot-scope="scope">
               <el-button
                 type="text"

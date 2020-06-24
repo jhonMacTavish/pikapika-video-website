@@ -14,7 +14,7 @@
       />
 
       <!-- <p class="name">{{listItem.name}}</p> -->
-      <p class="name">
+      <p class="name" :title="listItem.name">
         {{listItem.name}}
       </p>
 

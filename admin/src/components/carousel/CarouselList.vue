@@ -24,7 +24,7 @@
           <span>{{`第 ${scope.row.episode} ${scope.row.type_id==1?'话':'集'}`}}</span>
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button
             type="text"

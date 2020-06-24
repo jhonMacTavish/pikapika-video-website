@@ -15,7 +15,7 @@
                 <img :src="item.imgSrc" alt />
                 <div class="desc">
                   <p class="title">{{item.name}}</p>
-                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                  <span class="chapter">{{item.is_ended?"更新至第":"全"}}{{item.episodes}}话</span>
                 </div>
               </div>
             </router-link>
@@ -38,7 +38,7 @@
                 <img :src="item.imgSrc" alt />
                 <div class="desc">
                   <p class="title">{{item.name}}</p>
-                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                  <span class="chapter">{{item.is_ended?"更新至第":"全"}}{{item.episodes}}话</span>
                 </div>
               </div>
             </router-link>
@@ -61,7 +61,7 @@
                 <img :src="item.imgSrc" alt />
                 <div class="desc">
                   <p class="title">{{item.name}}</p>
-                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                  <span class="VGA">{{item.VGA==1?"720P":"1080P"}}</span>
                 </div>
               </div>
             </router-link>
@@ -84,7 +84,7 @@
                 <img :src="item.imgSrc" alt />
                 <div class="desc">
                   <p class="title">{{item.name}}</p>
-                  <span class="chapter">{{item.status==1?"更新至第":"全"}}{{item.episodes}}话</span>
+                  <span class="chapter">{{item.is_ended?"更新至第":"全"}}{{item.episodes}}话</span>
                 </div>
               </div>
             </router-link>
@@ -101,22 +101,7 @@ export default {
   data() {
     return {
       activeName: "first",
-      rankList: [
-        // {
-        //   id: 1,
-        //   imgSrc:
-        //     "https://i0.hdslb.com/bfs/bangumi/image/d8a6884c2f839a5ffe5a0637608eec7910763411.png@113w_150h.webp",
-        //   title: "公主连结 Re:Dive",
-        //   chapter: 2
-        // },
-        // {
-        //   id: 2,
-        //   imgSrc:
-        //     "https://i0.hdslb.com/bfs/bangumi/image/83ad052250e9a803e4ebaa47bef971cb079e0543.png@113w_150h.webp",
-        //   title: "辉夜大小姐",
-        //   chapter: 2
-        // }
-      ]
+      rankList: []
     };
   },
   computed: {},
@@ -203,6 +188,7 @@ export default {
       }
 
       .VGA {
+        font-size: 12px;
         color: #ff5c7c;
       }
     }

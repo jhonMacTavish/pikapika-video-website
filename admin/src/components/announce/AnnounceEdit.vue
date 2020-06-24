@@ -12,7 +12,7 @@
         <el-input type="text" v-model="model.title" maxlength="20"></el-input>
       </el-form-item>
       <el-form-item label=告示内容 prop="content">
-        <el-input type="textarea" v-model="model.content" maxlength="500" :rows="9"></el-input>
+        <el-input type="textarea" v-model="model.content" maxlength="500" show-word-limit :rows="9"></el-input>
       </el-form-item>
       <el-form-item>
         <el-button type="primary" @click.native="submitForm('announce')">保 存</el-button>

@@ -128,7 +128,7 @@
             <el-input v-model="modelB.imgSrc" maxlength="500"></el-input>
           </el-form-item>
           <el-form-item label="简介" prop="summary">
-            <el-input type="textarea" rows="4" v-model="modelB.summary" clearable maxlength="500"></el-input>
+            <el-input type="textarea" rows="4" v-model="modelB.summary" clearable maxlength="500" show-word-limit></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click.native="submitForm('bangumi')">保 存</el-button>
@@ -242,12 +242,12 @@
             </template>
           </el-table-column>
           <el-table-column prop="content" label="评论内容"></el-table-column>
-          <el-table-column prop="create_time" label="评论时间" width="140" fixed="right">
+          <el-table-column prop="create_time" label="评论时间" width="140">
             <template slot-scope="scope">
               <span>{{scope.row.create_time.replace(/T|:\d{2}.000Z/g," ")}}</span>
             </template>
           </el-table-column>
-          <el-table-column label="操作" width="200" fixed="right">
+          <el-table-column label="操作" width="200">
             <template slot-scope="scope">
               <el-button
                 type="text"

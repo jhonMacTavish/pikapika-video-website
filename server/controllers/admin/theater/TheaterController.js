@@ -52,7 +52,7 @@ createOne = async (req, res) => {
     if (nameRst.length != 0) {
         return res.send({
             "status": 402,
-            "msg": "数据库中存在同名国漫"
+            "msg": "数据库中存在同名电影"
         });
         return;
     }
@@ -93,7 +93,7 @@ updateOne = (req, res) => {
 
     callback = (err, data) => {
         if (err) {
-            //console.log("error",err.message)
+            console.log("error",err.message)
             return res.send({
                 "status": 402,
                 'msg': "更新失败"

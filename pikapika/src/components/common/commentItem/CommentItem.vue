@@ -56,6 +56,7 @@
         v-model="reason"
         clearable
         maxlength="100"
+        show-word-limit
       ></el-input>
       <span slot="footer" class="dialog-footer">
         <el-button @click="dialogVisible = false">取 消</el-button>

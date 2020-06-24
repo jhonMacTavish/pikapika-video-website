@@ -390,13 +390,13 @@ export default {
             // position: absolute;
             // bottom: 0;
             p {
-              line-height: 26px;
+              line-height: 23px;
               padding: 2px 0;
               overflow: hidden;
               text-overflow: ellipsis;
               display: -webkit-box;
               -webkit-box-orient: vertical;
-              -webkit-line-clamp: 3;
+              -webkit-line-clamp: 4;
               span:nth-child(1) {
                 margin-right: 20px;
                 color: #00a1d6;

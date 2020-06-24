@@ -24,7 +24,7 @@ getOne = async (req, res) => {
 
 getAll = (req, res) => {
     //console.log("getFilmTVAll")
-    let sql = 'select filmtv_id as film_id,name,style,playtime from pk_filmtv order by create_time desc';
+    let sql = 'select filmtv_id as film_id,name,is_ended,style,playtime from pk_filmtv order by create_time desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
@@ -61,7 +61,7 @@ createOne = async (req, res) => {
     if (nameRst.length != 0) {
         return res.send({
             "status": 402,
-            "msg": "数据库中存在同名国漫"
+            "msg": "数据库中存在同名影视"
         });
         return;
     }

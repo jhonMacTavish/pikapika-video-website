@@ -12,11 +12,7 @@
     >
       <el-carousel-item v-for="(item,index) in carousel" :key="item.id">
         <!-- <img :src="item.imgSrc" alt @click="$router.push({name: 'faninfo'})" /> -->
-        <img
-          :src="item.imgSrc"
-          alt
-          @click="handleClick(index)"
-        />
+        <img :src="item.imgSrc" alt @click="handleClick(index)" />
       </el-carousel-item>
       <p ref="name" class="carousel-name"></p>
       <div class="carousel-indicator">
@@ -97,11 +93,11 @@ export default {
       this.$refs.name.innerHTML = this.carousel[current].name;
     },
 
-    async handleClick(index){
-      let {type_id,film_id} = this.carousel[index];
-      let episode = this.carousel[index].episode
-      this.$store.commit("UpdateVideoParams", {type_id,film_id});
-      let params={};
+    async handleClick(index) {
+      let { type_id, film_id } = this.carousel[index];
+      let episode = this.carousel[index].episode;
+      this.$store.commit("UpdateVideoParams", { type_id, film_id });
+      let params = {};
       params.type_id = type_id;
       params.film_id = film_id;
       //console.log("params", params);
@@ -117,9 +113,11 @@ export default {
           break;
       }
 
-      let routerUrl = this.$router.resolve({path:`/playinfo/play/${episode}`});
-      window.open(routerUrl.href,'_blank')
-      let res = await this.$http.put("volumes",{params});
+      let routerUrl = this.$router.resolve({
+        path: `/playinfo/play/${episode}`
+      });
+      window.open(routerUrl.href, "_blank");
+      let res = await this.$http.put("volumes", { params });
     },
 
     async getFaninfo(path, params) {
@@ -133,13 +131,17 @@ export default {
       res = await this.$http.get("/videos", { params });
       // //console.log("res", res.data.list);
       this.$store.commit("UpdateEpisodeList", res.data.list);
-    },
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
+::-webkit-scrollbar {
+  width: 0 !important;
+}
 .carousel-container {
+  overflow-y: hidden;
   position: relative;
   border-radius: 5px;
   // background: rgba(0, 0, 0, 0.1);

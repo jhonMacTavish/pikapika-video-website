@@ -5,14 +5,37 @@
       <el-button type="text" @click="$router.push('/bangumi/create')">
         <i class="el-icon-plus"></i>添加番剧
       </el-button>
+      <el-input
+        class="searchInput"
+        :clearable="true"
+        v-model="search"
+        size="small"
+        placeholder="输入关键字搜索"
+        prefix-icon="el-icon-search"
+      />
     </div>
-    <el-table :data="pageListB" stripe>
+    <el-table
+      :data="pageList.filter(data=>!search || data.name.toLowerCase().includes(search.toLowerCase()))"
+      stripe
+    >
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="name" label="名称"></el-table-column>
-      <el-table-column prop="episodes" label="集数"></el-table-column>
-      <el-table-column prop="style" label="风格"></el-table-column>
-      <el-table-column prop="playtime" label="开播时间"  width="160"></el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column prop="episodes" label="集数" width="120"></el-table-column>
+      <el-table-column
+        prop="is_ended"
+        label="状态"
+        width="120"
+        :filters="[{text:'更新中',value:0},{text:'已完结',value:1}]"
+        :filter-method="filterTag"
+        filter-placement="top"
+      >
+        <template slot-scope="scope">
+          <el-tag :type="scope.row.is_ended?'primary':'success'">{{scope.row.is_ended?"已完结":"更新中"}}</el-tag>
+        </template>
+      </el-table-column>
+      <el-table-column prop="style" label="风格" width="280"></el-table-column>
+      <el-table-column prop="playtime" label="开播时间" width="160"></el-table-column>
+      <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row.film_id)" class="detail">查看</el-button>
           <el-button
@@ -105,8 +128,9 @@ export default {
   name: "BangumiList",
   data() {
     return {
+      search: "",
       dialogFormVisible: false,
-      pageListB: [],
+      pageList: [],
       pageListV: [],
       currentPage: 1,
       videoCurrentPage: 1,
@@ -134,8 +158,19 @@ export default {
       return this.$store.getters.videoList.length;
     }
   },
-  watch: {},
+  watch: {
+    search(newV,oldV){
+      if(newV){
+        this.pageList = this.theaterList;
+      }else{
+        this.handleCurrentChange(this.currentPage);
+      }
+    }
+  },
   methods: {
+    filterTag(value, row) {
+      return row.is_ended == value;
+    },
     async fetch() {
       const res = await this.$http.get("/bangumis");
       // //console.log("res", res.data);
@@ -159,7 +194,9 @@ export default {
             type_id: 1,
             film_id: row.film_id
           };
-          console.log("removeremoveremoveremoveremoveremoveremoveremoveremoveremoveremoveremoveremoveremove", )
+          console.log(
+            "removeremoveremoveremoveremoveremoveremoveremoveremoveremoveremoveremoveremoveremove"
+          );
           const resCsl = await this.$http.delete(`/removeCsl`, { params });
           if (resCsl.data.status == 200) {
             const resC = await this.$http.delete(`/comments`, { params });
@@ -221,7 +258,7 @@ export default {
       ) {
         pageList.push(this.bangumiList[i]);
       }
-      this.pageListB = pageList;
+      this.pageList = pageList;
       // document.querySelector("counter1").scrollIntoView(true); //这里的counter1是将要返回地方的id
     },
 
@@ -291,6 +328,19 @@ export default {
 </script>
 
 <style lang='less' scoped>
+.searchInput {
+  margin-right: 63px;
+  width: 360px;
+  float: right;
+}
+
+.searchInput::after {
+  content: "";
+  display: block;
+  visibility: hidden;
+  clear: both;
+}
+
 .detail {
   color: #409eff;
 }

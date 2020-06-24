@@ -38,7 +38,7 @@ let getOne = async (req, res) => {
 
 let getAll = (req, res) => {
     //console.log("getBangumiAll")
-    let sql = 'select bangumi_id as film_id,name,style,playtime from pk_bangumi order by create_time desc';
+    let sql = 'select bangumi_id as film_id,name,is_ended,style,playtime from pk_bangumi order by create_time desc';
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {

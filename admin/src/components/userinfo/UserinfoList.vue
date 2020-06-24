@@ -27,7 +27,7 @@
           <img :src="scope.row.avatar?scope.row.avatar:userAvatar" alt />
         </template>
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button v-if="!isbanUser" type="text" size="small" @click="detail(scope.row.user_id)" class="detail">查看</el-button>
           <el-button v-if="!isbanUser" type="text" size="small" @click="banUser(scope.row)" class="delete">封禁</el-button>

@@ -21,7 +21,7 @@
       <el-table-column prop="create_time" label="发布时间" width="200"></el-table-column>
       <el-table-column prop="adminname" label="发布人" width="160">
       </el-table-column>
-      <el-table-column fixed="right" label="操作" width="180">
+      <el-table-column label="操作" width="180">
         <template slot-scope="scope">
           <el-button
             type="text"

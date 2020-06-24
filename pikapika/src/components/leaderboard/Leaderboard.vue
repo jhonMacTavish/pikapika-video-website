@@ -12,7 +12,7 @@
             class="card-content"
           >
             <p class="title">{{item.name}}</p>
-            <span class="desc">{{item.status==1?"更新至":"全"}}{{item.episodes}}话</span>
+            <span class="desc">{{item.is_ended?"全":"更新至"}}{{item.episodes}}话</span>
           </router-link>
         </li>
       </ul>

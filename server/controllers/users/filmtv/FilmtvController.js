@@ -17,7 +17,7 @@ getOne = async (req, res) => {
     let sqlArr = [film_id];
 
     let result = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    result[0].episodes = await util.countEp(4,film_id);
+    result[0].episodes = await util.countEp(4, film_id);
 
     return res.send(result);
 }
@@ -28,7 +28,7 @@ getAll = (req, res) => {
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
-            console.error("error",err.message);
+            console.error("error", err.message);
             return res.send({
                 'is_ended': 402,
                 'msg': "信息获取失败"
@@ -37,9 +37,9 @@ getAll = (req, res) => {
             // //console.log("getAll", data);
             //console.log("操作成功");
             let type_id = 4;
-            for(let i=0; i<data.length; i++){
+            for (let i = 0; i < data.length; i++) {
                 let film_id = data[i].film_id;
-                data[i].episodes = await util.countEp(type_id,film_id);
+                data[i].episodes = await util.countEp(type_id, film_id);
             }
 
             return res.send({
@@ -98,7 +98,7 @@ let search = async (req, res) => {
         if (key == "style") continue
         if (key == "tag") continue
         if (params[key]) {
-            keyArr.push(` f_${key}=?`);
+            keyArr.push(` ${key}=?`);
             sqlArr.push(params[key]);
         }
     }
@@ -106,41 +106,25 @@ let search = async (req, res) => {
     if (sqlCondition) {
         sql = `${sql} where${sqlCondition}`;
     }
-    let callback = async (err, data) => {
-        if (err) {
-            console.error("error",err.message);
-            return res.send({
-                'is_ended': 402,
-                'msg': "信息获取失败"
-            })
-        } else {
-            //console.log("操作成功");
-            let type_id = 1;
-            for (let i = 0; i < data.length; i++) {
-                let film_id = data[i].film_id;
-                data[i].episodes = await util.countEp(type_id, film_id);
-            }
-            return res.send({
-                "list": data,
-                "is_ended": 200,
-                "msg": "信息获取成功"
-            })
-        }
-    }
 
-    let rst = await dbconfig.asyncSqlConnect(sql, sqlArr, callback);
+    let rst = await dbconfig.asyncSqlConnect(sql, sqlArr);
     let list = [];
-    if(params.style){
+    if (params.style) {
         let length = rst.length;
-        for(let i=0; i<length; i++){
-            if(rst[i].style.indexOf(params.style)>=0)
+        for (let i = 0; i < length; i++) {
+            if (rst[i].style.indexOf(params.style) >= 0)
                 list.push(rst[i]);
         }
-    }else{
+    } else {
         list = rst;
     }
+    let type_id = 4;
+    for (let i = 0; i < list.length; i++) {
+        let film_id = list[i].film_id;
+        list[i].episodes = await util.countEp(type_id, film_id);
+    }
     // //console.log("list", list);
-    return res.send({list});
+    return res.send({ list });
 }
 
 let getRank = (req, res) => {
@@ -149,7 +133,7 @@ let getRank = (req, res) => {
     let sqlArr = [];
     let callback = async (err, data) => {
         if (err) {
-            console.error("error",err.message);
+            console.error("error", err.message);
             return res.send({
                 'is_ended': 402,
                 'msg': "信息获取失败"
@@ -174,5 +158,5 @@ let getRank = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 module.exports = {
-    getAll, getOne, getStyles,search,getRank
+    getAll, getOne, getStyles, search, getRank
 }

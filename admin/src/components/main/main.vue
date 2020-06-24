@@ -8,17 +8,17 @@
           </template>
           <el-menu-item index="/bangumi/list" class="menu-item">番剧</el-menu-item>
           <el-menu-item index="/guoman/list" class="menu-item">国漫</el-menu-item>
-          <el-menu-item index="/theater/list" class="menu-item">电影</el-menu-item>
           <el-menu-item index="/filmtv/list" class="menu-item">影视</el-menu-item>
+          <el-menu-item index="/theater/list" class="menu-item">电影</el-menu-item>
         </el-submenu>
         <el-submenu index="2">
           <template slot="title">
             <i class="el-icon-set-up"></i>运营管理
           </template>
-            <el-menu-item index="/carousel/list" class="menu-item">首页轮播图</el-menu-item>
-            <el-menu-item index="/ads/list" class="menu-item">广告管理</el-menu-item>
-            <el-menu-item index="/announce/list" class="menu-item">公告管理</el-menu-item>
-            <el-menu-item index="/report/list" class="menu-item">举报处理</el-menu-item>
+          <el-menu-item index="/carousel/list" class="menu-item">首页轮播图</el-menu-item>
+          <el-menu-item index="/ads/list" class="menu-item">广告管理</el-menu-item>
+          <el-menu-item index="/announce/list" class="menu-item">公告管理</el-menu-item>
+          <el-menu-item index="/report/list" class="menu-item">举报处理</el-menu-item>
         </el-submenu>
         <el-submenu index="3">
           <template slot="title">
@@ -46,7 +46,7 @@
             <el-dropdown-item @click.native="logout">注销</el-dropdown-item>
           </el-dropdown-menu>
         </el-dropdown>
-          <span style="color:black" v-if="adminUser.name">管理员：{{adminUser.name}}</span>
+        <span style="color:black" v-if="adminUser.name">管理员：{{adminUser.name}}</span>
       </el-header>
 
       <el-main class="main-container">
@@ -60,6 +60,7 @@
 
 <style>
 .main-container {
+  overflow-y: scroll;
   position: relative;
   min-width: 1100px;
 }
@@ -73,13 +74,13 @@ i {
   top: -1px;
 }
 
-i.setting{
+i.setting {
   position: relative;
   top: 2px;
   font-size: 20px;
 }
 
-i.setting:hover{
+i.setting:hover {
   cursor: pointer;
 }
 
@@ -96,10 +97,9 @@ i.setting:hover{
   background-size: auto 520px;
   background-repeat: no-repeat;
 }
-.el-menu{
+.el-menu {
   background: rgba(255, 255, 255, 0.8);
 }
-
 </style>
 
 <script>
@@ -121,8 +121,8 @@ export default {
       }
     };
   },
-  watch:{
-    async '$route'(to,from){
+  watch: {
+    async $route(to, from) {
       //console.log("to", to);
     }
   },
@@ -143,7 +143,7 @@ export default {
     async fetch() {
       let res = await this.$http.get("/adminUser");
       this.adminUser = res.data.adminUser;
-      this.$store.commit("UpdateAdminUser",this.adminUser);
+      this.$store.commit("UpdateAdminUser", this.adminUser);
     },
 
     logout() {
