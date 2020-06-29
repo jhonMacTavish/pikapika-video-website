@@ -2,7 +2,7 @@ let dbconfig = require('../../../util/dbconfig');
 let util = require('../../../util/util');
 
 let getAll = async (req, res) => {
-    let sql = 'select reporting_id,comment_id,user_id from pk_reporting';
+    let sql = 'select reporting_id,comment_id,user_id,create_time from pk_reporting';
     let sqlArr = [];
 
     let reportRst = await dbconfig.asyncSqlConnect(sql, sqlArr);
@@ -22,7 +22,6 @@ let getAll = async (req, res) => {
         delete reportRst[i].user_id;
     }
     
-    console.log("reportRst", reportRst);
     return res.send({
         'list': reportRst
     })

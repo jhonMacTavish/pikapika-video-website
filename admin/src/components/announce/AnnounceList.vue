@@ -28,7 +28,7 @@
         </template>
       </el-table-column>
       <el-table-column prop="adminname" label="发布人" width="160"></el-table-column>
-      <el-table-column label="操作" width="120">
+      <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
           <el-button
             type="text"

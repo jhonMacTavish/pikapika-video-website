@@ -1194,7 +1194,7 @@ export default {
   vertical-align: bottom;
 }
 
-.panel {
+.panel {min-height: 570px;
   position: relative;
   padding-bottom: 60px;
   // overflow: auto;

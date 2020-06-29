@@ -21,7 +21,7 @@
         </template>
       </el-table-column>
       
-      <el-table-column label="操作" width="120">
+      <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
           <el-button
             type="text"

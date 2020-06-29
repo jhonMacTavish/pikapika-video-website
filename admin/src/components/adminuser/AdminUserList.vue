@@ -15,7 +15,7 @@
           <span>{{scope.row.create_time.replace(/T|.000Z/g," ")}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="120">
+      <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
           <el-button
             type="text"
