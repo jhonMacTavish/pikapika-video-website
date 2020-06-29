@@ -11,6 +11,7 @@ module.exports = app =>{
   var Announce = require('../../controllers/users/announce/AnnounceController');
   var Review = require('../../controllers/users/review/ReviewController');
   var Carousel = require('../../controllers/users/carousel/CarouselController');
+  var Ads = require('../../controllers/users/ads/AdsController');
   var axios = require("axios");
   var authMiddleware = require('../../middleware/userAuth');
 
@@ -78,6 +79,8 @@ module.exports = app =>{
   router.get('/announces', Announce.getAll);
 
   router.get('/carousels', Carousel.getAll);
+
+  router.get('/ads', Ads.getAll);
 
   app.use('/users/api',router);
 }

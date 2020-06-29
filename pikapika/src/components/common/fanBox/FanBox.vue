@@ -13,12 +13,12 @@
         target="_blank"
         tag="a"
       >
-        <span>{{listItem.name}}</span>
+        <span :title="listItem.name">{{listItem.name}}</span>
       </router-link>
       <p>
         更新至
         <router-link
-          :to="{path:`/playinfo/play/${listItem.type_id}/${listItem.film_id}/${listItem.episodes}/${listItem.episodes}`}"
+          :to="{path:`/playinfo/play/${listItem.type_id}/${listItem.film_id}/${listItem.episodes}`}"
           target="_blank"
           tag="a"
         >{{listItem.episodes}}话</router-link>

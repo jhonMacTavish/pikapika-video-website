@@ -8,12 +8,12 @@
     </div>
     <el-table :data="carouselList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="imgSrc" label="图片" width="600">
+      <el-table-column prop="imgSrc" label="图片" width="610px">
         <template slot-scope="scope">
           <img :src="scope.row.imgSrc" alt />
         </template>
       </el-table-column>
-      <el-table-column prop="type_id" label="类型" width="50">
+      <el-table-column prop="type_id" label="类型" width="60px">
         <template slot-scope="scope">
           <span>{{scope.row.type_id==1?"番剧":"国漫"}}</span>
         </template>
@@ -24,7 +24,7 @@
           <span>{{`第 ${scope.row.episode} ${scope.row.type_id==1?'话':'集'}`}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="120">
         <template slot-scope="scope">
           <el-button
             type="text"
@@ -103,7 +103,7 @@ export default {
 img {
   display: inline-block;
   height: 166px;
-  width: 100%;
+  width: 580px;
   background: aquamarine;
   border-radius: 5px;
   border: 1px solid rgba(0, 0, 0, 0.1);

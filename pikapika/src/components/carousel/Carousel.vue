@@ -11,22 +11,22 @@
       ref="carousel"
     >
       <el-carousel-item v-for="(item,index) in carousel" :key="item.id">
-        <!-- <img :src="item.imgSrc" alt @click="$router.push({name: 'faninfo'})" /> -->
-        <img :src="item.imgSrc" alt @click="handleClick(index)" />
+        <img :src="item.imgSrc" @click="handleClick(index)" />
       </el-carousel-item>
       <p ref="name" class="carousel-name"></p>
       <div class="carousel-indicator">
         <ul>
           <li
-            v-for="item in carousel"
+            v-for="(item,index) in carousel"
             :key="item.id"
-            @mouseenter="setCurrentIndex(item.id)"
+            @mouseenter="setCurrentIndex(index)"
             @mouseleave="setAutoplay"
+            @click="handleClick(index)"
           >
-            <img :src="item.imgSrc" alt />
+            <img :src="item.imgSrc"/>
           </li>
         </ul>
-        <div class="sliderBox" ref="sliderBox"></div>
+        <div class="sliderBox" ref="sliderBox" @click="handleClick(selectIndex)"></div>
       </div>
     </el-carousel>
   </div>
@@ -66,7 +66,8 @@ export default {
         // }
       ],
       autoplay: true,
-      oldPosition: 0
+      oldPosition: 0,
+      selectIndex: 0
     };
   },
   async created() {
@@ -80,8 +81,9 @@ export default {
     },
 
     setCurrentIndex(index) {
-      this.$refs.carousel.setActiveItem(index - 1);
+      this.$refs.carousel.setActiveItem(index);
       this.autoplay = false;
+      this.selectIndex = index;
     },
 
     setAutoplay() {
@@ -94,6 +96,7 @@ export default {
     },
 
     async handleClick(index) {
+      console.log("handleClick", index);
       let { type_id, film_id } = this.carousel[index];
       let episode = this.carousel[index].episode;
       this.$store.commit("UpdateVideoParams", { type_id, film_id });
@@ -114,7 +117,7 @@ export default {
       }
 
       let routerUrl = this.$router.resolve({
-        path: `/playinfo/play/${episode}`
+        path: `/playinfo/play/${type_id}/${film_id}/${episode}`
       });
       window.open(routerUrl.href, "_blank");
       let res = await this.$http.put("volumes", { params });
@@ -169,6 +172,7 @@ export default {
       li {
         margin-right: 10px;
         img {
+          z-index: 2020;
           display: inline-block;
           padding: 2.5px;
           width: 66px;
@@ -176,7 +180,6 @@ export default {
           border-radius: 4px;
           background: white;
           overflow: auto;
-          cursor: pointer;
         }
 
         // img:hover {
@@ -194,7 +197,6 @@ export default {
       height: 49px;
       border-radius: 4px;
       border: 3px solid #39c5bb;
-      // background: #39c5bb;
       transition-duration: 0.3s;
       transition-timing-function: ease-out;
     }
@@ -208,7 +210,7 @@ export default {
   left: 0;
   bottom: 0;
   width: 100%;
-  height: 62px;
+  height: 70px;
   background: linear-gradient(-180deg, rgba(0, 0, 0, 0), rgba(0, 0, 0, 0.75));
   cursor: auto;
 }

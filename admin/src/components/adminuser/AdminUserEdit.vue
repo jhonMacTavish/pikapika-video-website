@@ -1,6 +1,6 @@
 <template>
   <div>
-    <h1>{{id?'编辑':'添加'}}管理员</h1>
+    <h1>{{admin_id?'编辑':'添加'}}管理员</h1>
     <el-form
       :model="model"
       :rules="rules"
@@ -32,7 +32,7 @@
 export default {
   name: "BangumiEdit",
   props: {
-    id: {}
+    admin_id: {}
   },
   data() {
     let name = (rule, value, callback) => {
@@ -56,9 +56,9 @@ export default {
 
     let password = (rule, value, callback) => {
       let reg = /^(?![0-9]+$)(?![a-zA-Z]+$)[0-9A-Za-z]{6,16}$/;
-      if (!value && this.id) {
+      if (!value && this.admin_id) {
         callback(); // 请输入请输入集数
-      } else if (!value && !this.id) {
+      } else if (!value && !this.admin_id) {
         callback(new Error("请输入密码")); // 请输入请输入集数
       } else if (reg.test(value)) {
         callback();
@@ -90,7 +90,7 @@ export default {
   computed: {},
   watch: {},
   created() {
-    this.id && this.fetch();
+    this.admin_id && this.fetch();
   },
   methods: {
     submitForm(formName) {
@@ -103,9 +103,9 @@ export default {
 
           let res;
 
-          if (this.id) {
+          if (this.admin_id) {
             //console.log("更新");
-            res = await this.$http.put(`/adminusers/${this.id}`, params);
+            res = await this.$http.put(`/adminusers/${this.admin_id}`, params);
           } else {
             //console.log("创建");
             res = await this.$http.post("/adminusers", params);
@@ -159,11 +159,9 @@ export default {
     },
 
     async fetch() {
-      //console.log("edit");
-      const res = await this.$http.post(`/adminusers/${this.id}`);
-
+      const res = await this.$http.post(`/adminusers/${this.admin_id}`);
+      console.log("res", res);
       res.data[0]?this.model = res.data[0]:'';
-      //console.log("this.model", this.model);
     },
   },
   components: {}

@@ -996,6 +996,7 @@ export default {
       let list = resV.data.list;
 
       resV = await this.$http.get(`/getEpisodes/${this.modelB.searchUrl}`);
+      console.log(resources, "resources");
       let resources = resV.data.list;
 
       if (resV.data.status != 200) {

@@ -249,20 +249,12 @@ updateOne = (req, res) => {
 }
 
 getInfos = async (req, res) => {
-    let token = String(req.headers.authorization || '').split(' ').pop();
-    assert(token, 401, "请先登录");
-    try {
-        var { user_id } = jwt.verify(token, secretkey);
-    } catch (err) {
-        if (err.message == "jwt malformed")
-            user_id = null;
-        assert(user_id, 422, "请先登录");
-    }
-    assert(user_id, 401, "请先登录");
     let sql = 'select username,email,is_man,avatar,create_time from pk_user where user_id=?';
-    let sqlArr = [user_id];
+    let sqlArr = [req.user_id];
     let userRst = await dbconfig.asyncSqlConnect(sql, sqlArr);
+    console.log(userRst, "userRst");
     return res.send({
+        "code": 1,
         "user": userRst[0]
     })
 }

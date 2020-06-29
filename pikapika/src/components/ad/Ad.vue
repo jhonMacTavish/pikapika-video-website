@@ -1,7 +1,10 @@
 <template>
   <div class="ad-box">
-    <a href="https://7segu.taobao.com/?mm_sycmid=1_62746_0baf15f9c58912f036f1caf76317ec4a" target="_black">
-      <img src="https://cdn.u1.huluxia.com/g3/M01/53/F2/wKgBOV6haP2AXER-AAFhyKHjFJk277.jpg" alt />
+    <a
+      :href="ad.url"
+      target="_black"
+    >
+      <img :src="ad.imgSrc" :alt="ad.brand" />
     </a>
   </div>
 </template>
@@ -11,22 +14,34 @@ export default {
   name: "Ad",
   data() {
     return {
-      browserWidth: 0
+      browserWidth: 0,
+      ad:{}
     };
+  },
+  created() {
+    this.fetch();
+  },
+  methods: {
+    async fetch() {
+      const res = await this.$http.get("/ads");
+      let ads = res.data.list;
+      let index = Math.floor(Math.random() * ads.length);
+      this.ad = ads[index];
+    }
   }
 };
 </script>
 
 <style lang="less" scoped>
-  .ad-box{
-    margin-top: 20px;
+.ad-box {
+  margin-top: 20px;
+  width: 100%;
+  a {
     width: 100%;
-    a{
+    img {
       width: 100%;
-      img{
-        width: 100%;
-        overflow: auto;
-      }
+      overflow: auto;
     }
   }
+}
 </style>

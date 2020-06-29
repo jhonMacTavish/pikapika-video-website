@@ -57,12 +57,6 @@ export default {
         title: "",
         content: ""
       },
-
-      styleVisible: false,
-      styleValue: "",
-
-      actorsVisible: false,
-      actorsValue: ""
     };
   },
   computed: {
@@ -76,10 +70,8 @@ export default {
   created() {
     this.id = this.announce_id;
     this.id && this.fetch();
-    this.updatingFilms();
   },
   methods: {
-
     submitForm(formName) {
       this.$refs[formName].validate(async valid => {
         if (valid) {
@@ -125,7 +117,8 @@ export default {
 
     async fetch() {
       const res = await this.$http.get(`/announces/${this.announce_id}`);
-      res.data[0]? res.data.list[0]:'';
+      let list = res.data.list;
+      if(list.length>0) this.model = res.data.list[0];
     }
   },
   components: {}

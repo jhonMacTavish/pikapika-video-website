@@ -2,7 +2,11 @@
   <div>
     <h1>公告列表</h1>
     <div>
-      <el-button :disabled="announceList.length>=5" type="text" @click="$router.push('/announce/create')">
+      <el-button
+        :disabled="announceList.length>=5"
+        type="text"
+        @click="$router.push('/announce/create')"
+      >
         <i class="el-icon-plus"></i>添加公告
       </el-button>
     </div>
@@ -18,10 +22,13 @@
           <p :title="scope.row.content" class="content">{{scope.row.content}}</p>
         </template>
       </el-table-column>
-      <el-table-column prop="create_time" label="发布时间" width="200"></el-table-column>
-      <el-table-column prop="adminname" label="发布人" width="160">
+      <el-table-column prop="create_time" label="发布时间" width="200">
+        <template slot-scope="scope">
+          <span>{{scope.row.create_time.replace(/T|.000Z/g," ")}}</span>
+        </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column prop="adminname" label="发布人" width="160"></el-table-column>
+      <el-table-column label="操作" width="120">
         <template slot-scope="scope">
           <el-button
             type="text"
@@ -97,7 +104,7 @@ export default {
   color: #f56c6c;
 }
 
-.content{
+.content {
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;

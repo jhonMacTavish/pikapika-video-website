@@ -67,10 +67,6 @@ export default {
       type: String,
       default: "1"
     },
-    epIndex: {
-      type: String,
-      default: "1"
-    },
     episode: {
       type: String,
       default: "1"
@@ -93,8 +89,8 @@ export default {
     let res = await this.$http.get("/videos", { params });
     this.$store.commit("UpdateEpisodeList", res.data.list);
 
-    //console.log("epIndex", this.epIndex);
-    this.index = this.epIndex;
+    //console.log("episode", this.episode);
+    this.index = this.episode;
     --this.index;
     //console.log("index", this.index);
     this.item = this.$store.getters.episodeList[this.index];
@@ -160,9 +156,9 @@ export default {
     }
   },
   watch: {
-    epIndex(newV, olV) {
+    episode(newV, olV) {
       if (newV != olV) {
-        this.index = this.epIndex;
+        this.index = this.episode;
         --this.index;
         this.item = this.$store.getters.episodeList[this.index];
 

@@ -120,7 +120,7 @@ export default {
         password: [{ validator: validatePsw, trigger: "blur" }],
         captcha: [{ validator: captcha, trigger: "blur" }]
       },
-      turnTo:''
+      turnTo: ""
     };
   },
   computed: {},
@@ -163,7 +163,7 @@ export default {
               localStorage.removeItem("pk_user");
             }
             localStorage.setItem("pk_user_remenber", pk_user_remenber);
-            
+
             this.$router.push(this.turnTo);
           } else {
             this.$message({
@@ -223,7 +223,11 @@ export default {
   components: { Footer },
   beforeRouteEnter(to, from, next) {
     next(async vm => {
-      vm.turnTo = from.fullPath;
+      if (from.fullPath.indexOf("register") >= 0) {
+        vm.turnTo = "home";
+      } else {
+        vm.turnTo = from.fullPath;
+      }
     });
   }
 };
