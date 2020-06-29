@@ -90,7 +90,6 @@ let createOne = async (req, res) => {
         });
     }
 
-    //console.log("********************");
 
 
     sql =
@@ -173,7 +172,6 @@ let deleteOne = (req, res) => {
 }
 
 let removeCsl = (req, res) => {
-    console.log("***********************************", );
     let {type_id,film_id} = req.query;
     let sql = 'delete from pk_carousel where type_id=? and film_id=?';
     let sqlArr = [type_id,film_id];
@@ -198,7 +196,6 @@ let removeCsl = (req, res) => {
 }
 
 let getOne = async (req, res) => {
-    //console.log("getOne***********************************");
     let carousel_id = req.params.id;
     //console.log("carousel_id", carousel_id);
     let sql = 'select type_id,film_id,episode,imgSrc from pk_carousel where carousel_id=?';

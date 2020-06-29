@@ -128,11 +128,18 @@
             <el-input v-model="modelB.imgSrc" maxlength="500"></el-input>
           </el-form-item>
           <el-form-item label="简介" prop="summary">
-            <el-input type="textarea" rows="4" v-model="modelB.summary" clearable maxlength="500" show-word-limit></el-input>
+            <el-input
+              type="textarea"
+              rows="4"
+              v-model="modelB.summary"
+              clearable
+              maxlength="500"
+              show-word-limit
+            ></el-input>
           </el-form-item>
           <el-form-item>
             <el-button type="primary" @click.native="submitForm('bangumi')">保 存</el-button>
-            <el-button @click="$router.push('/bangumi/list')">取 消</el-button>
+            <el-button @click="cancelSubmit">取 消</el-button>
           </el-form-item>
         </el-form>
       </el-tab-pane>
@@ -470,8 +477,8 @@ export default {
         video_name: "",
         src: ""
       },
+      addingVideo: false,
       resources: [],
-
       isAdding: false,
 
       pageListC: [],
@@ -531,6 +538,23 @@ export default {
     // this.serchFilm(this.modelB.name);
   },
   methods: {
+    cancelSubmit() {
+      if (!this.modelB.name) {
+        this.$router.push("/bangumi/list");
+      } else {
+        this.$confirm(`是否确定要取消编辑 "${this.modelB.name}"`, "提示", {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        })
+          .then(async () => {
+            this.$router.push("/bangumi/list");
+          })
+          .catch(() => {
+            return;
+          });
+      }
+    },
     arrowUp(e) {
       let currentNode = e.target.parentNode.parentNode.parentNode.parentNode;
       let currentNextBro = currentNode.previousElementSibling;
@@ -561,7 +585,7 @@ export default {
           let queryCode = Math.floor(Math.random() * 9000) + 1000;
           this.queryCode = queryCode;
           if (query.indexOf("/" >= 0)) {
-            query = query.replace("/","%2F")
+            query = query.replace("/", "%2F");
           }
           const nameRst = await this.$http.get(`/getResources/${query}`, {
             params: { queryCode }
@@ -580,9 +604,6 @@ export default {
     async getEpisodes(url) {
       let queryCode = Math.floor(Math.random() * 9000) + 1000;
       this.queryCode = queryCode;
-          if (query.indexOf("/" >= 0)) {
-            query = query.replace("/","%2F")
-          }
       const episodeRst = await this.$http.get(`/getEpisodes/${url}`, {
         params: { queryCode }
       });
@@ -604,9 +625,9 @@ export default {
       if (!Number(row.episode)) {
         return false;
       }
-      if (!row.video_name) {
-        return false;
-      }
+      // if (!row.video_name) {
+      //   return false;
+      // }
       if (!row.src) {
         return false;
       }
@@ -698,11 +719,15 @@ export default {
         });
         return;
       }
-      this.$confirm(`是否确定要删除番剧 "${row.name}"`, "提示", {
-        confirmButtonText: "确定",
-        cancelButtonText: "取消",
-        type: "warning"
-      })
+      this.$confirm(
+        `是否确定要删除第${row.episode}话 "${row.video_name}"`,
+        "提示",
+        {
+          confirmButtonText: "确定",
+          cancelButtonText: "取消",
+          type: "warning"
+        }
+      )
         .then(async () => {
           //console.log("delete", `/videos/${row.resource_id}`);
           const res = await this.$http.delete(`/videos/${row.resource_id}`);
@@ -729,21 +754,50 @@ export default {
     addVideo() {
       this.isAdding = true;
       let index = this.videoTotal;
-      if (index != 0 && index == this.resources.length) {
-        this.$message({
-          type: "success",
-          message: "已添加该剧的所有视频"
-        });
-        this.isAdding = false;
-        return;
+      console.log(
+        "index != 0 && index == this.resources.length",
+        index != 0 && index == this.resources.length
+      );
+      if (index != 0 && index >= this.resources.length) {
+        // this.$message({
+        //   type: "success",
+        //   message: "已添加该剧的所有视频"
+        // });
+        // this.isAdding = false;
+        // return;
+        this.$confirm(
+          `已添加"${this.modelB.name}"的所有视频, 确定要继续添加吗?`,
+          "提示",
+          {
+            confirmButtonText: "确定",
+            cancelButtonText: "取消",
+            type: "warning"
+          }
+        )
+          .then(() => {
+            this.newVideo = {
+              episode: this.videoTotal + 1,
+              video_name: "",
+              src: ""
+            };
+            this.$store.commit("AddVideo", this.newVideo);
+            this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
+            this.videoCurrentChange(this.videoCurrentPage);
+            // this.isAdding = true;
+          })
+          .catch(() => {
+            this.isAdding = false;
+            return;
+          });
+      } else {
+        let resources = this.resources;
+        if (resources.length) {
+          this.newVideo = resources[index];
+        }
+        this.$store.commit("AddVideo", this.newVideo);
+        this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
+        this.videoCurrentChange(this.videoCurrentPage);
       }
-      let resources = this.resources;
-      if (resources.length) {
-        this.newVideo = resources[index];
-      }
-      this.$store.commit("AddVideo", this.newVideo);
-      this.videoCurrentPage = Math.ceil(this.videoTotal / 10);
-      this.videoCurrentChange(this.videoCurrentPage);
     },
 
     cancelAdd() {
@@ -800,7 +854,19 @@ export default {
           video_name: "",
           src: ""
         };
-        this.addVideo();
+        let index = this.videoTotal;
+        console.log(
+          "index != 0 && index == this.resources.length",
+          index != 0 && index == this.resources.length
+        );
+        if (index != 0 && index >= this.resources.length) {
+          this.$message({
+            type: "success",
+            message: "已添加该剧的所有视频"
+          });
+        } else {
+          this.addVideo();
+        }
       } else {
         this.$message({
           type: "error",
@@ -855,6 +921,7 @@ export default {
               )
                 .then(async () => {
                   this.id = res.data.film_id;
+                  this.addingVideo = true;
                   await this.fetch();
                   await this.fetchVideo();
                   // await this.fetchComment();
@@ -915,32 +982,11 @@ export default {
     },
 
     async fetch() {
-      // //console.log("this.videoCurrentPage", this.videoCurrentPage);
-
-      // //console.log("edit");
       const resB = await this.$http.get(`/bangumis/${this.id}`);
-      // //console.log("resB", resB.data[0].style.split("、"));
-      // //console.log("resB", resB);
       resB.data[0].style = resB.data[0].style.split("、");
       resB.data[0].actors = resB.data[0].actors.split("、");
 
       this.modelB = resB.data[0];
-      // let resV = await this.$http.get(`/videos/`, {
-      //   params: { film_id: this.modelB.film_id, type_id: this.modelB.type_id }
-      // });
-      // //console.log("resV.data.list", resV.data.list);
-      // // this.$store.dispatch("updateVideoList", resV.data.list);
-      // this.$store.commit("UpdateVideoList", resV.data.list);
-
-      // this.videoCurrentChange(this.videoCurrentPage);
-
-      // let resC = await this.$http.get(`/comments/`, {
-      //   params: { film_id: this.modelB.film_id, type_id: this.modelB.type_id }
-      // });
-
-      // //console.log("resC", resC.data.list);
-      // this.$store.commit("UpdateCommentList", resC.data.list);
-      // this.commentCurrentChange(this.commentCurrentPage);
     },
 
     async fetchVideo() {
@@ -948,11 +994,10 @@ export default {
         params: { film_id: this.modelB.film_id, type_id: this.modelB.type_id }
       });
       let list = resV.data.list;
-      this.$store.commit("UpdateVideoList", list);
-      this.videoCurrentChange(this.videoCurrentPage);
-      // if (!list.length) {
+
       resV = await this.$http.get(`/getEpisodes/${this.modelB.searchUrl}`);
-      //console.log("resV", resV);
+      let resources = resV.data.list;
+
       if (resV.data.status != 200) {
         this.$message({
           type: "error",
@@ -960,15 +1005,47 @@ export default {
         });
         return;
       }
-      let resources = resV.data.list;
+
+      if (!list.length && this.addingVideo) {
+        list = resV.data.list;
+        for (let i = 0; i < list.length; i++) {
+          let episode = list[i].num;
+          episode = Number(episode.substring(1, episode.length - 1));
+          if (isNaN(episode)) episode = i + 1;
+          let video_name = "";
+          let src = list[i].onlineurl;
+          if (src.includes("/index.m3u8")) src = list[i].m3u8url;
+
+          let params = { episode, video_name, src };
+          params.film_id = this.modelB.film_id;
+          params.type_id = this.modelB.type_id;
+          let res = await this.$http.post("/videos", params);
+          if (res.data.status != 200) {
+            this.$message({
+              type: "error",
+              message: `第${episode}集 添加失败`
+            });
+            break;
+          }
+        }
+      }
+      this.addingVideo = false;
+
+      resV = await this.$http.get(`/videos/`, {
+        params: { film_id: this.modelB.film_id, type_id: this.modelB.type_id }
+      });
+      list = resV.data.list;
+      this.$store.commit("UpdateVideoList", list);
+      this.videoCurrentChange(this.videoCurrentPage);
+
       let arr = [];
       for (let i = 0; i < resources.length; i++) {
         let episode = resources[i].num;
-        episode = Number(
-          episode.indexOf(".") == -1 ? episode.slice(1, 3) : episode.slice(1, 4)
-        );
+        episode = Number(episode.substring(1, episode.length - 1));
+        if (isNaN(episode)) episode = i + 1;
         let video_name = "";
         let src = resources[i].onlineurl;
+        if (src.includes("/index.m3u8")) src = resources[i].m3u8url;
         arr[i] = { episode, video_name, src };
       }
       this.resources = arr;

@@ -110,7 +110,6 @@ let deleteOne = (req, res) => {
 }
 
 let getOne = async (req, res) => {
-    //console.log("getOne***********************************");
     let ad_id = req.params.id;
     //console.log("type_id", ad_id);
     let sql = 'select brand,imgSrc,url from pk_advertising where ad_id=?';

@@ -159,7 +159,7 @@ module.exports = app => {
   router.put('/announces/:id', authMiddleware(), Announce.updateOne);
   router.delete('/announces/:id', authMiddleware(), Announce.deleteOne);
 
-  router.get('/comments/reports', authMiddleware(), Report.getAll);
+  router.get('/commentReporting', authMiddleware(), Report.getAll);
   router.delete('/comments/reports/:id', authMiddleware(), Report.deleteOne);
 
   app.use('/admin/api', router);

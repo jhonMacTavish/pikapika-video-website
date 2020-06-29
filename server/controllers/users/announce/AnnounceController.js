@@ -28,7 +28,6 @@ let getAll = async (req, res) => {
 }
 
 let getOne = async (req, res) => {
-    //console.log("getOne***********************************");
     let announce_id = req.params.id;
     let sql = 'select title,content from pk_announce where announce_id=?';
     let sqlArr = [announce_id];

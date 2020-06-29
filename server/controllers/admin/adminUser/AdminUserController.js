@@ -24,7 +24,6 @@ getOne = async (req, res) => {
 }
 
 getAll = (req, res) => {
-    //console.log("getUserinfoAll")
     let sql = 'select admin_id,name,email,create_time from pk_admin order by admin_id asc';
     let sqlArr = [];
     let callback = (err, data) => {

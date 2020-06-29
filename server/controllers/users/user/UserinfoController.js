@@ -25,6 +25,7 @@ sendCaptcha = async (req, res) => {
     let { email } = req.body;
     // //console.log("email", email);
     let captcha = generateCaptcha();
+    console.log(captcha, );
     //console.log("captcha", captcha);
     VerifyArr.push({ email, captcha });
     let id = setTimeout(() => {

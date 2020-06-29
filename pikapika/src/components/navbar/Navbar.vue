@@ -48,20 +48,26 @@ export default {
     }
   },
   created() {
-    this.selectedBar = /*sessionStorage.getItem("selectedBar") || */ this.initSelectedBar();
+    this.selectedBar =  this.initSelectedBar();
+    // if()
+    this.oldPosition = 83 + (this.selectedBar - 1) * 166;
+  },
+
+  mounted(){
+    this.$refs.slider.style.left = `${this.oldPosition}px`;
   },
   methods: {
     initSelectedBar() {
       let path = this.$route.fullPath;
       // //console.log("init", path);
       if (path.indexOf("home") != -1) return 1;
-      else if (path.indexOf("bangumi") != -1) return 2;
-      else if (path.indexOf("guoman") != -1) return 3;
-      else if (path.indexOf("theater") != -1) return 4;
-      else if (path.indexOf("filmtv") != -1) return 5;
+      else if (path.indexOf("bangumi") != -1 || path.indexOf("type_id=1") != -1) return 2;
+      else if (path.indexOf("guoman") != -1 || path.indexOf("type_id=2") != -1) return 3;
+      else if (path.indexOf("theater") != -1 || path.indexOf("type_id=3") != -1) return 4;
+      else if (path.indexOf("filmtv") != -1 || path.indexOf("type_id=4") != -1) return 5;
       else if (path.indexOf("news") != -1) return 6;
       else if (path.indexOf("announce") != -1) return 7;
-      else return 0;
+      else return 1;
     },
 
     cliickHandle(index) {

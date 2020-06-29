@@ -37,7 +37,7 @@ export default {
       this.videoList = res.data.list;
 
       let length = this.videoList.length;
-      length = length > 12 ? 12 : length < 6 ? length : 6;
+      length = length >= 12 ? 12 : length < 6 ? length : 6;
       this.videoList.length = length;
 
       // //console.log(path, this.videoList);

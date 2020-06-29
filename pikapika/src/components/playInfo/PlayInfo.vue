@@ -1,6 +1,6 @@
 <template>
   <div class="page-content">
-    <router-view/>
+    <router-view />
     <div class="playInfo-content">
       <Ad />
       <Episode />
@@ -53,18 +53,21 @@ export default {
 
     async fetch() {
       let params = this.$route.query;
-      if(!params){
-        let params = this.$route.params;
+      if (JSON.stringify(params)=="{}") {
+        console.log("*****************", );
+        params = this.$route.params;
       }
+      console.log("params", params);
+      console.log("route", this.$route);
       if (params.type_id) {
         this.$store.commit("UpdateVideoParams", params);
       }
-      
+
       params = JSON.stringify(params) == "{}" ? this.getParams : params;
       //console.log("params", params);
       switch (params.type_id) {
         case "1":
-          this.getVideos("/bangumis",params);
+          this.getVideos("/bangumis", params);
           // let res = await this.$http.get(`/bangumis/${params.film_id}`);
           // this.objectInfo = res.data[0];
           // this.$store.commit("UpdateObjectInfo", this.objectInfo);
@@ -73,13 +76,13 @@ export default {
           // this.$store.commit("UpdateEpisodeList", res.data.list);
           break;
         case "2":
-          this.getVideos("/guomans",params);
+          this.getVideos("/guomans", params);
           break;
         case "3":
-          this.getVideos("/theaters",params);
+          this.getVideos("/theaters", params);
           break;
         case "4":
-          this.getVideos("/filmtvs",params);
+          this.getVideos("/filmtvs", params);
           break;
         default:
           break;

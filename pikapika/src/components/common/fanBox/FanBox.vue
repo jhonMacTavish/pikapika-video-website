@@ -1,16 +1,27 @@
 <template>
   <div class="fanBox-box">
-    <img
-      :src="listItem.imgSrc"
-      alt
-    />
+    <router-link
+      :to="{path:'/playinfo',query:{type_id:listItem.type_id,film_id:listItem.film_id}}"
+      target="_blank"
+      tag="a"
+    >
+      <img :src="listItem.imgSrc" alt />
+    </router-link>
     <div class="desc">
-      <a href="javascript:;">
-        <span>{{listItem.title}}</span>
-      </a>
+      <router-link
+        :to="{path:'/playinfo',query:{type_id:listItem.type_id,film_id:listItem.film_id}}"
+        target="_blank"
+        tag="a"
+      >
+        <span>{{listItem.name}}</span>
+      </router-link>
       <p>
         更新至
-        <a href="javascript:;">{{listItem.latestChapter}}话</a>
+        <router-link
+          :to="{path:`/playinfo/play/${listItem.type_id}/${listItem.film_id}/${listItem.episodes}/${listItem.episodes}`}"
+          target="_blank"
+          tag="a"
+        >{{listItem.episodes}}话</router-link>
       </p>
     </div>
   </div>
@@ -21,9 +32,10 @@ export default {
   name: "FanBox",
   props: {
     listItem: {
-      id: 0,
-      title: "",
-      latestChapter: "",
+      type_id: null,
+      film_id: null,
+      name: "",
+      episodes: "",
       imgSrc: ""
     }
   },
@@ -56,7 +68,7 @@ export default {
     border-radius: 5px;
   }
 
-  img:hover{
+  img:hover {
     cursor: pointer;
   }
 
@@ -66,21 +78,21 @@ export default {
     position: relative;
     font-size: 12px;
     overflow: hidden;
-    a{
+    a {
       position: absolute;
       top: 0;
-      span{
+      span {
         display: inline-block;
         width: 100%;
         height: 80px;
         line-height: 18px;
       }
 
-      span:hover{
+      span:hover {
         color: #00a1d6;
       }
     }
-    
+
     p {
       width: 100%;
       height: 18px;

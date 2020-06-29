@@ -110,15 +110,15 @@ let createOne = async (req, res) => {
 }
 
 let updateOne = (req, res) => {
-    //console.log("updateBangumiByID")
+    console.log("updateBangumiByID")
     let { searchUrl, name, imgSrc, is_ended, style, initials, playtime, quarter, years, actors, summary, film_id } = req.body;
-
+    console.log("name", name.length);
     let sql = 'update pk_bangumi set searchUrl=?,name=?,imgSrc=?,is_ended=?,style=?,initials=?,playtime=?,quarter=?,years=?,actors=?,summary=?,admin_id=? where bangumi_id=?';
     let sqlArr = [searchUrl, name, imgSrc, is_ended, style, initials, playtime, quarter, years, actors, summary, req.admin_id, film_id];
 
     callback = (err, data) => {
         if (err) {
-            //console.log("error", err.message)
+            console.log("error", err.message)
             return res.send({
                 "status": 402,
                 'msg': "更新失败"

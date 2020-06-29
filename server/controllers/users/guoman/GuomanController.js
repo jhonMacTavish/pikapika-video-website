@@ -161,6 +161,35 @@ let getRank = (req, res) => {
     dbconfig.sqlConnect(sql, sqlArr, callback);
 }
 
+let getNewGuomans = (req, res) => {
+    //console.log("getBangumiAll")
+    let sql = 'select type_id,guoman_id as film_id,name,imgSrc,is_ended,weekday from pk_guoman where is_ended=0 order by create_time desc';
+    let sqlArr = [];
+    let callback = async (err, data) => {
+        if (err) {
+            console.error("error", err.message);
+            return res.send({
+                'is_ended': 402,
+                'msg': "信息获取失败"
+            })
+        } else {
+            //console.log("操作成功");
+            let type_id = 2;
+            for (let i = 0; i < data.length; i++) {
+                let film_id = data[i].film_id;
+                data[i].episodes = await util.countEp(type_id, film_id);
+            }
+            return res.send({
+                "list": data,
+                "is_ended": 200,
+                "msg": "信息获取成功"
+            })
+        }
+    }
+
+    dbconfig.sqlConnect(sql, sqlArr, callback);
+}
+
 module.exports = {
-    getAll, getOne, getStyles, search, getRank
+    getAll, getOne, getStyles, search, getRank, getNewGuomans
 }

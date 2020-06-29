@@ -51,7 +51,7 @@ export default {
           return "theater";
           break;
         case "剧集":
-          return "movie";
+          return "filmtv";
           break;
         default:
           break;
@@ -87,8 +87,64 @@ export default {
       }
     }
   },
-  watch: {},
-  methods: {},
+  watch: {
+    BGswitch(newV, oldV) {
+      // this.fetch();
+      this.toggle();
+    }
+  },
+  async created() {
+    // await this.fetch();
+    this.toggle();
+  },
+  methods: {
+    // async fetch() {
+    //   let res = null;
+    //   let fanTimeTable = [];
+    //   if (!this.BGswitch) {
+    //     res = await this.$http.get(`/newbangumis`);
+    //     let list = res.data.list;
+    //     for (let i = 0; i < 7; i++) {
+    //       fanTimeTable.push([]);
+    //     }
+    //     for (let i = 0; i < list.length; i++) {
+    //       switch (list[i].weekday) {
+    //         case "星期一":
+    //           fanTimeTable[0].push(list[i]);
+    //           break;
+    //         case "星期二":
+    //           fanTimeTable[1].push(list[i]);
+    //           break;
+    //         case "星期三":
+    //           fanTimeTable[2].push(list[i]);
+    //           break;
+    //         case "星期四":
+    //           fanTimeTable[3].push(list[i]);
+    //           break;
+    //         case "星期五":
+    //           fanTimeTable[4].push(list[i]);
+    //           break;
+    //         case "星期六":
+    //           fanTimeTable[5].push(list[i]);
+    //           break;
+    //         case "星期天":
+    //           fanTimeTable[6].push(list[i]);
+    //           break;
+    //         default:
+    //           break;
+    //       }
+    //     }
+    //     this.$store.commit("UpdateFanTimeTable",fanTimeTable);
+    //   } else {
+    //     res = await this.$http.get(`/newguomans`);
+    //     console.log("res", res.data.list);
+    //   }
+    // }
+
+    toggle(){
+      this.$emit("toggle",this.BGswitch);
+    }
+  },
   components: {}
 };
 </script>

@@ -47,7 +47,7 @@ getAll = (req, res) => {
 
 createOne = async (req, res) => {
     //console.log("createVideo");
-    //console.log("params", req.body);
+    console.log("params", req.body);
     let { film_id, type_id, episode, src, video_name } = req.body;
     let v_episodeRst = await getByParams({ key: 'film_id', value: film_id }, { key: 'type_id', value: type_id }, { key: 'episode', value: episode });
     if (v_episodeRst.length != 0) {
@@ -66,7 +66,7 @@ createOne = async (req, res) => {
 
     callback = (err, data) => {
         if (err) {
-            //console.log("error", err.message)
+            console.log("error", err.message)
             return res.send({
                 "status": 402,
                 'msg': "添加失败"

@@ -63,7 +63,8 @@ export default {
   watch: {},
   methods: {
     async fetch() {
-      const res = await this.$http.get("/comments/reports");
+      const res = await this.$http.get("/commentReporting");
+      console.log("res*********", res);
       this.reportList = res.data.list;
     },
 

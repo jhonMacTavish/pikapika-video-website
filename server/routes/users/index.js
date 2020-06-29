@@ -29,12 +29,14 @@ module.exports = app =>{
   })
 
   router.get('/getBrank', Bangumi.getRank);
+  router.get('/newbangumis', Bangumi.getNewBangumis);
   router.get('/bangumis', Bangumi.getAll);
   router.get('/bangumis/:id', Bangumi.getOne);
   router.post('/bangumis/type', Bangumi.getStyles);
   router.post('/bangumis/search',Bangumi.search);
 
   router.get('/getGrank', Guoman.getRank);
+  router.get('/newguomans', Guoman.getNewGuomans);
   router.get('/guomans', Guoman.getAll);
   router.get('/guomans/:id', Guoman.getOne);
   router.post('/guomans/type', Guoman.getStyles);
