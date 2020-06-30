@@ -1,7 +1,15 @@
+<!--
+ * @Author: your name
+ * @Date: 2020-06-29 17:14:38
+ * @LastEditTime: 2020-06-30 16:02:54
+ * @LastEditors: Please set LastEditors
+ * @Description: In User Settings Edit
+ * @FilePath: \pikapika-video-website\pikapika\src\components\findPsw\step\Verify.vue
+--> 
 <template>
   <div class="verifiy-box">
       <el-input v-model="account" placeholder="请输入内容" class="item"></el-input>
-      <el-button type="primary" class="item" @click="$router.push({name:'reset'})">确认</el-button>
+      <el-button type="primary" class="item" @click="verifyFn">确认</el-button>
   </div>
 </template>
 
@@ -17,7 +25,13 @@ export default {
   },
   watch:{
   },
-  methods: {},
+  methods: {
+    verifyFn() {
+      this.$router.push({name:"reset"});
+      document.getElementsByClassName("reset")[0].classList.add("active");
+      document.getElementsByClassName("verify")[0].classList.remove("active");
+    }
+  },
   components: {}
 };
 </script>

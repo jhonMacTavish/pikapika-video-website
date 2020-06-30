@@ -22,7 +22,7 @@
             <el-input placeholder="验证码" v-model="resetForm.captcha" maxlength="4" class="captcha"></el-input>
             <el-button type="primary" class="captcha-button">获取验证码</el-button>
           </el-form-item>
-          <el-button type="primary" class="register-buttom" @click="$router.push({name:'success'})">确认修改</el-button>
+          <el-button type="primary" class="register-buttom" @click="resetFn">确认修改</el-button>
         </el-form>
       </div>
     </div>
@@ -49,7 +49,13 @@ export default {
     }
   },
   watch: {},
-  methods: {},
+  methods: {
+    resetFn() {
+      this.$router.push({name:'success'});
+      document.getElementsByClassName("success")[0].classList.add("active");
+      document.getElementsByClassName("reset")[0].classList.remove("active");
+    }
+  },
   components: {}
 };
 </script>

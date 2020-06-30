@@ -7,15 +7,15 @@
     </div>
     <div class="step-wrap">
       <div class="step-line">
-        <div @click="$router.push({name:'verify'})" class="active">
+        <div @click="$router.push({name:'verify'})" class="verify active">
           <span class="step-icon">1</span>
           <div class="step-title">确认账号</div>
         </div>
-        <div @click="$router.push({name:'reset'})">
+        <div @click="$router.push({name:'reset'})" class="reset">
           <span class="step-icon">2</span>
           <div class="step-title">重置密码</div>
         </div>
-        <div @click="$router.push({name:'success'})">
+        <div @click="$router.push({name:'success'})" class="success">
           <span class="step-icon">3</span>
           <div class="step-title">重置成功</div>
         </div>
