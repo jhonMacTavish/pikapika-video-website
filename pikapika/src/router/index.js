@@ -98,7 +98,7 @@ export default new Router({
               component: FanInfo,
             },
             {
-              path: 'play/:type_id/:film_id/:epIndex/:episode',
+              path: 'play/:type_id/:film_id/:episode',
               name: 'play',
               component: Player,
               props:true

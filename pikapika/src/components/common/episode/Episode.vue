@@ -48,7 +48,7 @@ export default {
       let res = await this.$http.put("volumes",{params});
       // params.type_id = this.objectInfo.type_id;
       // params.film_id = this.objectInfo.film_id;
-      this.$router.push(`/playinfo/play/${type_id}/${film_id}/${index+1}/${this.episodeList[index].episode}`);
+      this.$router.push(`/playinfo/play/${type_id}/${film_id}/${index+1}`);
       this.$router.go(0);
     }
   },

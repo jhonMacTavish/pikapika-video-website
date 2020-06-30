@@ -22,16 +22,15 @@ let getAll = async (req, res) => {
 }
 
 let createOne = async (req, res) => {
-    //console.log("createAds");
     let { brand, url, imgSrc } = req.body;
 
     let adRst = await getByParams({ key: 'brand', value: brand }, { key: 'url', value: url });
-    if (adRst.length != 0) {
-        return res.send({
-            "status": 402,
-            "msg": `数据库中存在"${brand}"的该url广告`
-        });
-    }
+    // if (adRst.length != 0) {
+    //     return res.send({
+    //         "status": 402,
+    //         "msg": `数据库中存在"${brand}"的该url广告`
+    //     });
+    // }
     let sql =
         'insert into pk_advertising(brand,url,imgSrc,admin_id) '
         + 'values(?,?,?,?)';

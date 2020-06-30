@@ -32,7 +32,7 @@
       </el-table-column>
       <el-table-column prop="style" label="风格" width="280"></el-table-column>
       <el-table-column prop="playtime" label="开播时间" width="160"></el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
           <el-button type="text" size="small" @click="detail(scope.row.film_id)" class="detail">查看</el-button>
           <el-button

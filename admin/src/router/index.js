@@ -69,7 +69,7 @@ const router = new Router({
         { path: '/userinfo/list', component: UserinfoList },
 
         { path: '/adminuser/create', component: AdminUserEdit },
-        { path: '/adminuser/eidt/:film_id', component: AdminUserEdit, props: true },
+        { path: '/adminuser/eidt/:admin_id', component: AdminUserEdit, props: true },
         { path: '/adminuser/list', component: AdminUserList },
 
         { path: '/carousel/create', component: CarouselEdit },

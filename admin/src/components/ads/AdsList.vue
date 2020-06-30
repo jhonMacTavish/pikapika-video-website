@@ -8,20 +8,20 @@
     </div>
     <el-table :data="adsList" stripe>
       <el-table-column type="index" width="50"></el-table-column>
-      <el-table-column prop="imgSrc" label="图片">
+      <el-table-column prop="imgSrc" label="图片" width="610px">
         <template slot-scope="scope">
           <img :src="scope.row.imgSrc" alt />
         </template>
       </el-table-column>
-      <el-table-column prop="brand" label="商标" width="120">
+      <el-table-column prop="brand" label="商标" width="120px">
       </el-table-column>
-      <el-table-column prop="url" label="链接" width="380">
+      <el-table-column prop="url" label="链接">
         <template slot-scope="scope">
           <a :href="scope.row.url" target="_black">{{scope.row.url}}</a>
         </template>
       </el-table-column>
       
-      <el-table-column label="操作" width="180">
+      <el-table-column label="操作" width="130px">
         <template slot-scope="scope">
           <el-button
             type="text"
@@ -99,10 +99,9 @@ export default {
 
 img {
   display: inline-block;
-  width: 100%;
+  width: 587px;
   height: 48px;
   border-radius: 5px;
-  background: aquamarine;
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: lightgray;
 }
 </style>

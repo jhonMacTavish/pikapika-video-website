@@ -5,16 +5,29 @@
       <el-table-column type="index" width="50"></el-table-column>
       <el-table-column prop="commentator.username" label="评论人" width="160">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="userDetail(scope.row.commentator)">{{scope.row.commentator.username}}</el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="userDetail(scope.row.commentator)"
+          >{{scope.row.commentator.username}}</el-button>
         </template>
       </el-table-column>
       <el-table-column prop="content" label="评论内容"></el-table-column>
-      <el-table-column prop="whistleblower.username" label="举报人" width="160">
+      <el-table-column prop="create_time" label="举报时间" width="200">
         <template slot-scope="scope">
-          <el-button type="text" size="small" @click="userDetail(scope.row.whistleblower)">{{scope.row.whistleblower.username}}</el-button>
+          <span>{{scope.row.create_time.replace(/T|.000Z/g," ")}}</span>
         </template>
       </el-table-column>
-      <el-table-column label="操作" width="180">
+      <el-table-column prop="whistleblower.username" label="举报人" width="160">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="userDetail(scope.row.whistleblower)"
+          >{{scope.row.whistleblower.username}}</el-button>
+        </template>
+      </el-table-column>
+      <el-table-column label="操作" width="135px">
         <template slot-scope="scope">
           <el-button type="text" size="small" class="edit" @click="relieveReport(scope.row)">解除举报</el-button>
           <el-button type="text" size="small" @click="remove(scope.row)" class="delete">删除评论</el-button>
@@ -55,7 +68,7 @@ export default {
       modelU: {},
       dialogFormVisibleU: false,
       userAvatar: "../../../static/userAvatar.jpg",
-      user:null
+      user: null
     };
   },
   async created() {},
@@ -79,7 +92,9 @@ export default {
         }
       )
         .then(async () => {
-          const res = await this.$http.delete(`/comments/reports/${row.reporting_id}`);
+          const res = await this.$http.delete(
+            `/comments/reports/${row.reporting_id}`
+          );
           if (res.data.status == 200) {
             this.$message({
               type: "success",
@@ -143,11 +158,13 @@ export default {
         type: "warning"
       })
         .then(async () => {
-          let params = {is_banned:1}
-          const res = await this.$http.put(`/userinfos/${row.user_id}`,{params});
+          let params = { is_banned: 1 };
+          const res = await this.$http.put(`/userinfos/${row.user_id}`, {
+            params
+          });
           //console.log("delete", res);
           if (res.data.status == 200) {
-            this.dialogFormVisibleU=false;
+            this.dialogFormVisibleU = false;
             this.$message({
               type: "success",
               message: res.data.msg
@@ -163,7 +180,7 @@ export default {
         .catch(() => {
           return;
         });
-    },
+    }
   },
   components: {},
   beforeRouteEnter(to, from, next) {
@@ -187,13 +204,13 @@ export default {
   font-weight: bold;
   margin: 5px 0;
 
-img {
-  height: 40px;
-  width: 40px;
-  border-radius: 50%;
-  border: 1px solid rgba(0, 0, 0, 0.1);
-  margin-bottom: -12px;
-}
+  img {
+    height: 40px;
+    width: 40px;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 0, 0, 0.1);
+    margin-bottom: -12px;
+  }
 }
 
 .form-item:nth-child(even) {

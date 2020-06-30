@@ -31,7 +31,7 @@
                 </el-form-item>
 
                 <el-form-item label="头像：" prop="avatar">
-                  <img class="avatar" :src="model.avatar" />
+                  <img class="avatar" :src="model.avatar?model.avatar:'../../../static/imgs/user/userAvatar.jpg'" />
                 </el-form-item>
 
                 <el-form-item label="头像地址：" prop="avatar">
@@ -163,11 +163,8 @@ export default {
     },
 
     async fetch() {
-      //console.log("edit");
       const res = await this.$http.post(`/userinfos`);
-
-      res.data[0]?this.model = res.data.user:'';
-      //console.log("this.model", this.model);
+      res.data.code?this.model = res.data.user:'';
     },
     handleClick() {}
   },

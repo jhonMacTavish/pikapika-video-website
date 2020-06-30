@@ -171,7 +171,6 @@ let report = async (req, res) => {
     sqlArr = [comment_id, user_id, reason];
 
     reportRst = await dbconfig.asyncSqlConnect(sql, sqlArr);
-    //console.log("commentRst", reportRst);
     if (reportRst.affectedRows == 1) {
         return res.send({
             'status': 200,

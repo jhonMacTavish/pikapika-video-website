@@ -996,6 +996,7 @@ export default {
       let list = resV.data.list;
 
       resV = await this.$http.get(`/getEpisodes/${this.modelB.searchUrl}`);
+      console.log(resources, "resources");
       let resources = resV.data.list;
 
       if (resV.data.status != 200) {
@@ -1193,7 +1194,7 @@ export default {
   vertical-align: bottom;
 }
 
-.panel {
+.panel {min-height: 570px;
   position: relative;
   padding-bottom: 60px;
   // overflow: auto;
